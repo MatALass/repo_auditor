@@ -12,12 +12,14 @@ This project aims to:
 
 ## Current status
 
-Version `0.2.0` includes:
+Version `0.4.0` includes:
 - repository scoring engine
 - issue catalog
 - markdown report generation
 - demo CLI mode
 - local repository scanner
+- workspace scanning across multiple repositories
+- Markdown and JSON export
 
 ## Run locally
 

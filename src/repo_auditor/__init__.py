@@ -5,4 +5,6 @@ __all__ = [
     "scoring",
     "report",
     "local_scanner",
+    "workspace",
+    "serialization",
 ]

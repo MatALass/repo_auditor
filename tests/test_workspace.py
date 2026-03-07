@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from repo_auditor.serialization import workspace_result_to_dict
 from repo_auditor.workspace import audit_workspace, discover_repository_directories
 
 
@@ -73,3 +74,15 @@ def test_audit_workspace_returns_ranked_results(tmp_path: Path) -> None:
     ranked_names = [result.repo_name for result in workspace_result.sorted_results]
     assert ranked_names[0] == "bad_repo"
     assert ranked_names[1] == "good_repo"
+
+
+def test_workspace_result_to_dict_contains_summary(tmp_path: Path) -> None:
+    create_good_repo(tmp_path / "good_repo")
+    create_bad_repo(tmp_path / "bad_repo")
+
+    workspace_result = audit_workspace(tmp_path)
+    payload = workspace_result_to_dict(workspace_result)
+
+    assert payload["repo_count"] == 2
+    assert payload["worst_repo_name"] == "bad_repo"
+    assert len(payload["results"]) == 2
