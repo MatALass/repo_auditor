@@ -30,6 +30,25 @@ def render_markdown_report(result: RepoAuditResult) -> str:
             lines.append(f"- Recommendation: {issue.recommendation}")
             lines.append("")
 
+    lines.append("## Prioritized action plan")
+    lines.append("")
+    if not result.prioritized_actions:
+        lines.append("- No action plan generated.")
+    else:
+        for index, action in enumerate(result.prioritized_actions, start=1):
+            lines.append(f"### {index}. {action.title}")
+            lines.append(f"- Priority score: **{action.priority_score}**")
+            lines.append(f"- Impact: **{action.impact}**")
+            lines.append(f"- Effort: **{action.effort}**")
+            lines.append(f"- Why this matters: {action.rationale}")
+            lines.append(f"- Description: {action.description}")
+            lines.append("- Recommended steps:")
+            for step in action.steps:
+                lines.append(f"  - {step}")
+            if action.source_issue_codes:
+                lines.append(f"- Linked issues: {', '.join(action.source_issue_codes)}")
+            lines.append("")
+
     lines.append("## Detailed category issues")
     lines.append("")
     for category in result.category_scores:
@@ -75,6 +94,18 @@ def render_workspace_report(workspace_result: WorkspaceAuditResult) -> str:
                 lines.append(f"- **{issue.title}** ({issue.severity}) — {issue.recommendation}")
         lines.append("")
 
+        lines.append("### Recommended action plan")
+        lines.append("")
+        if not worst_repo.prioritized_actions:
+            lines.append("- No action plan generated.")
+        else:
+            for index, action in enumerate(worst_repo.prioritized_actions, start=1):
+                lines.append(
+                    f"{index}. **{action.title}** — "
+                    f"priority {action.priority_score}, impact {action.impact}, effort {action.effort}"
+                )
+        lines.append("")
+
     lines.append("## Repository ranking")
     lines.append("")
     for index, repo_result in enumerate(workspace_result.sorted_results, start=1):
@@ -96,6 +127,16 @@ def render_workspace_report(workspace_result: WorkspaceAuditResult) -> str:
                 lines.append(f"  - {issue.title} ({issue.severity})")
         else:
             lines.append("- Top issues: none")
+
+        if repo_result.prioritized_actions:
+            lines.append("- Top actions:")
+            for action in repo_result.prioritized_actions[:3]:
+                lines.append(
+                    f"  - {action.title} "
+                    f"[priority={action.priority_score}, impact={action.impact}, effort={action.effort}]"
+                )
+        else:
+            lines.append("- Top actions: none")
         lines.append("")
 
     return "\n".join(lines)

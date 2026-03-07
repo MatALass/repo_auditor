@@ -19,6 +19,7 @@ def test_repo_result_to_dict_contains_expected_keys() -> None:
     assert payload["repo_name"] == "demo-repo"
     assert "category_scores" in payload
     assert "priority_issues" in payload
+    assert "prioritized_actions" in payload
 
 
 def test_write_text_output_creates_file(tmp_path: Path) -> None:

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from repo_auditor.models import CategoryScore, RepoAuditResult, RepoFacts
+from repo_auditor.planner import build_action_plan
 from repo_auditor.rules import (
     apparent_test_volume_points,
     count_useful_root_files,
@@ -323,6 +324,8 @@ def audit_repo(facts: RepoFacts) -> RepoAuditResult:
     issues = deduplicate_issues(categories)
     issues.sort(key=issue_sort_key)
 
+    prioritized_actions = build_action_plan(issues)
+
     return RepoAuditResult(
         repo_name=facts.name,
         total_score=total_score,
@@ -330,4 +333,5 @@ def audit_repo(facts: RepoFacts) -> RepoAuditResult:
         level=score_to_level(total_score),
         category_scores=categories,
         priority_issues=issues[:5],
+        prioritized_actions=prioritized_actions,
     )

@@ -12,9 +12,10 @@ This project aims to:
 
 ## Current status
 
-Version `0.4.0` includes:
+Version `0.5.0` includes:
 - repository scoring engine
 - issue catalog
+- prioritized action planning
 - markdown report generation
 - demo CLI mode
 - local repository scanner

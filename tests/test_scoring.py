@@ -11,3 +11,12 @@ def test_demo_repo_scores_reasonably() -> None:
     assert result.max_score == 100
     assert result.level in {"strong", "good", "average", "weak", "very weak"}
     assert len(result.category_scores) == 7
+    assert len(result.prioritized_actions) >= 1
+
+
+def test_prioritized_actions_are_sorted_descending() -> None:
+    facts = build_demo_repo()
+    result = audit_repo(facts)
+
+    scores = [action.priority_score for action in result.prioritized_actions]
+    assert scores == sorted(scores, reverse=True)

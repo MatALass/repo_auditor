@@ -34,6 +34,19 @@ class AuditIssue:
 
 
 @dataclass(slots=True)
+class ActionRecommendation:
+    code: str
+    title: str
+    description: str
+    rationale: str
+    steps: List[str]
+    impact: str  # low, medium, high
+    effort: str  # low, medium, high
+    priority_score: int
+    source_issue_codes: List[str] = field(default_factory=list)
+
+
+@dataclass(slots=True)
 class CategoryScore:
     name: str
     score: int
@@ -49,3 +62,4 @@ class RepoAuditResult:
     level: str
     category_scores: List[CategoryScore]
     priority_issues: List[AuditIssue] = field(default_factory=list)
+    prioritized_actions: List[ActionRecommendation] = field(default_factory=list)
