@@ -19,6 +19,18 @@ from repo_auditor.local_scanner import (
 from repo_auditor.models import RepoFacts
 
 
+IGNORED_REMOTE_DIR_NAMES = {
+    "node_modules",
+    ".venv",
+    "venv",
+    "__pycache__",
+    ".pytest_cache",
+    "dist",
+    "build",
+    ".next",
+}
+
+
 @dataclass(slots=True)
 class GitHubScanOptions:
     max_remote_file_size_bytes: int = 200_000
@@ -32,6 +44,11 @@ def parse_github_datetime_to_age_days(value: str | None) -> int | None:
     parsed = datetime.strptime(value, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
     delta = datetime.now(timezone.utc) - parsed
     return max(delta.days, 0)
+
+
+def is_ignored_remote_path(path: str) -> bool:
+    parts = PurePosixPath(path).parts
+    return any(part in IGNORED_REMOTE_DIR_NAMES for part in parts)
 
 
 def build_root_entries(all_paths: list[str]) -> tuple[list[str], list[str]]:
@@ -53,8 +70,18 @@ def extract_blob_paths(tree_payload: dict[str, Any]) -> list[str]:
     paths: list[str] = []
 
     for entry in entries:
-        if entry.get("type") == "blob" and entry.get("path"):
-            paths.append(str(entry["path"]))
+        if entry.get("type") != "blob":
+            continue
+
+        path = entry.get("path")
+        if not path:
+            continue
+
+        path = str(path)
+        if is_ignored_remote_path(path):
+            continue
+
+        paths.append(path)
 
     return sorted(paths)
 
@@ -74,7 +101,7 @@ def select_code_files_for_content_fetch(
         path = str(entry.get("path", ""))
         size = int(entry.get("size", 0) or 0)
 
-        if not path:
+        if not path or is_ignored_remote_path(path):
             continue
         if size > max_file_size_bytes:
             continue

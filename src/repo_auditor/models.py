@@ -60,6 +60,7 @@ class RepoAuditResult:
     total_score: int
     max_score: int
     level: str
+    repo_type: str
     category_scores: List[CategoryScore]
     priority_issues: List[AuditIssue] = field(default_factory=list)
     prioritized_actions: List[ActionRecommendation] = field(default_factory=list)

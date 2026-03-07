@@ -10,6 +10,7 @@
 - **Name:** MatALass-EFREI/Projet-Web-S4-main
 - **Score:** 12/100
 - **Level:** very weak
+- **Type:** generic_project
 
 ### Top priority issues
 
@@ -29,29 +30,30 @@
 
 ## Repository ranking
 
-1. **MatALass-EFREI/Projet-Web-S4-main** — 12/100 (very weak)
-2. **MatALass-EFREI/Automate_project** — 15/100 (very weak)
-3. **MatALass-EFREI/Tetris_Game** — 19/100 (very weak)
-4. **MatALass-EFREI/projet_operationnel** — 27/100 (very weak)
-5. **MatALass-EFREI/TheorieDesGraphes** — 27/100 (very weak)
-6. **MatALass-EFREI/Analyse-des-Avis-et-Alertes-ANSSI** — 38/100 (very weak)
-7. **MatALass-EFREI/Pixel-Tracer** — 39/100 (very weak)
-8. **MatALass-EFREI/Puissance4** — 40/100 (weak)
-9. **MatALass-EFREI/Space-Jumper** — 43/100 (weak)
-10. **MatALass-EFREI/Space_Jumper_Website** — 43/100 (weak)
-11. **MatALass-EFREI/Boardswipe** — 47/100 (weak)
-12. **MatALass-EFREI/school-bus-dashboard** — 49/100 (weak)
-13. **MatALass-EFREI/BinWatch** — 53/100 (weak)
-14. **MatALass-EFREI/UML-Project** — 57/100 (average)
-15. **MatALass-EFREI/GreenEscape** — 57/100 (average)
-16. **MatALass-EFREI/dataviz-dashboard** — 62/100 (average)
-17. **MatALass-EFREI/CanAdventure** — 64/100 (average)
+1. **MatALass-EFREI/Projet-Web-S4-main** — 12/100 (very weak, generic_project)
+2. **MatALass-EFREI/Automate_project** — 15/100 (very weak, generic_project)
+3. **MatALass-EFREI/Tetris_Game** — 19/100 (very weak, generic_project)
+4. **MatALass-EFREI/projet_operationnel** — 27/100 (very weak, generic_project)
+5. **MatALass-EFREI/TheorieDesGraphes** — 28/100 (very weak, generic_project)
+6. **MatALass-EFREI/Pixel-Tracer** — 39/100 (very weak, generic_project)
+7. **MatALass-EFREI/Analyse-des-Avis-et-Alertes-ANSSI** — 39/100 (very weak, generic_project)
+8. **MatALass-EFREI/Puissance4** — 40/100 (weak, generic_project)
+9. **MatALass-EFREI/BinWatch** — 44/100 (weak, web_app)
+10. **MatALass-EFREI/Space-Jumper** — 45/100 (weak, game_project)
+11. **MatALass-EFREI/Space_Jumper_Website** — 45/100 (weak, game_project)
+12. **MatALass-EFREI/school-bus-dashboard** — 49/100 (weak, python_project)
+13. **MatALass-EFREI/Boardswipe** — 49/100 (weak, web_app)
+14. **MatALass-EFREI/GreenEscape** — 57/100 (average, django_app)
+15. **MatALass-EFREI/UML-Project** — 58/100 (average, web_app)
+16. **MatALass-EFREI/CanAdventure** — 64/100 (average, web_app)
+17. **MatALass-EFREI/dataviz-dashboard** — 64/100 (average, notebook_project)
 
 ## Per-repository summaries
 
 ### MatALass-EFREI/Projet-Web-S4-main
 - Score: **12/100**
 - Level: **very weak**
+- Type: **generic_project**
 - Top issues:
   - Repository is empty or nearly empty (high)
   - Dependency manifest missing (high)
@@ -66,6 +68,7 @@
 ### MatALass-EFREI/Automate_project
 - Score: **15/100**
 - Level: **very weak**
+- Type: **generic_project**
 - Top issues:
   - Flat project structure (high)
   - Dependency manifest missing (high)
@@ -80,6 +83,7 @@
 ### MatALass-EFREI/Tetris_Game
 - Score: **19/100**
 - Level: **very weak**
+- Type: **generic_project**
 - Top issues:
   - Flat project structure (high)
   - Dependency manifest missing (high)
@@ -94,48 +98,37 @@
 ### MatALass-EFREI/projet_operationnel
 - Score: **27/100**
 - Level: **very weak**
+- Type: **generic_project**
 - Top issues:
   - Dependency manifest missing (high)
   - Main code directory missing (high)
   - README missing (high)
   - No tests detected (high)
-  - Poor separation of concerns (high)
+  - Test presence appears weak (medium)
 - Top actions:
   - Write a complete README [priority=127, impact=high, effort=medium]
   - Build a core test suite [priority=126, impact=high, effort=medium]
   - Formalize project dependencies [priority=126, impact=high, effort=low]
 
 ### MatALass-EFREI/TheorieDesGraphes
-- Score: **27/100**
+- Score: **28/100**
 - Level: **very weak**
+- Type: **generic_project**
 - Top issues:
   - Dependency manifest missing (high)
   - README missing (high)
   - No tests detected (high)
-  - Monolithic structure detected (high)
   - Inconsistent or vague naming (medium)
+  - Test presence appears weak (medium)
 - Top actions:
   - Write a complete README [priority=127, impact=high, effort=medium]
   - Build a core test suite [priority=126, impact=high, effort=medium]
   - Formalize project dependencies [priority=126, impact=high, effort=low]
 
-### MatALass-EFREI/Analyse-des-Avis-et-Alertes-ANSSI
-- Score: **38/100**
-- Level: **very weak**
-- Top issues:
-  - Dependency manifest missing (high)
-  - .gitignore missing (high)
-  - Main code directory missing (high)
-  - No tests detected (high)
-  - Monolithic structure detected (high)
-- Top actions:
-  - Build a core test suite [priority=126, impact=high, effort=medium]
-  - Formalize project dependencies [priority=126, impact=high, effort=low]
-  - Add a proper .gitignore [priority=122, impact=high, effort=low]
-
 ### MatALass-EFREI/Pixel-Tracer
 - Score: **39/100**
 - Level: **very weak**
+- Type: **generic_project**
 - Top issues:
   - Flat project structure (high)
   - Dependency manifest missing (high)
@@ -147,9 +140,25 @@
   - Formalize project dependencies [priority=126, impact=high, effort=low]
   - Restructure the repository layout [priority=124, impact=high, effort=medium]
 
+### MatALass-EFREI/Analyse-des-Avis-et-Alertes-ANSSI
+- Score: **39/100**
+- Level: **very weak**
+- Type: **generic_project**
+- Top issues:
+  - Dependency manifest missing (high)
+  - .gitignore missing (high)
+  - Main code directory missing (high)
+  - No tests detected (high)
+  - Inconsistent or vague naming (medium)
+- Top actions:
+  - Build a core test suite [priority=126, impact=high, effort=medium]
+  - Formalize project dependencies [priority=126, impact=high, effort=low]
+  - Add a proper .gitignore [priority=122, impact=high, effort=low]
+
 ### MatALass-EFREI/Puissance4
 - Score: **40/100**
 - Level: **weak**
+- Type: **generic_project**
 - Top issues:
   - Repository is empty or nearly empty (high)
   - Dependency manifest missing (high)
@@ -161,51 +170,55 @@
   - Formalize project dependencies [priority=126, impact=high, effort=low]
   - Complete or archive the repository [priority=123, impact=high, effort=medium]
 
-### MatALass-EFREI/Space-Jumper
-- Score: **43/100**
+### MatALass-EFREI/BinWatch
+- Score: **44/100**
 - Level: **weak**
-- Top issues:
-  - Dependency manifest missing (high)
-  - .gitignore missing (high)
-  - Main code directory missing (high)
-  - No tests detected (high)
-  - Poor separation of concerns (high)
-- Top actions:
-  - Build a core test suite [priority=126, impact=high, effort=medium]
-  - Formalize project dependencies [priority=126, impact=high, effort=low]
-  - Add a proper .gitignore [priority=122, impact=high, effort=low]
-
-### MatALass-EFREI/Space_Jumper_Website
-- Score: **43/100**
-- Level: **weak**
-- Top issues:
-  - Dependency manifest missing (high)
-  - .gitignore missing (high)
-  - Main code directory missing (high)
-  - No tests detected (high)
-  - Poor separation of concerns (high)
-- Top actions:
-  - Build a core test suite [priority=126, impact=high, effort=medium]
-  - Formalize project dependencies [priority=126, impact=high, effort=low]
-  - Add a proper .gitignore [priority=122, impact=high, effort=low]
-
-### MatALass-EFREI/Boardswipe
-- Score: **47/100**
-- Level: **weak**
+- Type: **web_app**
 - Top issues:
   - Installation instructions missing (high)
-  - Main code directory missing (high)
   - No tests detected (high)
-  - Usage instructions missing (high)
+  - Inconsistent or vague naming (medium)
   - Test presence appears weak (medium)
+  - Low portfolio clarity (medium)
 - Top actions:
+  - Document installation steps [priority=130, impact=high, effort=low]
   - Build a core test suite [priority=126, impact=high, effort=medium]
-  - Document execution and usage [priority=124, impact=high, effort=low]
-  - Document installation steps [priority=124, impact=high, effort=low]
+  - Improve separation of concerns [priority=107, impact=high, effort=high]
+
+### MatALass-EFREI/Space-Jumper
+- Score: **45/100**
+- Level: **weak**
+- Type: **game_project**
+- Top issues:
+  - Dependency manifest missing (high)
+  - .gitignore missing (high)
+  - Inconsistent or vague naming (medium)
+  - Low technical credibility (medium)
+  - Main code directory missing (medium)
+- Top actions:
+  - Formalize project dependencies [priority=126, impact=high, effort=low]
+  - Add a proper .gitignore [priority=122, impact=high, effort=low]
+  - Improve separation of concerns [priority=107, impact=high, effort=high]
+
+### MatALass-EFREI/Space_Jumper_Website
+- Score: **45/100**
+- Level: **weak**
+- Type: **game_project**
+- Top issues:
+  - Dependency manifest missing (high)
+  - .gitignore missing (high)
+  - Inconsistent or vague naming (medium)
+  - Low technical credibility (medium)
+  - Main code directory missing (medium)
+- Top actions:
+  - Formalize project dependencies [priority=126, impact=high, effort=low]
+  - Add a proper .gitignore [priority=122, impact=high, effort=low]
+  - Improve separation of concerns [priority=107, impact=high, effort=high]
 
 ### MatALass-EFREI/school-bus-dashboard
 - Score: **49/100**
 - Level: **weak**
+- Type: **python_project**
 - Top issues:
   - .gitignore missing (high)
   - Main code directory missing (high)
@@ -217,37 +230,25 @@
   - Add a proper .gitignore [priority=122, impact=high, effort=low]
   - Introduce a dedicated source directory [priority=122, impact=high, effort=medium]
 
-### MatALass-EFREI/BinWatch
-- Score: **53/100**
+### MatALass-EFREI/Boardswipe
+- Score: **49/100**
 - Level: **weak**
+- Type: **web_app**
 - Top issues:
   - Installation instructions missing (high)
-  - Main code directory missing (high)
-  - Oversized files detected (high)
-  - Inconsistent or vague naming (medium)
-  - Low portfolio clarity (medium)
-- Top actions:
-  - Document installation steps [priority=124, impact=high, effort=low]
-  - Introduce a dedicated source directory [priority=122, impact=high, effort=medium]
-  - Split oversized files [priority=112, impact=high, effort=high]
-
-### MatALass-EFREI/UML-Project
-- Score: **57/100**
-- Level: **average**
-- Top issues:
   - No tests detected (high)
   - Usage instructions missing (high)
-  - Monolithic structure detected (high)
   - Test presence appears weak (medium)
   - Low technical credibility (medium)
 - Top actions:
+  - Document execution and usage [priority=130, impact=high, effort=low]
+  - Document installation steps [priority=130, impact=high, effort=low]
   - Build a core test suite [priority=126, impact=high, effort=medium]
-  - Document execution and usage [priority=124, impact=high, effort=low]
-  - Decompose monolithic code structure [priority=114, impact=high, effort=high]
 
 ### MatALass-EFREI/GreenEscape
 - Score: **57/100**
 - Level: **average**
+- Type: **django_app**
 - Top issues:
   - No tests detected (high)
   - Inconsistent or vague naming (medium)
@@ -259,23 +260,25 @@
   - Increase engineering credibility [priority=101, impact=high, effort=medium]
   - Expand test coverage on critical paths [priority=100, impact=high, effort=medium]
 
-### MatALass-EFREI/dataviz-dashboard
-- Score: **62/100**
+### MatALass-EFREI/UML-Project
+- Score: **58/100**
 - Level: **average**
+- Type: **web_app**
 - Top issues:
-  - .gitignore missing (high)
-  - Main code directory missing (high)
   - No tests detected (high)
+  - Usage instructions missing (high)
   - Test presence appears weak (medium)
   - Low technical credibility (medium)
+  - Environment example missing (medium)
 - Top actions:
+  - Document execution and usage [priority=130, impact=high, effort=low]
   - Build a core test suite [priority=126, impact=high, effort=medium]
-  - Add a proper .gitignore [priority=122, impact=high, effort=low]
-  - Introduce a dedicated source directory [priority=122, impact=high, effort=medium]
+  - Decompose monolithic code structure [priority=104, impact=high, effort=high]
 
 ### MatALass-EFREI/CanAdventure
 - Score: **64/100**
 - Level: **average**
+- Type: **web_app**
 - Top issues:
   - No tests detected (high)
   - Inconsistent or vague naming (medium)
@@ -286,6 +289,21 @@
   - Build a core test suite [priority=126, impact=high, effort=medium]
   - Expand test coverage on critical paths [priority=100, impact=high, effort=medium]
   - Normalize file and folder naming [priority=93, impact=medium, effort=low]
+
+### MatALass-EFREI/dataviz-dashboard
+- Score: **64/100**
+- Level: **average**
+- Type: **notebook_project**
+- Top issues:
+  - .gitignore missing (high)
+  - Low technical credibility (medium)
+  - Main code directory missing (medium)
+  - No tests detected (medium)
+  - Tooling configuration missing (medium)
+- Top actions:
+  - Add a proper .gitignore [priority=122, impact=high, effort=low]
+  - Increase engineering credibility [priority=101, impact=high, effort=medium]
+  - Build a core test suite [priority=96, impact=high, effort=medium]
 
 ## Failed repositories
 

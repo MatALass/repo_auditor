@@ -12,6 +12,7 @@ def test_demo_repo_scores_reasonably() -> None:
     assert result.level in {"strong", "good", "average", "weak", "very weak"}
     assert len(result.category_scores) == 7
     assert len(result.prioritized_actions) >= 1
+    assert result.repo_type == "python_project"
 
 
 def test_prioritized_actions_are_sorted_descending() -> None:

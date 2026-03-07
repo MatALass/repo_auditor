@@ -175,16 +175,40 @@ def detect_repo_type(all_paths: list[str], file_names: list[str]) -> str:
     lower_names = [name.lower() for name in file_names]
 
     notebook_count = sum(1 for path in lower_paths if path.endswith(".ipynb"))
+    python_count = sum(1 for path in lower_paths if path.endswith(".py"))
+    js_count = sum(1 for path in lower_paths if path.endswith((".js", ".ts", ".jsx", ".tsx")))
+    html_count = sum(1 for path in lower_paths if path.endswith((".html", ".css")))
+
+    has_streamlit = any("streamlit" in path for path in lower_paths) or "streamlit" in " ".join(lower_names)
+    has_django = any("manage.py" == name for name in lower_names)
+    has_package_json = "package.json" in lower_names
+    has_pyproject = "pyproject.toml" in lower_names or "requirements.txt" in lower_names
+    has_rendered_front = has_package_json and html_count > 0
+    has_game_hint = any(
+        keyword in " ".join(lower_names)
+        for keyword in ["tetris", "game", "jumper", "maze", "pygame", "arcade", "unity"]
+    )
+
+    if has_streamlit:
+        return "streamlit_app"
+
     if notebook_count >= 2:
         return "notebook_project"
 
-    if "package.json" in lower_names:
-        return "javascript_project"
+    if has_django:
+        return "django_app"
 
-    if "pyproject.toml" in lower_names or "requirements.txt" in lower_names:
-        if any("streamlit" in path for path in lower_paths):
-            return "data_app"
+    if has_package_json and has_rendered_front:
+        return "web_app"
+
+    if has_game_hint and (python_count > 0 or js_count > 0):
+        return "game_project"
+
+    if has_pyproject and python_count > 0:
         return "python_project"
+
+    if has_package_json and js_count > 0:
+        return "javascript_project"
 
     return "generic_project"
 
@@ -236,7 +260,10 @@ def scan_local_repository(
         if is_test_file(path_obj):
             test_file_count += 1
 
-    repo_type = detect_repo_type(all_paths=all_paths, file_names=root_files + [Path(p).name for p in all_paths])
+    repo_type = detect_repo_type(
+        all_paths=all_paths,
+        file_names=root_files + [Path(p).name for p in all_paths],
+    )
 
     return RepoFacts(
         name=root_path.name,

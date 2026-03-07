@@ -351,19 +351,6 @@ ACTION_CATALOG = {
         "effort": "high",
         "base_priority": 86,
     },
-    "vague_file_names": {
-        "action_code": "rename_vague_files",
-        "title": "Rename vague files",
-        "description": "Replace generic file names with responsibility-based names.",
-        "rationale": "Precise naming improves readability quickly.",
-        "steps": [
-            "Rename generic files.",
-            "Align file names with their actual function.",
-        ],
-        "impact": "medium",
-        "effort": "low",
-        "base_priority": 67,
-    },
     "poor_separation_of_concerns": {
         "action_code": "separate_responsibilities",
         "title": "Improve separation of concerns",
@@ -497,11 +484,49 @@ ACTION_CATALOG = {
 }
 
 
+TYPE_PRIORITY_ADJUSTMENTS = {
+    "streamlit_app": {
+        "build_core_test_suite": -18,
+        "create_main_code_directory": -14,
+        "decompose_monolith": -10,
+        "separate_responsibilities": -10,
+        "document_usage": +8,
+        "document_installation": +6,
+        "add_demo_outputs": +8,
+    },
+    "notebook_project": {
+        "build_core_test_suite": -20,
+        "expand_test_scope": -18,
+        "configure_test_framework": -16,
+        "create_main_code_directory": -18,
+        "document_usage": +8,
+        "add_demo_outputs": +6,
+        "improve_portfolio_positioning": +5,
+    },
+    "game_project": {
+        "build_core_test_suite": -10,
+        "create_main_code_directory": -10,
+        "add_demo_outputs": +8,
+        "document_usage": +6,
+    },
+    "web_app": {
+        "create_main_code_directory": -8,
+        "document_installation": +6,
+        "document_usage": +6,
+    },
+}
+
+
 def action_priority_score(*, base_priority: int, severity: str, effort: str, impact: str) -> int:
     impact_bonus = 10 if impact == "high" else 5 if impact == "medium" else 0
     severity_bonus = SEVERITY_SCORE.get(severity, 0)
     effort_penalty = EFFORT_SCORE.get(effort, 2) * 4
     return base_priority + impact_bonus + severity_bonus - effort_penalty
+
+
+def apply_repo_type_adjustment(action: ActionRecommendation, repo_type: str) -> None:
+    adjustment = TYPE_PRIORITY_ADJUSTMENTS.get(repo_type, {}).get(action.code, 0)
+    action.priority_score += adjustment
 
 
 def build_action_from_issue(issue: AuditIssue) -> ActionRecommendation | None:
@@ -546,7 +571,12 @@ def merge_actions(actions: list[ActionRecommendation]) -> list[ActionRecommendat
     return list(merged.values())
 
 
-def build_action_plan(issues: list[AuditIssue], *, max_actions: int = 5) -> list[ActionRecommendation]:
+def build_action_plan(
+    issues: list[AuditIssue],
+    *,
+    repo_type: str = "generic_project",
+    max_actions: int = 5,
+) -> list[ActionRecommendation]:
     raw_actions: list[ActionRecommendation] = []
 
     for issue in issues:
@@ -555,5 +585,9 @@ def build_action_plan(issues: list[AuditIssue], *, max_actions: int = 5) -> list
             raw_actions.append(action)
 
     merged_actions = merge_actions(raw_actions)
+
+    for action in merged_actions:
+        apply_repo_type_adjustment(action, repo_type)
+
     merged_actions.sort(key=lambda action: (-action.priority_score, action.title.lower()))
     return merged_actions[:max_actions]

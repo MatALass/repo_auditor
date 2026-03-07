@@ -38,6 +38,10 @@ def make_issue(code: str) -> AuditIssue:
     )
 
 
+def issue_severity_rank(severity: str) -> int:
+    return {"high": 0, "medium": 1, "low": 2}.get(severity, 3)
+
+
 def normalize_text(text: str | None) -> str:
     return (text or "").lower()
 
@@ -193,7 +197,7 @@ def technical_credibility_signal(facts: RepoFacts) -> bool:
         has_tooling_config(facts),
         has_technical_docs(facts),
     ]
-    return has_manifest(facts) and has_main_code_directory(facts) and any(quality_signals)
+    return has_manifest(facts) and (has_main_code_directory(facts) or is_lightweight_app_type(facts.repo_type)) and any(quality_signals)
 
 
 def interview_ready_signal(facts: RepoFacts) -> bool:
@@ -201,3 +205,19 @@ def interview_ready_signal(facts: RepoFacts) -> bool:
         facts,
         ["usage", "run", "quickstart", "how to run"],
     )
+
+
+def is_notebook_like_type(repo_type: str) -> bool:
+    return repo_type in {"notebook_project"}
+
+
+def is_lightweight_app_type(repo_type: str) -> bool:
+    return repo_type in {"streamlit_app", "game_project", "web_app"}
+
+
+def is_small_project_type(repo_type: str) -> bool:
+    return repo_type in {"game_project", "streamlit_app", "web_app", "generic_project"}
+
+
+def is_empty_like_repo_type(repo_type: str) -> bool:
+    return repo_type in {"generic_project"}

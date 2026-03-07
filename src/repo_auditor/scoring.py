@@ -22,6 +22,11 @@ from repo_auditor.rules import (
     has_tests_directory,
     has_tooling_config,
     interview_ready_signal,
+    is_empty_like_repo_type,
+    is_lightweight_app_type,
+    is_notebook_like_type,
+    is_small_project_type,
+    issue_severity_rank,
     make_issue,
     modularity_status,
     oversized_file_status,
@@ -32,6 +37,13 @@ from repo_auditor.rules import (
     repo_is_nearly_empty,
     technical_credibility_signal,
 )
+
+
+def maybe_append_issue(issues: list, issue_code: str, *, downgrade_to: str | None = None) -> None:
+    issue = make_issue(issue_code)
+    if downgrade_to is not None:
+        issue.severity = downgrade_to
+    issues.append(issue)
 
 
 def evaluate_documentation(facts: RepoFacts) -> CategoryScore:
@@ -71,12 +83,14 @@ def evaluate_documentation(facts: RepoFacts) -> CategoryScore:
     if has_keyword_section(facts, ["architecture", "structure", "project structure", "folders", "modules"]):
         score += 2
     else:
-        issues.append(make_issue("missing_project_structure_explanation"))
+        if not is_small_project_type(facts.repo_type):
+            issues.append(make_issue("missing_project_structure_explanation"))
 
     if has_keyword_section(facts, ["demo", "example", "screenshot", "preview", "sample output"]):
         score += 2
     else:
-        issues.append(make_issue("missing_demo_or_examples"))
+        if not is_notebook_like_type(facts.repo_type):
+            issues.append(make_issue("missing_demo_or_examples"))
 
     if has_keyword_section(facts, ["roadmap", "limitations", "future improvements", "todo", "next steps"]):
         score += 2
@@ -98,20 +112,28 @@ def evaluate_structure(facts: RepoFacts) -> CategoryScore:
     else:
         issues.append(make_issue("flat_project_structure"))
 
+    main_code_dir_optional = is_lightweight_app_type(facts.repo_type) or is_notebook_like_type(facts.repo_type)
     if has_main_code_directory(facts):
         score += 5
     else:
-        issues.append(make_issue("missing_main_code_directory"))
+        if main_code_dir_optional:
+            score += 2
+            maybe_append_issue(issues, "missing_main_code_directory", downgrade_to="medium")
+        else:
+            issues.append(make_issue("missing_main_code_directory"))
 
+    tests_dir_optional = is_small_project_type(facts.repo_type) or is_notebook_like_type(facts.repo_type)
     if has_tests_directory(facts):
         score += 3
     else:
-        issues.append(make_issue("missing_tests_directory"))
+        if not tests_dir_optional:
+            issues.append(make_issue("missing_tests_directory"))
 
     if has_support_directory(facts):
         score += 2
     else:
-        issues.append(make_issue("missing_supporting_directories"))
+        if not is_small_project_type(facts.repo_type):
+            issues.append(make_issue("missing_supporting_directories"))
 
     if not has_inconsistent_naming(facts):
         score += 3
@@ -148,12 +170,14 @@ def evaluate_packaging(facts: RepoFacts) -> CategoryScore:
     if has_tooling_config(facts):
         score += 3
     else:
-        issues.append(make_issue("missing_tooling_configuration"))
+        if not is_small_project_type(facts.repo_type):
+            issues.append(make_issue("missing_tooling_configuration"))
 
     if facts.has_env_example:
         score += 3
     else:
-        issues.append(make_issue("missing_env_example"))
+        if facts.repo_type in {"django_app", "streamlit_app", "python_project", "web_app"}:
+            issues.append(make_issue("missing_env_example"))
 
     return CategoryScore("Packaging", min(score, 15), 15, issues)
 
@@ -162,25 +186,35 @@ def evaluate_tests(facts: RepoFacts) -> CategoryScore:
     score = 0
     issues = []
 
+    tests_less_expected = is_notebook_like_type(facts.repo_type) or facts.repo_type in {"streamlit_app", "game_project"}
+
     if has_tests(facts):
         score += 5
     else:
-        issues.append(make_issue("missing_tests"))
+        if tests_less_expected:
+            maybe_append_issue(issues, "missing_tests", downgrade_to="medium")
+        else:
+            issues.append(make_issue("missing_tests"))
 
     volume_points = apparent_test_volume_points(facts)
     score += volume_points
     if volume_points < 4:
-        issues.append(make_issue("insufficient_test_coverage_apparent"))
+        if tests_less_expected:
+            maybe_append_issue(issues, "insufficient_test_coverage_apparent", downgrade_to="low")
+        else:
+            issues.append(make_issue("insufficient_test_coverage_apparent"))
 
     if has_test_framework_signal(facts):
         score += 3
     else:
-        issues.append(make_issue("missing_test_framework_configuration"))
+        if not tests_less_expected:
+            issues.append(make_issue("missing_test_framework_configuration"))
 
     if has_ci_signal(facts):
         score += 3
     else:
-        issues.append(make_issue("missing_ci_for_tests"))
+        if facts.repo_type not in {"notebook_project", "game_project"}:
+            issues.append(make_issue("missing_ci_for_tests"))
 
     return CategoryScore("Tests", min(score, 15), 15, issues)
 
@@ -202,25 +236,37 @@ def evaluate_maintainability(facts: RepoFacts) -> CategoryScore:
     if mod_status == "good":
         score += 4
     elif mod_status == "weak":
-        score += 2
-        issues.append(make_issue("monolithic_structure"))
+        if is_small_project_type(facts.repo_type):
+            score += 3
+            maybe_append_issue(issues, "monolithic_structure", downgrade_to="medium")
+        else:
+            score += 2
+            issues.append(make_issue("monolithic_structure"))
     else:
-        issues.append(make_issue("monolithic_structure"))
+        if is_small_project_type(facts.repo_type):
+            maybe_append_issue(issues, "monolithic_structure", downgrade_to="medium")
+        else:
+            issues.append(make_issue("monolithic_structure"))
 
     if not has_inconsistent_naming(facts):
         score += 2
     else:
         issues.append(make_issue("vague_file_names"))
 
+    separation_optional = is_small_project_type(facts.repo_type) or is_notebook_like_type(facts.repo_type)
     if has_separation_of_concerns_signal(facts) or has_main_code_directory(facts):
         score += 3
     else:
-        issues.append(make_issue("poor_separation_of_concerns"))
+        if separation_optional:
+            maybe_append_issue(issues, "poor_separation_of_concerns", downgrade_to="medium")
+        else:
+            issues.append(make_issue("poor_separation_of_concerns"))
 
     if has_technical_docs(facts):
         score += 2
     else:
-        issues.append(make_issue("missing_technical_documentation"))
+        if not is_small_project_type(facts.repo_type):
+            issues.append(make_issue("missing_technical_documentation"))
 
     return CategoryScore("Maintainability", min(score, 15), 15, issues)
 
@@ -247,7 +293,8 @@ def evaluate_completeness(facts: RepoFacts) -> CategoryScore:
     if has_demo_signal(facts):
         score += 2
     else:
-        issues.append(make_issue("missing_demo_artifacts"))
+        if not is_notebook_like_type(facts.repo_type):
+            issues.append(make_issue("missing_demo_artifacts"))
 
     if project_promise_supported(facts):
         score += 2
@@ -274,7 +321,8 @@ def evaluate_portfolio_value(facts: RepoFacts) -> CategoryScore:
     if interview_ready_signal(facts):
         score += 1
     else:
-        issues.append(make_issue("hard_to_present_in_interview"))
+        if facts.repo_type not in {"notebook_project"}:
+            issues.append(make_issue("hard_to_present_in_interview"))
 
     return CategoryScore("Portfolio value", min(score, 5), 5, issues)
 
@@ -303,8 +351,7 @@ def deduplicate_issues(category_scores: list[CategoryScore]) -> list:
 
 
 def issue_sort_key(issue) -> tuple[int, str]:
-    severity_rank = {"high": 0, "medium": 1, "low": 2}
-    return (severity_rank.get(issue.severity, 3), issue.code)
+    return (issue_severity_rank(issue.severity), issue.code)
 
 
 def audit_repo(facts: RepoFacts) -> RepoAuditResult:
@@ -324,13 +371,14 @@ def audit_repo(facts: RepoFacts) -> RepoAuditResult:
     issues = deduplicate_issues(categories)
     issues.sort(key=issue_sort_key)
 
-    prioritized_actions = build_action_plan(issues)
+    prioritized_actions = build_action_plan(issues, repo_type=facts.repo_type)
 
     return RepoAuditResult(
         repo_name=facts.name,
         total_score=total_score,
         max_score=max_score,
         level=score_to_level(total_score),
+        repo_type=facts.repo_type,
         category_scores=categories,
         priority_issues=issues[:5],
         prioritized_actions=prioritized_actions,
