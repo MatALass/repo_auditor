@@ -1,13 +1,25 @@
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 
+from repo_auditor.github_client import GitHubClient
+from repo_auditor.github_workspace import (
+    audit_github_org,
+    audit_github_repository,
+    audit_github_user,
+)
 from repo_auditor.local_scanner import scan_local_repository
 from repo_auditor.models import RepoFacts
-from repo_auditor.report import render_markdown_report, render_workspace_report
+from repo_auditor.report import (
+    render_github_workspace_report,
+    render_markdown_report,
+    render_workspace_report,
+)
 from repo_auditor.scoring import audit_repo
 from repo_auditor.serialization import (
+    github_workspace_result_to_dict,
     repo_result_to_dict,
     workspace_result_to_dict,
     write_json_output,
@@ -71,19 +83,37 @@ Add GitHub API support.
     )
 
 
+def sanitize_stem(value: str) -> str:
+    return (
+        value.replace("/", "__")
+        .replace("\\", "__")
+        .replace(" ", "_")
+        .replace(":", "_")
+    )
+
+
 def build_output_paths(base_path: str | None, default_stem: str) -> tuple[Path | None, Path | None]:
     if not base_path:
         return None, None
 
+    safe_stem = sanitize_stem(default_stem)
     base = Path(base_path)
+
     if base.suffix:
         markdown_path = base
         json_path = base.with_suffix(".json")
         return markdown_path, json_path
 
-    markdown_path = base / f"{default_stem}.md"
-    json_path = base / f"{default_stem}.json"
+    markdown_path = base / f"{safe_stem}.md"
+    json_path = base / f"{safe_stem}.json"
     return markdown_path, json_path
+
+
+def parse_github_repo_slug(value: str) -> tuple[str, str]:
+    parts = [part.strip() for part in value.split("/") if part.strip()]
+    if len(parts) != 2:
+        raise ValueError("GitHub repository slug must follow the format owner/repo")
+    return parts[0], parts[1]
 
 
 def main() -> None:
@@ -99,12 +129,32 @@ def main() -> None:
     parser.add_argument(
         "--workspace",
         type=str,
-        help="Scan a parent directory containing multiple repositories.",
+        help="Scan a parent directory containing multiple local repositories.",
     )
     parser.add_argument(
         "--recursive",
         action="store_true",
-        help="Recursively discover repositories inside the workspace.",
+        help="Recursively discover repositories inside a local workspace.",
+    )
+    parser.add_argument(
+        "--github-user",
+        type=str,
+        help="Audit all public or accessible repositories of a GitHub user.",
+    )
+    parser.add_argument(
+        "--github-org",
+        type=str,
+        help="Audit all public or accessible repositories of a GitHub organization.",
+    )
+    parser.add_argument(
+        "--github-repo",
+        type=str,
+        help="Audit a single GitHub repository using the format owner/repo.",
+    )
+    parser.add_argument(
+        "--include-forks",
+        action="store_true",
+        help="Include forked repositories in GitHub user/org audits.",
     )
     parser.add_argument(
         "--output",
@@ -115,6 +165,9 @@ def main() -> None:
         ),
     )
     args = parser.parse_args()
+
+    github_token = os.getenv("GITHUB_TOKEN")
+    github_client = GitHubClient(token=github_token)
 
     if args.demo:
         facts = build_demo_repo()
@@ -151,7 +204,52 @@ def main() -> None:
             write_json_output(json_path, workspace_result_to_dict(workspace_result))
         return
 
-    parser.error("Use one of: --demo, --path <repo_path>, or --workspace <parent_directory>.")
+    if args.github_repo:
+        owner, repo = parse_github_repo_slug(args.github_repo)
+        result = audit_github_repository(owner, repo, client=github_client)
+        markdown = render_markdown_report(result)
+        print(markdown)
+
+        md_path, json_path = build_output_paths(args.output, f"{owner}__{repo}-github-audit")
+        if md_path and json_path:
+            write_text_output(md_path, markdown)
+            write_json_output(json_path, repo_result_to_dict(result))
+        return
+
+    if args.github_user:
+        github_result = audit_github_user(
+            args.github_user,
+            client=github_client,
+            include_forks=args.include_forks,
+        )
+        markdown = render_github_workspace_report(github_result)
+        print(markdown)
+
+        md_path, json_path = build_output_paths(args.output, f"{args.github_user}-github-user-audit")
+        if md_path and json_path:
+            write_text_output(md_path, markdown)
+            write_json_output(json_path, github_workspace_result_to_dict(github_result))
+        return
+
+    if args.github_org:
+        github_result = audit_github_org(
+            args.github_org,
+            client=github_client,
+            include_forks=args.include_forks,
+        )
+        markdown = render_github_workspace_report(github_result)
+        print(markdown)
+
+        md_path, json_path = build_output_paths(args.output, f"{args.github_org}-github-org-audit")
+        if md_path and json_path:
+            write_text_output(md_path, markdown)
+            write_json_output(json_path, github_workspace_result_to_dict(github_result))
+        return
+
+    parser.error(
+        "Use one of: --demo, --path <repo_path>, --workspace <parent_directory>, "
+        "--github-repo <owner/repo>, --github-user <username>, or --github-org <org>."
+    )
 
 
 if __name__ == "__main__":

@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 from dataclasses import asdict
-from pathlib import Path
 import json
+from pathlib import Path
 
+from repo_auditor.github_workspace import GitHubWorkspaceAuditResult
 from repo_auditor.models import RepoAuditResult
 from repo_auditor.workspace import WorkspaceAuditResult
 
@@ -16,10 +17,25 @@ def workspace_result_to_dict(result: WorkspaceAuditResult) -> dict:
     worst_repo = result.worst_repo
 
     return {
+        "workspace_type": "local_workspace",
         "root_path": str(result.root_path),
         "repo_count": result.repo_count,
         "worst_repo_name": worst_repo.repo_name if worst_repo else None,
         "results": [repo_result_to_dict(repo_result) for repo_result in result.sorted_results],
+    }
+
+
+def github_workspace_result_to_dict(result: GitHubWorkspaceAuditResult) -> dict:
+    worst_repo = result.worst_repo
+
+    return {
+        "workspace_type": result.source_type,
+        "source_name": result.source_name,
+        "repo_count": result.repo_count,
+        "failed_count": result.failed_count,
+        "worst_repo_name": worst_repo.repo_name if worst_repo else None,
+        "results": [repo_result_to_dict(repo_result) for repo_result in result.sorted_results],
+        "failed_repositories": [asdict(failure) for failure in result.failed_repositories],
     }
 
 

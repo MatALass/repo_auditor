@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from repo_auditor.github_workspace import GitHubWorkspaceAuditResult
 from repo_auditor.models import RepoAuditResult
 from repo_auditor.workspace import WorkspaceAuditResult
 
@@ -137,6 +138,97 @@ def render_workspace_report(workspace_result: WorkspaceAuditResult) -> str:
                 )
         else:
             lines.append("- Top actions: none")
+        lines.append("")
+
+    return "\n".join(lines)
+
+
+def render_github_workspace_report(result: GitHubWorkspaceAuditResult) -> str:
+    lines: list[str] = []
+
+    lines.append(f"# GitHub Audit Report — {result.source_type}:{result.source_name}")
+    lines.append("")
+    lines.append(f"**Source type:** {result.source_type}")
+    lines.append(f"**Source name:** {result.source_name}")
+    lines.append(f"**Repositories analyzed successfully:** {result.repo_count}")
+    lines.append(f"**Repositories failed to scan:** {result.failed_count}")
+    lines.append("")
+
+    if result.repo_count == 0 and result.failed_count == 0:
+        lines.append("No repositories found for this GitHub source.")
+        return "\n".join(lines)
+
+    worst_repo = result.worst_repo
+    if worst_repo is not None:
+        lines.append("## Worst repository")
+        lines.append("")
+        lines.append(f"- **Name:** {worst_repo.repo_name}")
+        lines.append(f"- **Score:** {worst_repo.total_score}/{worst_repo.max_score}")
+        lines.append(f"- **Level:** {worst_repo.level}")
+        lines.append("")
+
+        lines.append("### Top priority issues")
+        lines.append("")
+        if not worst_repo.priority_issues:
+            lines.append("- No major issue detected.")
+        else:
+            for issue in worst_repo.priority_issues:
+                lines.append(f"- **{issue.title}** ({issue.severity}) — {issue.recommendation}")
+        lines.append("")
+
+        lines.append("### Recommended action plan")
+        lines.append("")
+        if not worst_repo.prioritized_actions:
+            lines.append("- No action plan generated.")
+        else:
+            for index, action in enumerate(worst_repo.prioritized_actions, start=1):
+                lines.append(
+                    f"{index}. **{action.title}** — "
+                    f"priority {action.priority_score}, impact {action.impact}, effort {action.effort}"
+                )
+        lines.append("")
+
+    if result.repo_count > 0:
+        lines.append("## Repository ranking")
+        lines.append("")
+        for index, repo_result in enumerate(result.sorted_results, start=1):
+            lines.append(
+                f"{index}. **{repo_result.repo_name}** — "
+                f"{repo_result.total_score}/{repo_result.max_score} ({repo_result.level})"
+            )
+        lines.append("")
+
+        lines.append("## Per-repository summaries")
+        lines.append("")
+        for repo_result in result.sorted_results:
+            lines.append(f"### {repo_result.repo_name}")
+            lines.append(f"- Score: **{repo_result.total_score}/{repo_result.max_score}**")
+            lines.append(f"- Level: **{repo_result.level}**")
+
+            if repo_result.priority_issues:
+                lines.append("- Top issues:")
+                for issue in repo_result.priority_issues:
+                    lines.append(f"  - {issue.title} ({issue.severity})")
+            else:
+                lines.append("- Top issues: none")
+
+            if repo_result.prioritized_actions:
+                lines.append("- Top actions:")
+                for action in repo_result.prioritized_actions[:3]:
+                    lines.append(
+                        f"  - {action.title} "
+                        f"[priority={action.priority_score}, impact={action.impact}, effort={action.effort}]"
+                    )
+            else:
+                lines.append("- Top actions: none")
+
+            lines.append("")
+
+    if result.failed_repositories:
+        lines.append("## Failed repositories")
+        lines.append("")
+        for failure in result.failed_repositories:
+            lines.append(f"- **{failure.owner}/{failure.repo_name}** — {failure.error}")
         lines.append("")
 
     return "\n".join(lines)
