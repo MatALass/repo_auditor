@@ -208,16 +208,23 @@ def interview_ready_signal(facts: RepoFacts) -> bool:
 
 
 def is_notebook_like_type(repo_type: str) -> bool:
-    return repo_type in {"notebook_project"}
+    return repo_type in {"notebook_project", "data_science_project", "ml_project"}
 
 
 def is_lightweight_app_type(repo_type: str) -> bool:
-    return repo_type in {"streamlit_app", "game_project", "web_app"}
+    return repo_type in {"streamlit_app", "game_project", "web_app", "cli_tool"}
 
 
 def is_small_project_type(repo_type: str) -> bool:
-    return repo_type in {"game_project", "streamlit_app", "web_app", "generic_project"}
+    return repo_type in {
+        "game_project",
+        "streamlit_app",
+        "web_app",
+        "generic_project",
+        "documentation_project",
+        "config_or_infra_project",
+    }
 
 
 def is_empty_like_repo_type(repo_type: str) -> bool:
-    return repo_type in {"generic_project"}
+    return repo_type in {"generic_project", "documentation_project"}

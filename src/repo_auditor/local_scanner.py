@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Iterable
 
 from repo_auditor.models import RepoFacts
@@ -94,6 +94,41 @@ IGNORED_DIRS = {
     ".vscode",
 }
 
+DOC_EXTENSIONS = {".md", ".rst", ".txt"}
+INFRA_FILE_NAMES = {
+    "dockerfile",
+    "docker-compose.yml",
+    "docker-compose.yaml",
+    "compose.yml",
+    "compose.yaml",
+    "terraform.tfvars",
+}
+INFRA_EXTENSIONS = {".tf", ".tfvars", ".hcl"}
+INFRA_PATH_MARKERS = {".github/workflows", "terraform", "helm", "k8s", "kubernetes", "ansible"}
+DATA_DIR_MARKERS = {"data", "datasets", "notebooks", "models", "experiments"}
+CLI_FILE_NAMES = {"cli.py", "main.py", "__main__.py"}
+CLI_PATH_MARKERS = {"bin/", "cli/", "commands/"}
+ML_FILE_MARKERS = {
+    "train.py",
+    "trainer.py",
+    "predict.py",
+    "inference.py",
+    "model.py",
+    "pipeline.py",
+}
+ML_PATH_MARKERS = {"models/", "training/", "experiments/", "pipelines/"}
+ML_KEYWORDS = {
+    "sklearn",
+    "scikit-learn",
+    "xgboost",
+    "lightgbm",
+    "catboost",
+    "tensorflow",
+    "keras",
+    "pytorch",
+    "torch",
+}
+
 
 @dataclass(slots=True)
 class ScanOptions:
@@ -105,11 +140,11 @@ def is_ignored_path(path: Path) -> bool:
     return any(part in IGNORED_DIRS for part in path.parts)
 
 
-def is_code_file(path: Path) -> bool:
+def is_code_file(path: Path | PurePosixPath) -> bool:
     return path.suffix.lower() in CODE_EXTENSIONS
 
 
-def is_test_file(path: Path) -> bool:
+def is_test_file(path: Path | PurePosixPath) -> bool:
     path_str = path.as_posix().lower()
     name = path.name.lower()
 
@@ -170,30 +205,58 @@ def find_first_existing(paths: Iterable[str], all_paths: set[str]) -> str | None
     return None
 
 
+def _has_any_path_marker(lower_paths: list[str], markers: set[str]) -> bool:
+    return any(marker in path for marker in markers for path in lower_paths)
+
+
+def _has_any_name_fragment(lower_names: list[str], fragments: set[str]) -> bool:
+    joined = " ".join(lower_names)
+    return any(fragment in joined for fragment in fragments)
+
+
 def detect_repo_type(all_paths: list[str], file_names: list[str]) -> str:
     lower_paths = [path.lower() for path in all_paths]
     lower_names = [name.lower() for name in file_names]
+    lower_root_names = {name.lower() for name in file_names if "/" not in name and "\\" not in name}
 
     notebook_count = sum(1 for path in lower_paths if path.endswith(".ipynb"))
     python_count = sum(1 for path in lower_paths if path.endswith(".py"))
     js_count = sum(1 for path in lower_paths if path.endswith((".js", ".ts", ".jsx", ".tsx")))
     html_count = sum(1 for path in lower_paths if path.endswith((".html", ".css")))
+    markdown_count = sum(1 for path in lower_paths if PurePosixPath(path).suffix in DOC_EXTENSIONS)
+    infra_count = sum(
+        1
+        for path in lower_paths
+        if PurePosixPath(path).name in INFRA_FILE_NAMES or PurePosixPath(path).suffix in INFRA_EXTENSIONS
+    )
 
     has_streamlit = any("streamlit" in path for path in lower_paths) or "streamlit" in " ".join(lower_names)
-    has_django = any("manage.py" == name for name in lower_names)
+    has_django = "manage.py" in lower_names
     has_package_json = "package.json" in lower_names
-    has_pyproject = "pyproject.toml" in lower_names or "requirements.txt" in lower_names
+    has_python_manifest = "pyproject.toml" in lower_names or "requirements.txt" in lower_names or "setup.py" in lower_names
     has_rendered_front = has_package_json and html_count > 0
     has_game_hint = any(
         keyword in " ".join(lower_names)
         for keyword in ["tetris", "game", "jumper", "maze", "pygame", "arcade", "unity"]
     )
 
+    has_docs_dir = any(path.startswith("docs/") for path in lower_paths)
+    has_docsite_config = any(name in lower_names for name in {"mkdocs.yml", "docusaurus.config.js", "docusaurus.config.ts"})
+    has_infra_signal = infra_count > 0 or _has_any_path_marker(lower_paths, INFRA_PATH_MARKERS)
+    has_data_signal = notebook_count >= 1 or any(part in DATA_DIR_MARKERS for part in lower_root_names)
+    has_cli_signal = (
+        any(name in CLI_FILE_NAMES for name in lower_names)
+        or any(path.startswith(marker) for marker in CLI_PATH_MARKERS for path in lower_paths)
+        or "argparse" in " ".join(lower_names)
+    )
+    has_ml_signal = (
+        any(name in ML_FILE_MARKERS for name in lower_names)
+        or _has_any_path_marker(lower_paths, ML_PATH_MARKERS)
+        or _has_any_name_fragment(lower_names, ML_KEYWORDS)
+    )
+
     if has_streamlit:
         return "streamlit_app"
-
-    if notebook_count >= 2:
-        return "notebook_project"
 
     if has_django:
         return "django_app"
@@ -204,7 +267,25 @@ def detect_repo_type(all_paths: list[str], file_names: list[str]) -> str:
     if has_game_hint and (python_count > 0 or js_count > 0):
         return "game_project"
 
-    if has_pyproject and python_count > 0:
+    if has_ml_signal and (python_count > 0 or notebook_count > 0):
+        return "ml_project"
+
+    if has_data_signal and (python_count > 0 or notebook_count >= 2):
+        return "data_science_project"
+
+    if has_cli_signal and (python_count > 0 or js_count > 0):
+        return "cli_tool"
+
+    if has_infra_signal and python_count == 0 and js_count == 0:
+        return "config_or_infra_project"
+
+    if (has_docs_dir or has_docsite_config) and markdown_count >= max(3, python_count + js_count + 1):
+        return "documentation_project"
+
+    if notebook_count >= 2:
+        return "notebook_project"
+
+    if has_python_manifest and python_count > 0:
         return "python_project"
 
     if has_package_json and js_count > 0:
@@ -262,7 +343,7 @@ def scan_local_repository(
 
     repo_type = detect_repo_type(
         all_paths=all_paths,
-        file_names=root_files + [Path(p).name for p in all_paths],
+        file_names=root_files + [Path(path).name for path in all_paths],
     )
 
     return RepoFacts(
@@ -280,6 +361,5 @@ def scan_local_repository(
         has_env_example=has_env_example,
         code_file_count=code_file_count,
         test_file_count=test_file_count,
-        recent_push_days=None,
         repo_type=repo_type,
     )

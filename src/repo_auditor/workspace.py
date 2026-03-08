@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
-from repo_auditor.local_scanner import scan_local_repository
+from repo_auditor.local_scanner import is_code_file, scan_local_repository
 from repo_auditor.models import RepoAuditResult
 from repo_auditor.scoring import audit_repo
 
@@ -32,7 +32,7 @@ def severity_weight(issue_severity: str) -> int:
     return mapping.get(issue_severity, 0)
 
 
-def repo_rank_key(result: RepoAuditResult) -> tuple[int, int, int, str]:
+def repo_rank_key(result: RepoAuditResult) -> tuple[int, int, int, int, str]:
     high_issue_count = sum(1 for issue in result.priority_issues if issue.severity == "high")
     total_issue_weight = sum(severity_weight(issue.severity) for issue in result.priority_issues)
     total_issue_count = len(result.priority_issues)
@@ -41,8 +41,16 @@ def repo_rank_key(result: RepoAuditResult) -> tuple[int, int, int, str]:
         result.total_score,
         -high_issue_count,
         -total_issue_weight,
+        -total_issue_count,
         result.repo_name.lower(),
     )
+
+
+def has_code_like_children(path: Path) -> bool:
+    for child in path.iterdir():
+        if child.is_file() and is_code_file(child):
+            return True
+    return False
 
 
 def is_repo_directory(path: Path) -> bool:
@@ -70,6 +78,9 @@ def is_repo_directory(path: Path) -> bool:
 
     common_code_dirs = {"src", "app", "lib", "tests"}
     if child_names.intersection(common_code_dirs):
+        return True
+
+    if has_code_like_children(path):
         return True
 
     return False

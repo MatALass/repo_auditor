@@ -25,7 +25,7 @@ class GitHubClient:
             {
                 "Accept": "application/vnd.github+json",
                 "X-GitHub-Api-Version": api_version,
-                "User-Agent": "repo-auditor/0.6.0",
+                "User-Agent": "repo-auditor/0.8.0",
             }
         )
         if token:
@@ -69,6 +69,10 @@ class GitHubClient:
             return str(payload)
 
         return str(payload)
+
+    @staticmethod
+    def _is_not_found_error(exc: GitHubApiError) -> bool:
+        return "GitHub API error 404" in str(exc)
 
     def get_json(
         self,
@@ -128,9 +132,18 @@ class GitHubClient:
 
     def get_repository_tree_from_default_branch(self, owner: str, repo: str) -> dict[str, Any]:
         repo_payload = self.get_repository(owner, repo)
-        default_branch = repo_payload["default_branch"]
+        default_branch = repo_payload.get("default_branch")
 
-        branch_payload = self.get_branch(owner, repo, default_branch)
+        if not default_branch:
+            return {"tree": []}
+
+        try:
+            branch_payload = self.get_branch(owner, repo, str(default_branch))
+        except GitHubApiError as exc:
+            if self._is_not_found_error(exc):
+                return {"tree": []}
+            raise
+
         commit_data = branch_payload.get("commit", {})
 
         tree_sha = (
@@ -143,9 +156,7 @@ class GitHubClient:
             tree_sha = commit_data.get("sha")
 
         if not tree_sha:
-            raise GitHubApiError(
-                f"Could not resolve a tree SHA for {owner}/{repo} on branch {default_branch}"
-            )
+            return {"tree": []}
 
         return self.get_tree(owner, repo, tree_sha, recursive=True)
 
@@ -156,7 +167,7 @@ class GitHubClient:
                 headers={"Accept": "application/vnd.github.raw+json"},
             )
         except GitHubApiError as exc:
-            if "404" in str(exc):
+            if self._is_not_found_error(exc):
                 return None
             raise
 
@@ -167,7 +178,7 @@ class GitHubClient:
                 headers={"Accept": "application/vnd.github.raw+json"},
             )
         except GitHubApiError as exc:
-            if "404" in str(exc):
+            if self._is_not_found_error(exc):
                 return None
             raise
 
