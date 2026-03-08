@@ -1,0 +1,35 @@
+{
+  "thresholds": {
+    "keep_min_score": 78,
+    "improve_min_score": 45,
+    "archive_max_score": 24
+  },
+  "repo_type_overrides": {
+    "config_or_infra_project": {
+      "keep_min_score": 70,
+      "improve_min_score": 50
+    },
+    "documentation_project": {
+      "keep_min_score": 72,
+      "improve_min_score": 40
+    },
+    "ml_project": {
+      "keep_min_score": 75,
+      "improve_min_score": 50
+    },
+    "data_science_project": {
+      "keep_min_score": 72,
+      "improve_min_score": 48
+    }
+  },
+  "repo_overrides": {
+    "MatALass-ISM/ects-grade-engine": {
+      "decision": "keep",
+      "reason": "Repository is strategically important and already strong enough to remain a showcase candidate."
+    },
+    "MatALass-Trophee-NSI/MicroTamagotchi": {
+      "decision": "improve",
+      "reason": "Repository has enough substance to justify incremental improvement rather than a rebuild."
+    }
+  }
+}

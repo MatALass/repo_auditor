@@ -31,12 +31,12 @@ def test_build_batch_summary_aggregates_multiple_targets(tmp_path: Path) -> None
                     "maturity_band": "bootstrap",
                     "priority_issues": [
                         {"code": "repo_empty", "title": "Repository is empty or nearly empty"},
-                        {"code": "missing_readme", "title": "README missing"},
+                        {"code": "missing_readme", "title": "README missing"}
                     ],
                     "prioritized_actions": [
                         {"code": "archive_repo", "title": "Complete or archive the repository"},
-                        {"code": "write_readme", "title": "Write a complete README"},
-                    ],
+                        {"code": "write_readme", "title": "Write a complete README"}
+                    ]
                 },
                 {
                     "repo_name": "OrgA/repo2",
@@ -46,10 +46,10 @@ def test_build_batch_summary_aggregates_multiple_targets(tmp_path: Path) -> None
                     "repo_type": "python_project",
                     "maturity_band": "advanced",
                     "priority_issues": [],
-                    "prioritized_actions": [],
-                },
+                    "prioritized_actions": []
+                }
             ],
-            "failed_repositories": [],
+            "failed_repositories": []
         },
     )
 
@@ -58,7 +58,7 @@ def test_build_batch_summary_aggregates_multiple_targets(tmp_path: Path) -> None
         {
             "workspace_type": "github_user",
             "source_name": "UserA",
-            "repo_count": 2,
+            "repo_count": 3,
             "failed_count": 1,
             "results": [
                 {
@@ -69,11 +69,11 @@ def test_build_batch_summary_aggregates_multiple_targets(tmp_path: Path) -> None
                     "repo_type": "cli_tool",
                     "maturity_band": "foundation",
                     "priority_issues": [
-                        {"code": "monolith", "title": "Monolithic structure detected"},
+                        {"code": "monolith", "title": "Monolithic structure detected"}
                     ],
                     "prioritized_actions": [
-                        {"code": "separate_concerns", "title": "Improve separation of concerns"},
-                    ],
+                        {"code": "separate_concerns", "title": "Improve separation of concerns"}
+                    ]
                 },
                 {
                     "repo_name": "UserA/repo4",
@@ -84,17 +84,27 @@ def test_build_batch_summary_aggregates_multiple_targets(tmp_path: Path) -> None
                     "maturity_band": "developing",
                     "priority_issues": [
                         {"code": "missing_gitignore", "title": ".gitignore missing"},
-                        {"code": "missing_usage", "title": "Usage instructions missing"},
+                        {"code": "missing_usage", "title": "Usage instructions missing"}
                     ],
                     "prioritized_actions": [
                         {"code": "add_gitignore", "title": "Add a proper .gitignore"},
-                        {"code": "document_usage", "title": "Document execution and usage"},
-                    ],
+                        {"code": "document_usage", "title": "Document execution and usage"}
+                    ]
                 },
+                {
+                    "repo_name": "UserA/repo5",
+                    "total_score": 73,
+                    "max_score": 100,
+                    "level": "good",
+                    "repo_type": "config_or_infra_project",
+                    "maturity_band": "advanced",
+                    "priority_issues": [],
+                    "prioritized_actions": []
+                }
             ],
             "failed_repositories": [
-                {"owner": "UserA", "repo_name": "broken-repo", "error": "404"},
-            ],
+                {"owner": "UserA", "repo_name": "broken-repo", "error": "404"}
+            ]
         },
     )
 
@@ -102,15 +112,20 @@ def test_build_batch_summary_aggregates_multiple_targets(tmp_path: Path) -> None
 
     assert summary["batch_type"] == "github_targets_audit"
     assert summary["target_count"] == 2
-    assert summary["total_repositories_analyzed"] == 4
+    assert summary["total_repositories_analyzed"] == 5
     assert summary["total_failed_repositories"] == 1
 
     assert summary["targets"][0]["target_name"] == "OrgA"
     assert summary["targets"][0]["target_kind"] == "org"
     assert summary["targets"][1]["target_kind"] == "user"
 
-    assert summary["weakest_repositories"][0]["repo_name"] == "OrgA/repo1"
-    assert summary["weakest_repositories"][0]["decision"] == "archive"
+    weakest = summary["weakest_repositories"][0]
+    assert weakest["repo_name"] == "OrgA/repo1"
+    assert weakest["decision"] == "archive"
+
+    strongest_names = {repo["repo_name"]: repo["decision"] for repo in summary["strongest_repositories"]}
+    assert strongest_names["OrgA/repo2"] == "keep"
+    assert strongest_names["UserA/repo5"] == "keep"
 
     decisions = summary["decision_distribution"]
     assert decisions["archive"] >= 1

@@ -6,6 +6,8 @@ from pathlib import Path
 from statistics import mean
 from typing import Any
 
+from repo_auditor.portfolio_policy import PortfolioPolicy, load_portfolio_policy
+
 
 def load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -95,14 +97,6 @@ def summarize_target(target_payload: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def issue_code_set(repo: dict[str, Any]) -> set[str]:
-    return {
-        str(issue.get("code", "")).strip().lower()
-        for issue in repo.get("priority_issues", [])
-        if str(issue.get("code", "")).strip()
-    }
-
-
 def issue_title_text(repo: dict[str, Any]) -> str:
     return " | ".join(
         str(issue.get("title", "")).strip().lower()
@@ -117,91 +111,92 @@ def action_title_text(repo: dict[str, Any]) -> str:
     )
 
 
-def has_empty_like_signal(repo: dict[str, Any]) -> bool:
-    text = issue_title_text(repo)
-    return "empty or nearly empty" in text or "empty" in text
+def text_contains_any(text: str, keywords: list[str]) -> bool:
+    return any(keyword.lower() in text for keyword in keywords)
 
 
-def has_structure_debt_signal(repo: dict[str, Any]) -> bool:
-    text = issue_title_text(repo)
-    action_text = action_title_text(repo)
-    return any(
-        fragment in text or fragment in action_text
-        for fragment in [
-            "monolithic structure",
-            "poor separation of concerns",
-            "main code directory missing",
-            "flat project structure",
-            "dedicated source directory",
-            "decompose monolithic code structure",
-            "improve separation of concerns",
-        ]
+def has_empty_like_signal(repo: dict[str, Any], policy: PortfolioPolicy) -> bool:
+    return text_contains_any(issue_title_text(repo), policy.empty_like_keywords)
+
+
+def has_structure_debt_signal(repo: dict[str, Any], policy: PortfolioPolicy) -> bool:
+    return text_contains_any(
+        issue_title_text(repo) + " | " + action_title_text(repo),
+        policy.structure_debt_keywords,
     )
 
 
-def has_missing_basics_signal(repo: dict[str, Any]) -> bool:
-    text = issue_title_text(repo)
-    return any(
-        fragment in text
-        for fragment in [
-            ".gitignore missing",
-            "dependency manifest missing",
-            "readme missing",
-            "installation instructions missing",
-            "usage instructions missing",
-        ]
-    )
+def has_missing_basics_signal(repo: dict[str, Any], policy: PortfolioPolicy) -> bool:
+    return text_contains_any(issue_title_text(repo), policy.missing_basics_keywords)
 
 
-def determine_repo_decision(repo: dict[str, Any]) -> str:
-    score = int(repo["total_score"])
+def determine_repo_decision(repo: dict[str, Any], policy: PortfolioPolicy) -> str:
+    repo_name = str(repo["repo_name"])
     repo_type = str(repo["repo_type"])
     maturity = str(repo["maturity_band"])
-    empty_like = has_empty_like_signal(repo)
-    structure_debt = has_structure_debt_signal(repo)
-    missing_basics = has_missing_basics_signal(repo)
+    score = int(repo["total_score"])
 
-    if score >= 75:
+    repo_override = policy.repo_overrides.get(repo_name)
+    if repo_override and "decision" in repo_override:
+        return str(repo_override["decision"])
+
+    thresholds = policy.thresholds_for_repo_type(repo_type)
+    keep_min_score = thresholds["keep_min_score"]
+    improve_min_score = thresholds["improve_min_score"]
+    archive_max_score = thresholds["archive_max_score"]
+
+    empty_like = has_empty_like_signal(repo, policy)
+    structure_debt = has_structure_debt_signal(repo, policy)
+    missing_basics = has_missing_basics_signal(repo, policy)
+
+    if score >= keep_min_score:
         return "keep"
 
-    if score < 25:
-        if empty_like or repo_type in {"generic_project", "documentation_project"}:
+    if score <= archive_max_score:
+        if empty_like or (repo_type in policy.archive_repo_types and maturity in policy.archive_maturity_bands):
             return "archive"
-        return "rebuild"
+        if repo_type in policy.rebuild_repo_types:
+            return "rebuild"
+        return "archive"
 
-    if score < 40:
-        if empty_like and maturity in {"bootstrap", "foundation"}:
+    if score < improve_min_score:
+        if empty_like and maturity in policy.archive_maturity_bands and repo_type in policy.archive_repo_types:
             return "archive"
-        if structure_debt:
+        if structure_debt or repo_type in policy.rebuild_repo_types:
             return "rebuild"
         return "improve"
 
-    if score < 75:
-        if structure_debt and maturity in {"developing", "advanced"}:
-            return "rebuild"
-        if missing_basics or structure_debt:
-            return "improve"
+    if structure_debt and maturity in {"developing", "advanced"} and score < keep_min_score:
+        return "improve"
+
+    if missing_basics or structure_debt:
         return "improve"
 
     return "keep"
 
 
-def decision_reason(repo: dict[str, Any], decision: str) -> str:
+def decision_reason(repo: dict[str, Any], decision: str, policy: PortfolioPolicy) -> str:
+    repo_name = str(repo["repo_name"])
+    repo_override = policy.repo_overrides.get(repo_name)
+    if repo_override and "reason" in repo_override:
+        return str(repo_override["reason"])
+
     score = int(repo["total_score"])
     maturity = str(repo["maturity_band"])
 
     if decision == "keep":
-        return f"High score ({score}/100) and already credible as a showcase repository."
+        return f"Score is high enough ({score}/100) to keep this repository as a portfolio asset."
     if decision == "archive":
         return (
-            f"Very weak score ({score}/100) with low portfolio value relative to cleanup effort, "
+            f"Low score ({score}/100) with limited portfolio upside relative to cleanup effort, "
             f"especially for a {maturity} repository."
         )
     if decision == "rebuild":
         return (
-            f"Low-to-mid score ({score}/100) with structural debt that likely makes incremental cleanup inefficient."
+            f"Score remains too low ({score}/100) and the repository appears structurally weak, "
+            f"so a rebuild is more defensible than incremental cleanup."
         )
-    return f"Recoverable score ({score}/100) with improvements that are still worth implementing incrementally."
+    return f"Repository is still recoverable ({score}/100) through targeted incremental improvements."
 
 
 def classify_action_bucket(action_title: str) -> str:
@@ -315,6 +310,10 @@ def build_batch_summary(batch_dir: Path) -> dict[str, Any]:
     if not json_files:
         raise FileNotFoundError(f"No GitHub audit JSON files found under: {batch_dir}")
 
+    project_root = Path(__file__).resolve().parents[1]
+    policy_path = project_root / "config" / "portfolio_policy.json"
+    policy = load_portfolio_policy(policy_path if policy_path.exists() else None)
+
     target_payloads = [load_json(path) for path in json_files]
     target_summaries = [summarize_target(payload) for payload in target_payloads]
 
@@ -337,8 +336,8 @@ def build_batch_summary(batch_dir: Path) -> dict[str, Any]:
         failed_repositories.extend(payload.get("failed_repositories", []))
 
     for repo in all_repos:
-        repo["decision"] = determine_repo_decision(repo)
-        repo["decision_reason"] = decision_reason(repo, repo["decision"])
+        repo["decision"] = determine_repo_decision(repo, policy)
+        repo["decision_reason"] = decision_reason(repo, repo["decision"], policy)
 
         repo_type_counter[str(repo["repo_type"])] += 1
         maturity_counter[str(repo["maturity_band"])] += 1
@@ -390,6 +389,7 @@ def build_batch_summary(batch_dir: Path) -> dict[str, Any]:
     return {
         "batch_type": "github_targets_audit",
         "batch_directory": str(batch_dir),
+        "policy_path": str(policy_path) if policy_path.exists() else None,
         "target_count": len(target_payloads),
         "target_kind_distribution": dict(target_kind_counter.most_common()),
         "total_repositories_analyzed": len(all_repos),
@@ -437,6 +437,8 @@ def render_batch_summary_markdown(summary: dict[str, Any]) -> str:
     lines.append(f"**Repositories analyzed:** {summary['total_repositories_analyzed']}")
     lines.append(f"**Repositories failed to scan:** {summary['total_failed_repositories']}")
     lines.append(f"**Average score across all repositories:** {summary['average_score_all_repositories']}/100")
+    if summary.get("policy_path"):
+        lines.append(f"**Decision policy:** `{summary['policy_path']}`")
     lines.append("")
 
     lines.append("## Target ranking")
