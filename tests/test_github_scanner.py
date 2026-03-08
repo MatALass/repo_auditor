@@ -80,6 +80,109 @@ class FakeEmptyGitHubClient:
         return None
 
 
+class FakeGameGitHubClient:
+    def get_repository(self, owner: str, repo: str) -> dict:
+        return {
+            "full_name": f"{owner}/{repo}",
+            "description": "A simple Tetris game project.",
+            "default_branch": "main",
+            "pushed_at": "2026-03-01T10:00:00Z",
+        }
+
+    def get_repository_tree_from_default_branch(self, owner: str, repo: str) -> dict:
+        return {
+            "tree": [
+                {"path": "README.md", "type": "blob", "size": 500},
+                {"path": "main.py", "type": "blob", "size": 250},
+                {"path": "board.py", "type": "blob", "size": 220},
+                {"path": "pieces.py", "type": "blob", "size": 210},
+            ]
+        }
+
+    def get_readme(self, owner: str, repo: str) -> str | None:
+        return """
+# Tetris Game
+
+A small arcade game built in Python.
+"""
+
+    def get_file_text(self, owner: str, repo: str, path: str) -> str | None:
+        payloads = {
+            "main.py": "def run_game():\n    pass\n",
+            "board.py": "class Board:\n    pass\n",
+            "pieces.py": "class Piece:\n    pass\n",
+        }
+        return payloads.get(path)
+
+
+class FakeWebGitHubClient:
+    def get_repository(self, owner: str, repo: str) -> dict:
+        return {
+            "full_name": f"{owner}/{repo}",
+            "description": "Personal portfolio website.",
+            "default_branch": "main",
+            "pushed_at": "2026-03-01T10:00:00Z",
+        }
+
+    def get_repository_tree_from_default_branch(self, owner: str, repo: str) -> dict:
+        return {
+            "tree": [
+                {"path": "README.md", "type": "blob", "size": 400},
+                {"path": "index.html", "type": "blob", "size": 500},
+                {"path": "styles.css", "type": "blob", "size": 300},
+                {"path": "app.js", "type": "blob", "size": 250},
+            ]
+        }
+
+    def get_readme(self, owner: str, repo: str) -> str | None:
+        return """
+# Portfolio Website
+
+A personal website and portfolio built with HTML, CSS and JavaScript.
+"""
+
+    def get_file_text(self, owner: str, repo: str, path: str) -> str | None:
+        payloads = {
+            "app.js": "function init() { return true; }\n",
+        }
+        return payloads.get(path)
+
+
+class FakePythonAppGitHubClient:
+    def get_repository(self, owner: str, repo: str) -> dict:
+        return {
+            "full_name": f"{owner}/{repo}",
+            "description": "ECTS grade engine for academic analytics.",
+            "default_branch": "main",
+            "pushed_at": "2026-03-01T10:00:00Z",
+        }
+
+    def get_repository_tree_from_default_branch(self, owner: str, repo: str) -> dict:
+        return {
+            "tree": [
+                {"path": "README.md", "type": "blob", "size": 700},
+                {"path": "requirements.txt", "type": "blob", "size": 120},
+                {"path": "grade_engine.py", "type": "blob", "size": 320},
+                {"path": "rules.py", "type": "blob", "size": 210},
+                {"path": "docs/usage.md", "type": "blob", "size": 180},
+            ]
+        }
+
+    def get_readme(self, owner: str, repo: str) -> str | None:
+        return """
+# ECTS Grade Engine
+
+Python engine for academic grade analytics and workload calculations.
+"""
+
+    def get_file_text(self, owner: str, repo: str, path: str) -> str | None:
+        payloads = {
+            "grade_engine.py": "def compute_grade():\n    return 1\n",
+            "rules.py": "RULES = {}\n",
+        }
+        return payloads.get(path)
+
+
 def test_parse_github_datetime_to_age_days() -> None:
     age = parse_github_datetime_to_age_days("2026-03-01T10:00:00Z")
     assert age is not None
@@ -123,3 +226,42 @@ def test_scan_github_repository_handles_empty_repo() -> None:
     assert facts.root_dirs == []
     assert facts.root_files == []
     assert facts.manifest_files == []
+
+
+def test_scan_github_repository_detects_game_project() -> None:
+    client = FakeGameGitHubClient()
+
+    facts = scan_github_repository(
+        "example-owner",
+        "Tetris_Game",
+        client=client,
+        options=GitHubScanOptions(max_code_files_for_line_counts=10),
+    )
+
+    assert facts.repo_type == "game_project"
+
+
+def test_scan_github_repository_detects_web_app() -> None:
+    client = FakeWebGitHubClient()
+
+    facts = scan_github_repository(
+        "example-owner",
+        "Atelier_Alassoeur_Website",
+        client=client,
+        options=GitHubScanOptions(max_code_files_for_line_counts=10),
+    )
+
+    assert facts.repo_type == "web_app"
+
+
+def test_scan_github_repository_detects_python_project_from_engine_signals() -> None:
+    client = FakePythonAppGitHubClient()
+
+    facts = scan_github_repository(
+        "example-owner",
+        "ects-grade-engine",
+        client=client,
+        options=GitHubScanOptions(max_code_files_for_line_counts=10),
+    )
+
+    assert facts.repo_type == "python_project"

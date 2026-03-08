@@ -126,6 +126,10 @@ def has_any_named_path(all_paths: list[str], names: set[str]) -> bool:
     return any(PurePosixPath(path).name in names for path in all_paths)
 
 
+def build_detection_file_names(root_files: list[str], all_paths: list[str]) -> list[str]:
+    return root_files + [PurePosixPath(path).name for path in all_paths]
+
+
 def scan_github_repository(
     owner: str,
     repo: str,
@@ -136,8 +140,9 @@ def scan_github_repository(
     options = options or GitHubScanOptions()
 
     repo_payload = client.get_repository(owner, repo)
-    tree_payload = client.get_repository_tree_from_default_branch(owner, repo)
+    repo_full_name = str(repo_payload.get("full_name") or f"{owner}/{repo}")
     readme_text = client.get_readme(owner, repo)
+    tree_payload = client.get_repository_tree_from_default_branch(owner, repo)
 
     all_paths = extract_blob_paths(tree_payload)
     root_files, root_dirs = build_root_entries(all_paths)
@@ -174,11 +179,13 @@ def scan_github_repository(
 
     repo_type = detect_repo_type(
         all_paths=all_paths,
-        file_names=root_files + [PurePosixPath(path).name for path in all_paths],
+        file_names=build_detection_file_names(root_files, all_paths),
+        repo_name=repo_full_name,
+        readme_text=readme_text,
     )
 
     return RepoFacts(
-        name=str(repo_payload.get("full_name") or f"{owner}/{repo}"),
+        name=repo_full_name,
         description=str(repo_payload.get("description") or ""),
         root_files=root_files,
         root_dirs=root_dirs,
