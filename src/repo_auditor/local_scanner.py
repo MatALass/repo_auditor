@@ -5,7 +5,7 @@ from pathlib import Path, PurePosixPath
 from typing import Iterable
 
 from repo_auditor.models import RepoFacts
-from repo_auditor.rules import README_NAMES
+from repo_auditor.rules import README_NAMES, extract_readme_sections
 
 
 CODE_EXTENSIONS = {
@@ -418,5 +418,10 @@ def scan_local_repository(
         has_env_example=has_env_example,
         code_file_count=code_file_count,
         test_file_count=test_file_count,
+        readme_sections=extract_readme_sections(readme_text),
+        github_topics=[],
+        homepage_url=None,
+        has_ci_config=any(path.startswith(".github/workflows/") for path in all_paths),
+        is_archived=False,
         repo_type=repo_type,
     )

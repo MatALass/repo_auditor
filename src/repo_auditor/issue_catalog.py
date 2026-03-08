@@ -47,6 +47,12 @@ ISSUE_CATALOG = {
         "recommendation": "Add roadmap, known limitations, or next steps.",
         "severity": "low",
     },
+    "readme_missing_key_sections": {
+        "title": "README missing key sections",
+        "why_it_matters": "The repository documentation exists but still lacks essential onboarding or evaluation context.",
+        "recommendation": "Add the missing README sections for overview, installation, usage, structure, demo, or roadmap.",
+        "severity": "medium",
+    },
     "flat_project_structure": {
         "title": "Flat project structure",
         "why_it_matters": "Too many root-level files usually indicate weak organization.",
@@ -171,6 +177,30 @@ ISSUE_CATALOG = {
         "title": "Repository description missing",
         "why_it_matters": "The repo is less understandable at first glance on GitHub.",
         "recommendation": "Add a concise GitHub repository description.",
+        "severity": "low",
+    },
+    "missing_github_topics": {
+        "title": "GitHub topics missing",
+        "why_it_matters": "The repository is harder to discover and less well-positioned as a portfolio item.",
+        "recommendation": "Add a small set of relevant GitHub topics describing stack, domain, and project type.",
+        "severity": "low",
+    },
+    "weak_github_topics": {
+        "title": "GitHub topics are weak or too sparse",
+        "why_it_matters": "Very limited topic metadata reduces discoverability and portfolio clarity.",
+        "recommendation": "Add 2 to 5 precise GitHub topics covering the language, domain, and project format.",
+        "severity": "low",
+    },
+    "missing_project_homepage": {
+        "title": "Project homepage missing",
+        "why_it_matters": "A homepage or live link makes the repository easier to evaluate quickly.",
+        "recommendation": "Add a homepage URL to the GitHub repository when a demo, docs site, or live app exists.",
+        "severity": "low",
+    },
+    "repository_archived": {
+        "title": "Repository is archived",
+        "why_it_matters": "Archived repositories are valid historically, but they send a weaker active-project signal in a portfolio.",
+        "recommendation": "Keep it archived if intentional, but explain its status clearly or prioritize active flagship repositories.",
         "severity": "low",
     },
     "stale_repository": {

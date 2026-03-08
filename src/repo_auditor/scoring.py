@@ -1,18 +1,22 @@
 from __future__ import annotations
 
 from repo_auditor.maturity import apply_maturity_adjustments, maturity_band_for_score
-from repo_auditor.models import CategoryScore, RepoAuditResult, RepoFacts
+from repo_auditor.models import CategoryScore, RepoAuditMetadata, RepoAuditResult, RepoFacts
 from repo_auditor.planner import build_action_plan
 from repo_auditor.rules import (
     apparent_test_volume_points,
     count_useful_root_files,
+    github_topic_count_points,
     has_ci_signal,
     has_demo_signal,
+    has_github_topics,
+    has_homepage_signal,
     has_inconsistent_naming,
     has_junk_files,
     has_keyword_section,
     has_main_code_directory,
     has_manifest,
+    has_minimum_readme_sections,
     has_readme,
     has_repo_description,
     has_separation_of_concerns_signal,
@@ -23,6 +27,7 @@ from repo_auditor.rules import (
     has_tests_directory,
     has_tooling_config,
     interview_ready_signal,
+    is_archived_repo,
     is_lightweight_app_type,
     is_notebook_like_type,
     is_small_project_type,
@@ -39,8 +44,8 @@ from repo_auditor.rules import (
 )
 
 
-def maybe_append_issue(issues: list, issue_code: str, *, downgrade_to: str | None = None) -> None:
-    issue = make_issue(issue_code)
+def maybe_append_issue(issues: list, code: str, downgrade_to: str | None = None) -> None:
+    issue = make_issue(code)
     if downgrade_to is not None:
         issue.severity = downgrade_to
     issues.append(issue)
@@ -57,20 +62,19 @@ def evaluate_documentation(facts: RepoFacts) -> CategoryScore:
         return CategoryScore("Documentation", score, 20, issues)
 
     length = readme_length(facts)
-    if length >= 300:
-        score += 1
+    if length >= 400:
+        score += 3
+    elif length >= 180:
+        score += 2
     else:
         issues.append(make_issue("readme_too_short"))
 
-    if length >= 800:
-        score += 1
-
-    if has_keyword_section(facts, ["overview", "about", "description", "project", "goal", "purpose"]):
+    if has_keyword_section(facts, ["overview", "introduction", "description", "about"]):
         score += 3
     else:
         issues.append(make_issue("missing_project_description"))
 
-    if has_keyword_section(facts, ["install", "installation", "setup", "requirements", "getting started"]):
+    if has_keyword_section(facts, ["installation", "setup", "requirements", "getting started"]):
         score += 3
     else:
         issues.append(make_issue("missing_installation_instructions"))
@@ -96,6 +100,9 @@ def evaluate_documentation(facts: RepoFacts) -> CategoryScore:
         score += 2
     else:
         issues.append(make_issue("missing_roadmap_or_limitations"))
+
+    if not has_minimum_readme_sections(facts):
+        issues.append(make_issue("readme_missing_key_sections"))
 
     return CategoryScore("Documentation", min(score, 20), 20, issues)
 
@@ -309,12 +316,12 @@ def evaluate_portfolio_value(facts: RepoFacts) -> CategoryScore:
     issues = []
 
     if portfolio_clarity_signal(facts):
-        score += 2
+        score += 1
     else:
         issues.append(make_issue("low_portfolio_clarity"))
 
     if technical_credibility_signal(facts):
-        score += 2
+        score += 1
     else:
         issues.append(make_issue("low_technical_credibility"))
 
@@ -323,6 +330,22 @@ def evaluate_portfolio_value(facts: RepoFacts) -> CategoryScore:
     else:
         if facts.repo_type not in {"notebook_project"}:
             issues.append(make_issue("hard_to_present_in_interview"))
+
+    if facts.name.count("/") == 1:
+        topic_points = github_topic_count_points(facts)
+        score += topic_points
+        if not has_github_topics(facts):
+            issues.append(make_issue("missing_github_topics"))
+        elif topic_points == 0:
+            issues.append(make_issue("weak_github_topics"))
+
+        if has_homepage_signal(facts):
+            score += 1
+        elif has_demo_signal(facts):
+            issues.append(make_issue("missing_project_homepage"))
+
+        if is_archived_repo(facts):
+            issues.append(make_issue("repository_archived"))
 
     return CategoryScore("Portfolio value", min(score, 5), 5, issues)
 
@@ -387,4 +410,11 @@ def audit_repo(facts: RepoFacts) -> RepoAuditResult:
         category_scores=categories,
         priority_issues=issues[:5],
         prioritized_actions=prioritized_actions,
+        metadata=RepoAuditMetadata(
+            github_topics=list(facts.github_topics),
+            homepage_url=facts.homepage_url,
+            has_ci_config=facts.has_ci_config,
+            is_archived=facts.is_archived,
+            readme_sections=list(facts.readme_sections),
+        ),
     )

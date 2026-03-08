@@ -3,17 +3,22 @@ from __future__ import annotations
 from dataclasses import asdict
 import json
 from pathlib import Path
+from typing import Any
 
 from repo_auditor.github_workspace import GitHubWorkspaceAuditResult
 from repo_auditor.models import RepoAuditResult
 from repo_auditor.workspace import WorkspaceAuditResult
 
 
-def repo_result_to_dict(result: RepoAuditResult) -> dict:
+def repo_result_to_dict(result: RepoAuditResult) -> dict[str, Any]:
     return asdict(result)
 
 
-def workspace_result_to_dict(result: WorkspaceAuditResult) -> dict:
+def repo_audit_result_to_dict(result: RepoAuditResult) -> dict[str, Any]:
+    return repo_result_to_dict(result)
+
+
+def workspace_result_to_dict(result: WorkspaceAuditResult) -> dict[str, Any]:
     worst_repo = result.worst_repo
 
     return {
@@ -25,7 +30,7 @@ def workspace_result_to_dict(result: WorkspaceAuditResult) -> dict:
     }
 
 
-def github_workspace_result_to_dict(result: GitHubWorkspaceAuditResult) -> dict:
+def github_workspace_result_to_dict(result: GitHubWorkspaceAuditResult) -> dict[str, Any]:
     worst_repo = result.worst_repo
 
     return {
@@ -45,10 +50,18 @@ def write_text_output(path: Path | str, content: str) -> None:
     output_path.write_text(content, encoding="utf-8")
 
 
-def write_json_output(path: Path | str, payload: dict) -> None:
+def write_json_output(path: Path | str, payload: dict[str, Any]) -> None:
     output_path = Path(path).expanduser().resolve()
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(
         json.dumps(payload, indent=2, ensure_ascii=False),
         encoding="utf-8",
     )
+
+
+def write_repo_audit_json(result: RepoAuditResult, output_path: str | Path) -> Path:
+    path = Path(output_path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload = repo_result_to_dict(result)
+    path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    return path

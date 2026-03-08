@@ -1,176 +1,321 @@
 # repo-auditor
 
-A structured repository auditing tool focused on project quality, maintainability, and portfolio value.
+![Python](https://img.shields.io/badge/python-3.11%2B-blue)
+![Tests](https://img.shields.io/badge/tests-78%20passing-brightgreen)
+![Coverage](https://img.shields.io/badge/coverage-94%25-green)
+![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
-## Goals
+**repo-auditor** is a Python CLI tool that audits software repositories
+(local or GitHub) and generates a **structured engineering evaluation**
+with scoring, prioritized issues, and an actionable improvement roadmap.
 
-This project aims to:
-- score repositories with a transparent rule-based system
-- identify the weakest repositories in a portfolio
-- explain the main issues clearly
-- propose prioritized improvements
-- audit GitHub repositories directly without manual cloning
+It is designed to help developers, data engineers, and teams quickly
+identify weaknesses in repositories and transform them into **clean,
+production‑grade portfolio projects**.
 
-## Current status
+------------------------------------------------------------------------
 
-Version `0.6.0` includes:
-- repository scoring engine
-- issue catalog
-- prioritized action planning
-- local repository scanner
-- workspace scanning across multiple local repositories
-- Markdown and JSON export
-- GitHub REST API integration for:
-  - a single remote repository
-  - all repositories of a GitHub user
-  - all repositories of a GitHub organization
+# Key Features
 
-## Installation
+### Repository auditing
 
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -e .
-```
+-   Analyze **local repositories**
+-   Analyze **GitHub repositories**
+-   Analyze **GitHub users**
+-   Analyze **GitHub organizations**
+-   Analyze **local workspaces with multiple repositories**
 
-On Windows PowerShell:
+### Engineering scoring system
 
-```powershell
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-pip install -e .
-```
+Each repository is scored **out of 100** across multiple engineering
+dimensions:
 
-## Local usage
+-   Documentation quality
+-   Project structure
+-   Testing coverage
+-   Dependency management
+-   Code organization
+-   Portfolio readiness
+-   Maintainability
 
-### Demo
+### Issue detection
 
-```bash
-repo-auditor --demo
-```
+The auditor detects structural issues such as:
 
-### Audit one local repository
+-   Missing README
+-   Missing license
+-   Missing dependency manifest
+-   Lack of tests
+-   Poor project structure
+-   Missing documentation
+-   Portfolio anti‑patterns
 
-```bash
-repo-auditor --path /absolute/or/relative/path/to/repo
-```
+Each issue includes:
 
-### Audit a local workspace
+-   severity
+-   explanation
+-   recommendation
 
-```bash
-repo-auditor --workspace /absolute/or/relative/path/to/workspace
-```
+### Action roadmap generation
 
-### Recursive local workspace audit
+For every repository the tool generates:
 
-```bash
-repo-auditor --workspace /absolute/or/relative/path/to/workspace --recursive
-```
+-   **Prioritized improvement plan**
+-   Action descriptions
+-   Impact vs effort evaluation
+-   Implementation steps
 
-## GitHub usage
+### Multi‑repository batch analysis
 
-For public repositories, authentication is optional but strongly discouraged for repeated use because unauthenticated requests are more rate-limited.
+You can audit:
 
-For private repositories, or for a more reliable rate limit, set a token:
+-   a full GitHub organization
+-   a GitHub user
+-   a workspace with many local repositories
 
-```powershell
-$env:GITHUB_TOKEN="ghp_xxx"
-```
+The tool then generates:
 
-or on macOS/Linux:
+-   **batch summary**
+-   **worst repositories first**
+-   **review queue CSV**
+-   **consolidated reporting**
 
-```bash
-export GITHUB_TOKEN="ghp_xxx"
-```
+### Export formats
 
-### Audit one remote repository
+Reports can be exported as:
 
-```bash
-repo-auditor --github-repo owner/repository
-```
+-   Markdown
+-   JSON
+-   CSV review queue
 
-### Audit all repositories of a GitHub user
+------------------------------------------------------------------------
 
-```bash
-repo-auditor --github-user some-username
-```
+# Example Output
 
-### Audit all repositories of a GitHub organization
+Example report structure:
 
-```bash
-repo-auditor --github-org some-organization
-```
+    GitHub Audit Report — github_org:example-org
 
-### Include forks
+    Repositories analyzed successfully: 12
+    Repositories failed to scan: 1
 
-```bash
-repo-auditor --github-user some-username --include-forks
-```
+    Worst repository
+    ----------------
+    Name: example-org/bad-repo
+    Score: 22/100
 
-## Export reports
+    Top priority issues
+    -------------------
+    - Repository is empty or nearly empty
+    - Dependency manifest missing
+    - Tests missing
 
-### Export a local repository audit
+    Recommended actions
+    -------------------
+    1. Add project structure
+    2. Add dependency management
+    3. Add basic test suite
 
-```bash
-repo-auditor --path /path/to/repo --output ./reports
-```
+------------------------------------------------------------------------
 
-### Export a local workspace audit
+# Architecture Overview
 
-```bash
-repo-auditor --workspace /path/to/workspace --output ./reports
-```
+The project follows a modular architecture:
 
-### Export a GitHub user audit
+    repo-auditor
+    │
+    ├─ cli.py
+    │   CLI entrypoint
+    │
+    ├─ github_client.py
+    │   GitHub API client wrapper
+    │
+    ├─ github_scanner.py
+    │   Extracts repository facts from GitHub
+    │
+    ├─ local_scanner.py
+    │   Extracts repository facts locally
+    │
+    ├─ scoring.py
+    │   Core scoring engine
+    │
+    ├─ rules.py
+    │   Repository evaluation rules
+    │
+    ├─ planner.py
+    │   Generates prioritized improvement plans
+    │
+    ├─ report.py
+    │   Markdown and JSON reporting
+    │
+    ├─ workspace.py
+    │   Local workspace batch auditing
+    │
+    └─ github_workspace.py
+        GitHub user / org batch auditing
 
-```bash
-repo-auditor --github-user some-username --output ./reports
-```
+Design principles:
 
-### Export a GitHub organization audit
+-   strict separation between **data extraction** and **evaluation**
+-   deterministic scoring
+-   composable reporting layer
+-   batch‑safe execution
 
-```bash
-repo-auditor --github-org some-organization --output ./reports
-```
+------------------------------------------------------------------------
 
-### Export a single GitHub repository audit
+# Installation
 
-```bash
-repo-auditor --github-repo owner/repository --output ./reports
-```
+Clone the repository:
 
-This writes both Markdown and JSON artifacts.
+    git clone https://github.com/YOUR_USERNAME/repo-auditor.git
+    cd repo-auditor
 
-## What GitHub integration currently does
+Install dependencies:
 
-The remote scanner currently collects:
-- repository metadata
-- default branch information
-- recursive file tree
-- README content
-- dependency manifests
-- tooling/config files
-- license and environment template signals
-- code file counts
-- test file counts
-- limited remote file content reads for line-count heuristics
+    pip install -e .
 
-## Current limitations
+Or:
 
-- remote line counts are still heuristic and intentionally capped to avoid excessive API calls
-- some very large repositories may be partially assessed if Git tree traversal is truncated by GitHub
-- action planning is rule-based, not semantic
-- no deep AST/code-smell analysis yet
-- no historical comparison yet
+    pip install -r requirements.txt
 
-## Recommended token model
+Python requirement:
 
-Use a fine-grained personal access token with the minimum repository read permissions needed for the endpoints you use. For read-only auditing, a token scoped to repository contents read access is the correct baseline.
+    Python >= 3.11
 
-## Next steps
+------------------------------------------------------------------------
 
-- project-type-aware scoring adjustments
-- historical scoring and diffing
-- scheduled daily audit
-- GitHub Actions / webhook integration
-- richer action deduplication and grouping
+# Configuration
+
+Create a `.env` file for GitHub API access:
+
+    GITHUB_TOKEN=your_token_here
+
+Using a token is recommended to avoid GitHub rate limits.
+
+------------------------------------------------------------------------
+
+# CLI Usage
+
+## Audit a local repository
+
+    repo-auditor audit-repo ./my-project
+
+## Audit a local workspace
+
+    repo-auditor audit-workspace ./projects-folder
+
+## Audit a GitHub repository
+
+    repo-auditor audit-github-repo owner repo
+
+Example:
+
+    repo-auditor audit-github-repo octocat hello-world
+
+## Audit a GitHub user
+
+    repo-auditor audit-github-user username
+
+## Audit a GitHub organization
+
+    repo-auditor audit-github-org orgname
+
+------------------------------------------------------------------------
+
+# Batch Mode
+
+You can run multiple audits in one command using batch targets.
+
+Example targets file:
+
+    github_org:my-company
+    github_user:myusername
+    local_workspace:./projects
+
+Run batch audit:
+
+    repo-auditor batch targets.txt
+
+Generated outputs:
+
+-   batch summary
+-   markdown reports
+-   JSON reports
+-   review queue CSV
+
+------------------------------------------------------------------------
+
+# Review Queue
+
+The tool can generate a **review queue CSV** listing repositories
+ordered by priority.
+
+Fields include:
+
+-   repository name
+-   score
+-   issue severity
+-   recommended actions
+
+This allows teams to **triage improvements across many repositories**.
+
+------------------------------------------------------------------------
+
+# Testing
+
+The project includes a comprehensive test suite.
+
+Current metrics:
+
+    78 tests
+    94% coverage
+
+Modules tested:
+
+-   CLI
+-   scoring engine
+-   GitHub client
+-   GitHub workspace orchestration
+-   reporting layer
+-   serialization
+-   repository scanning
+
+Run tests:
+
+    PYTHONPATH=src python -m pytest --cov=repo_auditor --cov-report=term-missing
+
+------------------------------------------------------------------------
+
+# Project Goals
+
+repo-auditor aims to become a powerful tool for:
+
+-   developer portfolio auditing
+-   repository quality analysis
+-   engineering best‑practice enforcement
+-   large GitHub organization reviews
+
+Potential future capabilities:
+
+-   GitHub PR integration
+-   CI pipeline checks
+-   automatic repository upgrade suggestions
+-   architecture linting
+-   dependency risk detection
+
+------------------------------------------------------------------------
+
+# License
+
+MIT License
+
+------------------------------------------------------------------------
+
+# Author
+
+Mathieu Alassoeur
+
+Computer Engineering Student\
+Data Analytics & Software Engineering
+
+GitHub: https://github.com/MatALass

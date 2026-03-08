@@ -5,6 +5,12 @@ from repo_auditor.models import RepoAuditResult
 from repo_auditor.workspace import WorkspaceAuditResult
 
 
+def _format_list(items: list[str]) -> str:
+    if not items:
+        return "_none_"
+    return ", ".join(items)
+
+
 def render_markdown_report(result: RepoAuditResult) -> str:
     lines: list[str] = []
     lines.append(f"# Repository Audit Report — {result.repo_name}")
@@ -15,13 +21,24 @@ def render_markdown_report(result: RepoAuditResult) -> str:
     lines.append(f"**Detected maturity band:** {result.maturity_band}")
     lines.append("")
 
+    metadata = getattr(result, "metadata", None)
+    if metadata is not None:
+        lines.append("## Repository metadata")
+        lines.append("")
+        lines.append(f"- **GitHub topics:** {_format_list(list(metadata.github_topics))}")
+        lines.append(f"- **Homepage:** {metadata.homepage_url or '_none_'}")
+        lines.append(f"- **CI detected:** {'yes' if metadata.has_ci_config else 'no'}")
+        lines.append(f"- **Archived:** {'yes' if metadata.is_archived else 'no'}")
+        lines.append(f"- **README sections detected:** {_format_list(list(metadata.readme_sections))}")
+        lines.append("")
+
     lines.append("## Category scores")
     lines.append("")
     for category in result.category_scores:
         lines.append(f"- **{category.name}**: {category.score}/{category.max_score}")
     lines.append("")
 
-    lines.append("## Priority issues")
+    lines.append("## Top priority issues")
     lines.append("")
     if not result.priority_issues:
         lines.append("- No major issue detected.")
@@ -64,6 +81,10 @@ def render_markdown_report(result: RepoAuditResult) -> str:
         lines.append("")
 
     return "\n".join(lines)
+
+
+def render_repo_report_markdown(result: RepoAuditResult) -> str:
+    return render_markdown_report(result)
 
 
 def render_workspace_report(workspace_result: WorkspaceAuditResult) -> str:
@@ -129,6 +150,14 @@ def render_workspace_report(workspace_result: WorkspaceAuditResult) -> str:
         lines.append(f"- Level: **{repo_result.level}**")
         lines.append(f"- Type: **{repo_result.repo_type}**")
         lines.append(f"- Maturity: **{repo_result.maturity_band}**")
+
+        metadata = getattr(repo_result, "metadata", None)
+        if metadata is not None:
+            lines.append(f"- Topics: {_format_list(list(metadata.github_topics))}")
+            lines.append(f"- Homepage: {metadata.homepage_url or 'none'}")
+            lines.append(f"- CI: {'yes' if metadata.has_ci_config else 'no'}")
+            lines.append(f"- Archived: {'yes' if metadata.is_archived else 'no'}")
+
         if repo_result.priority_issues:
             lines.append("- Top issues:")
             for issue in repo_result.priority_issues:
@@ -217,6 +246,13 @@ def render_github_workspace_report(result: GitHubWorkspaceAuditResult) -> str:
             lines.append(f"- Type: **{repo_result.repo_type}**")
             lines.append(f"- Maturity: **{repo_result.maturity_band}**")
 
+            metadata = getattr(repo_result, "metadata", None)
+            if metadata is not None:
+                lines.append(f"- Topics: {_format_list(list(metadata.github_topics))}")
+                lines.append(f"- Homepage: {metadata.homepage_url or 'none'}")
+                lines.append(f"- CI: {'yes' if metadata.has_ci_config else 'no'}")
+                lines.append(f"- Archived: {'yes' if metadata.is_archived else 'no'}")
+
             if repo_result.priority_issues:
                 lines.append("- Top issues:")
                 for issue in repo_result.priority_issues:
@@ -233,7 +269,6 @@ def render_github_workspace_report(result: GitHubWorkspaceAuditResult) -> str:
                     )
             else:
                 lines.append("- Top actions: none")
-
             lines.append("")
 
     if result.failed_repositories:

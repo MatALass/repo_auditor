@@ -17,6 +17,7 @@ from repo_auditor.local_scanner import (
     is_test_file,
 )
 from repo_auditor.models import RepoFacts
+from repo_auditor.rules import extract_readme_sections
 
 
 IGNORED_REMOTE_DIR_NAMES = {
@@ -199,6 +200,11 @@ def scan_github_repository(
         has_env_example=has_env_example,
         code_file_count=code_file_count,
         test_file_count=test_file_count,
+        readme_sections=extract_readme_sections(readme_text),
+        github_topics=[str(topic) for topic in (repo_payload.get("topics") or []) if str(topic).strip()],
+        homepage_url=str(repo_payload.get("homepage") or "").strip() or None,
+        has_ci_config=any(path.startswith(".github/workflows/") for path in all_paths),
+        is_archived=bool(repo_payload.get("archived", False)),
         recent_push_days=parse_github_datetime_to_age_days(repo_payload.get("pushed_at")),
         repo_type=repo_type,
     )

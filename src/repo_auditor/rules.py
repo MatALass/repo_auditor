@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from pathlib import PurePosixPath
 from typing import Iterable
 
@@ -24,6 +25,32 @@ VAGUE_NAMES = {
     "temp.py",
     "aaa.py",
     "script1.py",
+}
+README_SECTION_PATTERN = re.compile(r"^\s{0,3}#{1,6}\s+(.+?)\s*$", re.MULTILINE)
+README_SECTION_NORMALIZATIONS = {
+    "getting started": "installation",
+    "setup": "installation",
+    "install": "installation",
+    "how to run": "usage",
+    "quickstart": "usage",
+    "quick start": "usage",
+    "examples": "demo",
+    "screenshots": "demo",
+    "preview": "demo",
+    "project structure": "structure",
+    "architecture": "structure",
+    "folder structure": "structure",
+    "next steps": "roadmap",
+    "future improvements": "roadmap",
+    "limitations": "roadmap",
+}
+README_SECTION_ALIASES = {
+    "overview": {"overview", "introduction", "description", "about"},
+    "installation": {"installation", "setup", "getting started", "install", "requirements"},
+    "usage": {"usage", "run", "how to run", "quickstart", "quick start", "example usage"},
+    "structure": {"architecture", "structure", "project structure", "folders", "modules", "folder structure"},
+    "demo": {"demo", "example", "examples", "screenshot", "screenshots", "preview", "sample output"},
+    "roadmap": {"roadmap", "limitations", "future improvements", "todo", "next steps"},
 }
 
 
@@ -50,6 +77,38 @@ def contains_any(text: str, keywords: Iterable[str]) -> bool:
     return any(keyword in text for keyword in keywords)
 
 
+def normalize_readme_section_name(title: str) -> str:
+    normalized = re.sub(r"[`*_#:]", " ", title.lower())
+    normalized = re.sub(r"\s+", " ", normalized).strip(" -\t\n\r")
+    return README_SECTION_NORMALIZATIONS.get(normalized, normalized)
+
+
+def extract_readme_sections(readme_text: str | None) -> list[str]:
+    if not readme_text:
+        return []
+
+    sections: list[str] = []
+    seen: set[str] = set()
+
+    for match in README_SECTION_PATTERN.finditer(readme_text):
+        section = normalize_readme_section_name(match.group(1))
+        if not section or section in seen:
+            continue
+        seen.add(section)
+        sections.append(section)
+
+    return sections
+
+
+def _normalized_readme_keywords(keywords: Iterable[str]) -> set[str]:
+    normalized_keywords: set[str] = set()
+    for keyword in keywords:
+        normalized = normalize_readme_section_name(keyword)
+        normalized_keywords.add(normalized)
+        normalized_keywords.update(README_SECTION_ALIASES.get(normalized, set()))
+    return {normalize_readme_section_name(keyword) for keyword in normalized_keywords}
+
+
 def has_readme(facts: RepoFacts) -> bool:
     return facts.readme_text is not None
 
@@ -59,6 +118,9 @@ def readme_length(facts: RepoFacts) -> int:
 
 
 def has_keyword_section(facts: RepoFacts, keywords: Iterable[str]) -> bool:
+    normalized_keywords = _normalized_readme_keywords(keywords)
+    if any(section in normalized_keywords for section in facts.readme_sections):
+        return True
     return contains_any(normalize_text(facts.readme_text), keywords)
 
 
@@ -124,7 +186,7 @@ def has_test_framework_signal(facts: RepoFacts) -> bool:
 
 
 def has_ci_signal(facts: RepoFacts) -> bool:
-    return any(path.startswith(".github/workflows/") for path in facts.all_paths)
+    return facts.has_ci_config or any(path.startswith(".github/workflows/") for path in facts.all_paths)
 
 
 def oversized_file_status(facts: RepoFacts) -> str:
@@ -166,7 +228,10 @@ def repo_is_nearly_empty(facts: RepoFacts) -> bool:
 
 def has_demo_signal(facts: RepoFacts) -> bool:
     text = normalize_text(facts.readme_text)
-    return contains_any(text, ["demo", "example", "screenshot", "preview", "sample output"])
+    return "demo" in facts.readme_sections or contains_any(
+        text,
+        ["demo", "example", "screenshot", "preview", "sample output"],
+    )
 
 
 def has_repo_description(facts: RepoFacts) -> bool:
@@ -183,12 +248,45 @@ def recent_activity_points(facts: RepoFacts) -> int:
     return 0
 
 
+def has_github_topics(facts: RepoFacts) -> bool:
+    return len([topic for topic in facts.github_topics if topic.strip()]) > 0
+
+
+def github_topic_count_points(facts: RepoFacts) -> int:
+    count = len([topic for topic in facts.github_topics if topic.strip()])
+    if count >= 4:
+        return 2
+    if count >= 2:
+        return 1
+    return 0
+
+
+def has_homepage_signal(facts: RepoFacts) -> bool:
+    return bool((facts.homepage_url or "").strip())
+
+
+def is_archived_repo(facts: RepoFacts) -> bool:
+    return facts.is_archived
+
+
+def missing_readme_sections(facts: RepoFacts) -> list[str]:
+    missing: list[str] = []
+    for key in ["overview", "installation", "usage", "structure", "demo", "roadmap"]:
+        if not has_keyword_section(facts, README_SECTION_ALIASES[key]):
+            missing.append(key)
+    return missing
+
+
+def has_minimum_readme_sections(facts: RepoFacts) -> bool:
+    return len(missing_readme_sections(facts)) <= 2
+
+
 def project_promise_supported(facts: RepoFacts) -> bool:
     return has_repo_description(facts) and has_readme(facts) and facts.code_file_count > 0
 
 
 def portfolio_clarity_signal(facts: RepoFacts) -> bool:
-    return has_repo_description(facts) and has_readme(facts)
+    return has_repo_description(facts) and has_readme(facts) and has_minimum_readme_sections(facts)
 
 
 def technical_credibility_signal(facts: RepoFacts) -> bool:
@@ -196,8 +294,11 @@ def technical_credibility_signal(facts: RepoFacts) -> bool:
         has_tests(facts),
         has_tooling_config(facts),
         has_technical_docs(facts),
+        has_ci_signal(facts),
     ]
-    return has_manifest(facts) and (has_main_code_directory(facts) or is_lightweight_app_type(facts.repo_type)) and any(quality_signals)
+    return has_manifest(facts) and (
+        has_main_code_directory(facts) or is_lightweight_app_type(facts.repo_type)
+    ) and any(quality_signals)
 
 
 def interview_ready_signal(facts: RepoFacts) -> bool:

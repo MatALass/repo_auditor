@@ -32,6 +32,7 @@ Screenshot available.
     write_text(tmp_path / ".env.example", "API_KEY=\n")
     write_text(tmp_path / "src" / "main.py", "print('hello')\n")
     write_text(tmp_path / "tests" / "test_main.py", "def test_ok():\n    assert True\n")
+    write_text(tmp_path / ".github" / "workflows" / "ci.yml", "name: ci\n")
     write_text(tmp_path / "docs" / "architecture.md", "# Architecture\n")
 
     facts = scan_local_repository(tmp_path, description="Sample local repository for testing.")
@@ -45,6 +46,11 @@ Screenshot available.
     assert "requirements.txt" in facts.manifest_files
     assert "src" in facts.root_dirs
     assert "tests" in facts.root_dirs
+    assert facts.has_ci_config is True
+    assert facts.readme_sections == ["sample repo", "overview", "installation", "usage", "demo"]
+    assert facts.github_topics == []
+    assert facts.homepage_url is None
+    assert facts.is_archived is False
 
 
 def test_scan_local_repository_handles_missing_readme(tmp_path: Path) -> None:

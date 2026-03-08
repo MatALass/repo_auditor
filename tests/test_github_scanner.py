@@ -14,6 +14,9 @@ class FakeGitHubClient:
             "description": "Remote repository used for testing.",
             "default_branch": "main",
             "pushed_at": "2026-03-01T10:00:00Z",
+            "topics": ["python", "cli", "audit"],
+            "homepage": "https://example.com/repo-auditor",
+            "archived": False,
         }
 
     def get_repository_tree_from_default_branch(self, owner: str, repo: str) -> dict:
@@ -25,6 +28,7 @@ class FakeGitHubClient:
                 {"path": "src/main.py", "type": "blob", "size": 180},
                 {"path": "src/utils.py", "type": "blob", "size": 120},
                 {"path": "tests/test_main.py", "type": "blob", "size": 90},
+                {"path": ".github/workflows/ci.yml", "type": "blob", "size": 70},
                 {"path": "docs/architecture.md", "type": "blob", "size": 200},
             ]
         }
@@ -68,6 +72,9 @@ class FakeEmptyGitHubClient:
             "description": "",
             "default_branch": None,
             "pushed_at": "2026-03-01T10:00:00Z",
+            "topics": [],
+            "homepage": "",
+            "archived": True,
         }
 
     def get_repository_tree_from_default_branch(self, owner: str, repo: str) -> dict:
@@ -207,6 +214,19 @@ def test_scan_github_repository_builds_repofacts() -> None:
     assert "pyproject.toml" in facts.manifest_files
     assert "src" in facts.root_dirs
     assert "tests" in facts.root_dirs
+    assert facts.readme_sections == [
+        "sample remote repo",
+        "overview",
+        "installation",
+        "usage",
+        "structure",
+        "demo",
+        "roadmap",
+    ]
+    assert facts.github_topics == ["python", "cli", "audit"]
+    assert facts.homepage_url == "https://example.com/repo-auditor"
+    assert facts.has_ci_config is True
+    assert facts.is_archived is False
 
 
 def test_scan_github_repository_handles_empty_repo() -> None:
@@ -226,6 +246,11 @@ def test_scan_github_repository_handles_empty_repo() -> None:
     assert facts.root_dirs == []
     assert facts.root_files == []
     assert facts.manifest_files == []
+    assert facts.readme_sections == []
+    assert facts.github_topics == []
+    assert facts.homepage_url is None
+    assert facts.has_ci_config is False
+    assert facts.is_archived is True
 
 
 def test_scan_github_repository_detects_game_project() -> None:
@@ -259,7 +284,7 @@ def test_scan_github_repository_detects_python_project_from_engine_signals() -> 
 
     facts = scan_github_repository(
         "example-owner",
-        "ects-grade-engine",
+        "ECTS-Grade-Engine",
         client=client,
         options=GitHubScanOptions(max_code_files_for_line_counts=10),
     )

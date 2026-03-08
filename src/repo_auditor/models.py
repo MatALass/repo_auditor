@@ -20,6 +20,11 @@ class RepoFacts:
     has_env_example: bool
     code_file_count: int
     test_file_count: int
+    readme_sections: List[str] = field(default_factory=list)
+    github_topics: List[str] = field(default_factory=list)
+    homepage_url: str | None = None
+    has_ci_config: bool = False
+    is_archived: bool = False
     recent_push_days: int | None = None
     repo_type: str = "generic_project"
 
@@ -55,6 +60,15 @@ class CategoryScore:
 
 
 @dataclass(slots=True)
+class RepoAuditMetadata:
+    github_topics: List[str] = field(default_factory=list)
+    homepage_url: str | None = None
+    has_ci_config: bool = False
+    is_archived: bool = False
+    readme_sections: List[str] = field(default_factory=list)
+
+
+@dataclass(slots=True)
 class RepoAuditResult:
     repo_name: str
     total_score: int
@@ -65,3 +79,4 @@ class RepoAuditResult:
     category_scores: List[CategoryScore]
     priority_issues: List[AuditIssue] = field(default_factory=list)
     prioritized_actions: List[ActionRecommendation] = field(default_factory=list)
+    metadata: RepoAuditMetadata = field(default_factory=RepoAuditMetadata)
