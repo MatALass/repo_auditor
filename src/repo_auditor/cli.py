@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import os
 from pathlib import Path
+from typing import Any
 
 from dotenv import load_dotenv
 
@@ -13,7 +14,12 @@ from repo_auditor.github_workspace import (
     audit_github_user,
 )
 from repo_auditor.local_scanner import scan_local_repository
-from repo_auditor.models import RepoFacts
+from repo_auditor.models import RepoFacts, RepoAuditResult
+from repo_auditor.portfolio_policy import (
+    PortfolioAssessment,
+    assess_repo_for_portfolio,
+    load_portfolio_policy,
+)
 from repo_auditor.report import (
     render_github_workspace_report,
     render_markdown_report,
@@ -80,6 +86,11 @@ Add GitHub API support.
         has_env_example=False,
         code_file_count=2,
         test_file_count=1,
+        readme_sections=["demo repo", "overview", "installation", "usage", "structure", "demo", "roadmap"],
+        github_topics=[],
+        homepage_url=None,
+        has_ci_config=False,
+        is_archived=False,
         recent_push_days=10,
         repo_type="python_project",
     )
@@ -116,6 +127,134 @@ def parse_github_repo_slug(value: str) -> tuple[str, str]:
     if len(parts) != 2:
         raise ValueError("GitHub repository slug must follow the format owner/repo")
     return parts[0], parts[1]
+
+
+def render_portfolio_block(assessment: PortfolioAssessment) -> str:
+    lines = [
+        "## Portfolio assessment",
+        "",
+        f"- **Decision:** {assessment.decision}",
+        f"- **Reason:** {assessment.reason}",
+        "",
+    ]
+    return "\n".join(lines)
+
+
+def classify_doctor_actions(result: RepoAuditResult) -> tuple[list[str], list[str], list[str]]:
+    quick_wins: list[str] = []
+    structural_fixes: list[str] = []
+    blockers: list[str] = []
+
+    for issue in result.priority_issues:
+        if issue.severity == "high":
+            blockers.append(f"{issue.title} — {issue.recommendation}")
+
+    for action in result.prioritized_actions:
+        line = f"{action.title} — impact={action.impact}, effort={action.effort}, priority={action.priority_score}"
+        if action.effort == "low":
+            quick_wins.append(line)
+        elif action.effort == "high" or action.impact == "high":
+            structural_fixes.append(line)
+        else:
+            quick_wins.append(line)
+
+    return quick_wins[:5], structural_fixes[:5], blockers[:5]
+
+
+def render_doctor_block(result: RepoAuditResult) -> str:
+    quick_wins, structural_fixes, blockers = classify_doctor_actions(result)
+
+    lines: list[str] = []
+    lines.append("## Doctor mode")
+    lines.append("")
+    lines.append("### Top blockers")
+    lines.append("")
+    if blockers:
+        for item in blockers:
+            lines.append(f"- {item}")
+    else:
+        lines.append("- No critical blockers detected.")
+    lines.append("")
+
+    lines.append("### Quick wins")
+    lines.append("")
+    if quick_wins:
+        for item in quick_wins:
+            lines.append(f"- {item}")
+    else:
+        lines.append("- No quick wins identified.")
+    lines.append("")
+
+    lines.append("### Structural fixes")
+    lines.append("")
+    if structural_fixes:
+        for item in structural_fixes:
+            lines.append(f"- {item}")
+    else:
+        lines.append("- No structural refactor identified.")
+    lines.append("")
+
+    return "\n".join(lines)
+
+
+def enrich_repo_markdown(
+    result: RepoAuditResult,
+    *,
+    include_portfolio: bool,
+    include_doctor: bool,
+    policy_path: Path | None,
+) -> str:
+    sections = [render_markdown_report(result).rstrip()]
+
+    if include_portfolio:
+        policy = load_portfolio_policy(policy_path)
+        assessment = assess_repo_for_portfolio(result, policy)
+        sections.append(render_portfolio_block(assessment).rstrip())
+
+    if include_doctor:
+        sections.append(render_doctor_block(result).rstrip())
+
+    return "\n\n".join(section for section in sections if section).rstrip() + "\n"
+
+
+def enrich_repo_payload(
+    result: RepoAuditResult,
+    *,
+    include_portfolio: bool,
+    include_doctor: bool,
+    policy_path: Path | None,
+) -> dict[str, Any]:
+    payload = repo_result_to_dict(result)
+
+    if include_portfolio:
+        policy = load_portfolio_policy(policy_path)
+        assessment = assess_repo_for_portfolio(result, policy)
+        payload["portfolio_assessment"] = {
+            "decision": assessment.decision,
+            "reason": assessment.reason,
+        }
+
+    if include_doctor:
+        quick_wins, structural_fixes, blockers = classify_doctor_actions(result)
+        payload["doctor_summary"] = {
+            "top_blockers": blockers,
+            "quick_wins": quick_wins,
+            "structural_fixes": structural_fixes,
+        }
+
+    return payload
+
+
+def ensure_single_repo_mode_for_enhanced_flags(args: argparse.Namespace, parser: argparse.ArgumentParser) -> None:
+    if not (args.portfolio or args.doctor or args.policy):
+        return
+
+    single_repo_mode = bool(args.demo or args.path or args.github_repo)
+    if not single_repo_mode:
+        parser.error("--portfolio, --doctor, and --policy are currently supported only with --demo, --path, or --github-repo.")
+
+    if args.policy and not args.portfolio:
+        parser.error("--policy requires --portfolio.")
 
 
 def main() -> None:
@@ -168,7 +307,25 @@ def main() -> None:
             "If a directory/base path is provided, both Markdown and JSON are written."
         ),
     )
+    parser.add_argument(
+        "--portfolio",
+        action="store_true",
+        help="Append a portfolio decision block for single-repository audits.",
+    )
+    parser.add_argument(
+        "--doctor",
+        action="store_true",
+        help="Append an action-oriented doctor block for single-repository audits.",
+    )
+    parser.add_argument(
+        "--policy",
+        type=str,
+        help="Optional custom portfolio policy JSON file. Requires --portfolio.",
+    )
     args = parser.parse_args()
+
+    ensure_single_repo_mode_for_enhanced_flags(args, parser)
+    policy_path = Path(args.policy).expanduser().resolve() if args.policy else None
 
     github_token = os.getenv("GITHUB_TOKEN")
     github_client = GitHubClient(token=github_token)
@@ -176,25 +333,51 @@ def main() -> None:
     if args.demo:
         facts = build_demo_repo()
         result = audit_repo(facts)
-        markdown = render_markdown_report(result)
+        markdown = enrich_repo_markdown(
+            result,
+            include_portfolio=args.portfolio,
+            include_doctor=args.doctor,
+            policy_path=policy_path,
+        )
         print(markdown)
 
         md_path, json_path = build_output_paths(args.output, "demo-repo-audit")
         if md_path and json_path:
             write_text_output(md_path, markdown)
-            write_json_output(json_path, repo_result_to_dict(result))
+            write_json_output(
+                json_path,
+                enrich_repo_payload(
+                    result,
+                    include_portfolio=args.portfolio,
+                    include_doctor=args.doctor,
+                    policy_path=policy_path,
+                ),
+            )
         return
 
     if args.path:
         facts = scan_local_repository(Path(args.path), description=args.description)
         result = audit_repo(facts)
-        markdown = render_markdown_report(result)
+        markdown = enrich_repo_markdown(
+            result,
+            include_portfolio=args.portfolio,
+            include_doctor=args.doctor,
+            policy_path=policy_path,
+        )
         print(markdown)
 
         md_path, json_path = build_output_paths(args.output, f"{facts.name}-audit")
         if md_path and json_path:
             write_text_output(md_path, markdown)
-            write_json_output(json_path, repo_result_to_dict(result))
+            write_json_output(
+                json_path,
+                enrich_repo_payload(
+                    result,
+                    include_portfolio=args.portfolio,
+                    include_doctor=args.doctor,
+                    policy_path=policy_path,
+                ),
+            )
         return
 
     if args.workspace:
@@ -211,13 +394,26 @@ def main() -> None:
     if args.github_repo:
         owner, repo = parse_github_repo_slug(args.github_repo)
         result = audit_github_repository(owner, repo, client=github_client)
-        markdown = render_markdown_report(result)
+        markdown = enrich_repo_markdown(
+            result,
+            include_portfolio=args.portfolio,
+            include_doctor=args.doctor,
+            policy_path=policy_path,
+        )
         print(markdown)
 
         md_path, json_path = build_output_paths(args.output, f"{owner}__{repo}-github-audit")
         if md_path and json_path:
             write_text_output(md_path, markdown)
-            write_json_output(json_path, repo_result_to_dict(result))
+            write_json_output(
+                json_path,
+                enrich_repo_payload(
+                    result,
+                    include_portfolio=args.portfolio,
+                    include_doctor=args.doctor,
+                    policy_path=policy_path,
+                ),
+            )
         return
 
     if args.github_user:
@@ -257,4 +453,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()  
+    main()

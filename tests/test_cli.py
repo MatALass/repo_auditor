@@ -10,6 +10,7 @@ from repo_auditor.models import (
     ActionRecommendation,
     AuditIssue,
     CategoryScore,
+    RepoAuditMetadata,
     RepoAuditResult,
 )
 from repo_auditor.workspace import WorkspaceAuditResult
@@ -25,14 +26,14 @@ def make_issue(code: str, title: str, severity: str = "high") -> AuditIssue:
     )
 
 
-def make_action(code: str, title: str, priority_score: int = 120) -> ActionRecommendation:
+def make_action(code: str, title: str, priority_score: int = 120, effort: str = "medium", impact: str = "high") -> ActionRecommendation:
     return ActionRecommendation(
         code=code,
         title=title,
         description=f"Description for {title}.",
         rationale=f"Rationale for {title}.",
-        impact="high",
-        effort="medium",
+        impact=impact,
+        effort=effort,
         priority_score=priority_score,
         source_issue_codes=["issue_1"],
         steps=["step 1", "step 2"],
@@ -46,7 +47,7 @@ def make_repo_result(
     maturity_band: str = "advanced",
 ) -> RepoAuditResult:
     issue = make_issue("issue_1", "README missing")
-    action = make_action("action_1", "Write a complete README")
+    action = make_action("action_1", "Write a complete README", effort="low", impact="medium")
 
     return RepoAuditResult(
         repo_name=repo_name,
@@ -65,6 +66,13 @@ def make_repo_result(
         ],
         priority_issues=[issue],
         prioritized_actions=[action],
+        metadata=RepoAuditMetadata(
+            github_topics=["python", "cli"],
+            homepage_url="https://example.com",
+            has_ci_config=True,
+            is_archived=False,
+            readme_sections=["overview", "installation", "usage"],
+        ),
     )
 
 
@@ -157,6 +165,43 @@ def test_main_demo_writes_outputs(
     assert isinstance(written["json_payload"], dict)
 
 
+def test_main_demo_with_portfolio_and_doctor(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    repo_result = make_repo_result(repo_name="demo-repo", score=82, repo_type="cli_tool", maturity_band="advanced")
+
+    monkeypatch.setattr(cli, "audit_repo", lambda facts: repo_result)
+    monkeypatch.setattr(cli, "load_dotenv", lambda: None)
+
+    written: dict[str, object] = {}
+
+    def fake_write_text_output(path: Path, content: str) -> None:
+        written["text_path"] = path
+        written["text_content"] = content
+
+    def fake_write_json_output(path: Path, payload: dict) -> None:
+        written["json_path"] = path
+        written["json_payload"] = payload
+
+    monkeypatch.setattr(cli, "write_text_output", fake_write_text_output)
+    monkeypatch.setattr(cli, "write_json_output", fake_write_json_output)
+
+    monkeypatch.setattr(
+        "sys.argv",
+        ["repo-auditor", "--demo", "--portfolio", "--doctor", "--output", str(tmp_path)],
+    )
+    cli.main()
+
+    out = capsys.readouterr().out
+    assert "## Portfolio assessment" in out
+    assert "## Doctor mode" in out
+    assert isinstance(written["json_payload"], dict)
+    assert "portfolio_assessment" in written["json_payload"]
+    assert "doctor_summary" in written["json_payload"]
+
+
 def test_main_path_branch(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
@@ -230,6 +275,49 @@ def test_main_github_repo_branch(
     assert written["json_path"] == tmp_path / "owner__repo-github-audit.json"
 
 
+def test_main_github_repo_with_portfolio_custom_policy(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    repo_result = make_repo_result(repo_name="owner/repo", score=60, repo_type="python_project", maturity_band="developing")
+    policy_path = tmp_path / "policy.json"
+    policy_path.write_text(
+        '{"thresholds":{"keep_min_score":90,"improve_min_score":55,"archive_max_score":20,"soft_keep_min_score":88,"web_improve_floor":25}}',
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(cli, "load_dotenv", lambda: None)
+    monkeypatch.setattr(cli, "audit_github_repository", lambda owner, repo, client: repo_result)
+
+    written: dict[str, object] = {}
+
+    def fake_write_json_output(path: Path, payload: dict) -> None:
+        written["json_payload"] = payload
+
+    monkeypatch.setattr(cli, "write_text_output", lambda path, content: written.setdefault("text_path", path))
+    monkeypatch.setattr(cli, "write_json_output", fake_write_json_output)
+
+    monkeypatch.setattr(
+        "sys.argv",
+        [
+            "repo-auditor",
+            "--github-repo",
+            "owner/repo",
+            "--portfolio",
+            "--policy",
+            str(policy_path),
+            "--output",
+            str(tmp_path),
+        ],
+    )
+    cli.main()
+
+    out = capsys.readouterr().out
+    assert "## Portfolio assessment" in out
+    assert written["json_payload"]["portfolio_assessment"]["decision"] in {"improve", "rebuild", "keep", "archive"}
+
+
 def test_main_github_user_branch(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
@@ -274,6 +362,26 @@ def test_main_github_org_branch(
     assert "# GitHub Audit Report — github_org:example-org" in out
     assert written["text_path"] == tmp_path / "example-org-github-org-audit.md"
     assert written["json_path"] == tmp_path / "example-org-github-org-audit.json"
+
+
+def test_main_rejects_portfolio_for_workspace(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(cli, "load_dotenv", lambda: None)
+    monkeypatch.setattr("sys.argv", ["repo-auditor", "--workspace", ".", "--portfolio"])
+
+    with pytest.raises(SystemExit) as exc:
+        cli.main()
+
+    assert exc.value.code == 2
+
+
+def test_main_rejects_policy_without_portfolio(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(cli, "load_dotenv", lambda: None)
+    monkeypatch.setattr("sys.argv", ["repo-auditor", "--demo", "--policy", "config/portfolio_policy.json"])
+
+    with pytest.raises(SystemExit) as exc:
+        cli.main()
+
+    assert exc.value.code == 2
 
 
 def test_main_without_mode_exits_with_parser_error(monkeypatch: pytest.MonkeyPatch) -> None:
