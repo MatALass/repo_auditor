@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 import json
+from dataclasses import asdict, dataclass
 from pathlib import Path
 
-from repo_auditor.github_workspace import GitHubWorkspaceAuditResult, GitHubWorkspaceRepoFailure
+from repo_auditor.github_workspace import GitHubWorkspaceAuditResult
 from repo_auditor.models import (
     ActionRecommendation,
     AuditIssue,
@@ -20,6 +21,13 @@ from repo_auditor.serialization import (
     workspace_result_to_dict,
 )
 from repo_auditor.workspace import WorkspaceAuditResult
+
+
+@dataclass
+class DummyGitHubFailure:
+    owner: str
+    repo_name: str
+    error: str
 
 
 def make_issue(code: str, title: str, severity: str = "medium") -> AuditIssue:
@@ -133,7 +141,7 @@ def test_github_workspace_result_to_dict_serializes_failures() -> None:
         source_name="acme",
         repo_results=[stronger, weaker],
         failed_repositories=[
-            GitHubWorkspaceRepoFailure(
+            DummyGitHubFailure(
                 owner="acme",
                 repo_name="repo-c",
                 error="default branch not found",

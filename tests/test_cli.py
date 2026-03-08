@@ -45,6 +45,11 @@ def make_repo_result(
     score: int = 78,
     repo_type: str = "python_project",
     maturity_band: str = "advanced",
+    *,
+    topics: list[str] | None = None,
+    homepage_url: str | None = "https://example.com",
+    has_ci: bool = True,
+    is_archived: bool = False,
 ) -> RepoAuditResult:
     issue = make_issue("issue_1", "README missing")
     action = make_action("action_1", "Write a complete README", effort="low", impact="medium")
@@ -67,10 +72,10 @@ def make_repo_result(
         priority_issues=[issue],
         prioritized_actions=[action],
         metadata=RepoAuditMetadata(
-            github_topics=["python", "cli"],
-            homepage_url="https://example.com",
-            has_ci_config=True,
-            is_archived=False,
+            github_topics=topics if topics is not None else ["python", "cli"],
+            homepage_url=homepage_url,
+            has_ci_config=has_ci,
+            is_archived=is_archived,
             readme_sections=["overview", "installation", "usage"],
         ),
     )
@@ -130,6 +135,33 @@ def test_parse_github_repo_slug_valid() -> None:
 def test_parse_github_repo_slug_invalid() -> None:
     with pytest.raises(ValueError, match="owner/repo"):
         cli.parse_github_repo_slug("invalid-slug")
+
+
+def test_build_org_health_summary_aggregates_metrics() -> None:
+    repo_a = make_repo_result("acme/repo-a", score=82, repo_type="cli_tool", maturity_band="advanced")
+    repo_b = make_repo_result(
+        "acme/repo-b",
+        score=40,
+        repo_type="generic_project",
+        maturity_band="foundation",
+        topics=[],
+        homepage_url=None,
+        has_ci=False,
+        is_archived=True,
+    )
+
+    summary = cli.build_org_health_summary([repo_a, repo_b], policy_path=None)
+
+    assert summary["repo_count"] == 2
+    assert summary["average_score"] == 61.0
+    assert summary["median_score"] == 61.0
+    assert summary["best_repo_name"] == "acme/repo-a"
+    assert summary["worst_repo_name"] == "acme/repo-b"
+    assert summary["archived_count"] == 1
+    assert summary["missing_topics_count"] == 1
+    assert summary["missing_homepage_count"] == 1
+    assert summary["missing_ci_count"] == 1
+    assert set(summary["portfolio_decisions"]) == {"keep", "improve", "rebuild", "archive"}
 
 
 def test_main_demo_writes_outputs(
@@ -252,6 +284,34 @@ def test_main_workspace_branch(
     assert written["json_path"] == tmp_path / "workspace-workspace-audit.json"
 
 
+def test_main_workspace_with_org_health(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    repo_a = make_repo_result("repo-a", score=82)
+    repo_b = make_repo_result("repo-b", score=35, repo_type="generic_project", maturity_band="foundation", topics=[], homepage_url=None, has_ci=False)
+    workspace_result = WorkspaceAuditResult(root_path=Path("/tmp/workspace"), repo_results=[repo_a, repo_b])
+
+    monkeypatch.setattr(cli, "load_dotenv", lambda: None)
+    monkeypatch.setattr(cli, "audit_workspace", lambda path, recursive=False: workspace_result)
+
+    written: dict[str, object] = {}
+
+    def fake_write_json_output(path: Path, payload: dict) -> None:
+        written["json_payload"] = payload
+
+    monkeypatch.setattr(cli, "write_text_output", lambda path, content: written.setdefault("text_path", path))
+    monkeypatch.setattr(cli, "write_json_output", fake_write_json_output)
+
+    monkeypatch.setattr("sys.argv", ["repo-auditor", "--workspace", ".", "--org-health", "--output", str(tmp_path)])
+    cli.main()
+
+    out = capsys.readouterr().out
+    assert "## Organization health summary" in out
+    assert "org_health_summary" in written["json_payload"]
+
+
 def test_main_github_repo_branch(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
@@ -341,6 +401,39 @@ def test_main_github_user_branch(
     assert written["json_path"] == tmp_path / "example-user-github-user-audit.json"
 
 
+def test_main_github_user_with_org_health(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    repo_a = make_repo_result("example-user/repo-a", score=81)
+    repo_b = make_repo_result("example-user/repo-b", score=28, repo_type="generic_project", maturity_band="foundation", topics=[], homepage_url=None, has_ci=False)
+    github_result = GitHubWorkspaceAuditResult(
+        source_type="github_user",
+        source_name="example-user",
+        repo_results=[repo_a, repo_b],
+        failed_repositories=[],
+    )
+
+    monkeypatch.setattr(cli, "load_dotenv", lambda: None)
+    monkeypatch.setattr(cli, "audit_github_user", lambda username, client, include_forks=False: github_result)
+
+    written: dict[str, object] = {}
+
+    def fake_write_json_output(path: Path, payload: dict) -> None:
+        written["json_payload"] = payload
+
+    monkeypatch.setattr(cli, "write_text_output", lambda path, content: written.setdefault("text_path", path))
+    monkeypatch.setattr(cli, "write_json_output", fake_write_json_output)
+
+    monkeypatch.setattr("sys.argv", ["repo-auditor", "--github-user", "example-user", "--org-health", "--output", str(tmp_path)])
+    cli.main()
+
+    out = capsys.readouterr().out
+    assert "## Organization health summary" in out
+    assert "org_health_summary" in written["json_payload"]
+
+
 def test_main_github_org_branch(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
@@ -374,9 +467,19 @@ def test_main_rejects_portfolio_for_workspace(monkeypatch: pytest.MonkeyPatch) -
     assert exc.value.code == 2
 
 
-def test_main_rejects_policy_without_portfolio(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_main_rejects_policy_without_flags(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(cli, "load_dotenv", lambda: None)
     monkeypatch.setattr("sys.argv", ["repo-auditor", "--demo", "--policy", "config/portfolio_policy.json"])
+
+    with pytest.raises(SystemExit) as exc:
+        cli.main()
+
+    assert exc.value.code == 2
+
+
+def test_main_rejects_org_health_for_single_repo(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(cli, "load_dotenv", lambda: None)
+    monkeypatch.setattr("sys.argv", ["repo-auditor", "--demo", "--org-health"])
 
     with pytest.raises(SystemExit) as exc:
         cli.main()

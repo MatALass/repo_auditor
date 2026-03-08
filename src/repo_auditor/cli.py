@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import argparse
 import os
+from collections import Counter
 from pathlib import Path
+from statistics import median
 from typing import Any
 
 from dotenv import load_dotenv
@@ -23,6 +25,7 @@ from repo_auditor.portfolio_policy import (
 from repo_auditor.report import (
     render_github_workspace_report,
     render_markdown_report,
+    render_org_health_block,
     render_workspace_report,
 )
 from repo_auditor.scoring import audit_repo
@@ -257,6 +260,119 @@ def ensure_single_repo_mode_for_enhanced_flags(args: argparse.Namespace, parser:
         parser.error("--policy requires --portfolio.")
 
 
+def ensure_org_health_mode_is_valid(args: argparse.Namespace, parser: argparse.ArgumentParser) -> None:
+    if not args.org_health:
+        return
+
+    valid = bool(args.workspace or args.github_user or args.github_org)
+    if not valid:
+        parser.error("--org-health is currently supported only with --workspace, --github-user, or --github-org.")
+
+
+def build_org_health_summary(
+    repo_results: list[RepoAuditResult],
+    *,
+    policy_path: Path | None,
+) -> dict[str, Any]:
+    policy = load_portfolio_policy(policy_path)
+    scores = [repo.total_score for repo in repo_results]
+    max_score = repo_results[0].max_score if repo_results else 100
+
+    issue_counter: Counter[str] = Counter()
+    issue_titles: dict[str, str] = {}
+    decisions: Counter[str] = Counter()
+
+    archived_count = 0
+    missing_topics_count = 0
+    missing_homepage_count = 0
+    missing_ci_count = 0
+
+    for repo in repo_results:
+        assessment = assess_repo_for_portfolio(repo, policy)
+        decisions[assessment.decision] += 1
+
+        metadata = getattr(repo, "metadata", None)
+        if metadata is not None:
+            if metadata.is_archived:
+                archived_count += 1
+            if not metadata.github_topics:
+                missing_topics_count += 1
+            if not metadata.homepage_url:
+                missing_homepage_count += 1
+            if not metadata.has_ci_config:
+                missing_ci_count += 1
+        else:
+            missing_topics_count += 1
+            missing_homepage_count += 1
+            missing_ci_count += 1
+
+        seen_codes: set[str] = set()
+        for issue in repo.priority_issues:
+            if issue.code in seen_codes:
+                continue
+            seen_codes.add(issue.code)
+            issue_counter[issue.code] += 1
+            issue_titles.setdefault(issue.code, issue.title)
+
+    sorted_by_score = sorted(repo_results, key=lambda item: item.total_score)
+    best_repo = sorted_by_score[-1] if sorted_by_score else None
+    worst_repo = sorted_by_score[0] if sorted_by_score else None
+
+    top_issue_counts = [
+        {"code": code, "title": issue_titles.get(code, code), "count": count}
+        for code, count in issue_counter.most_common(5)
+    ]
+
+    return {
+        "repo_count": len(repo_results),
+        "max_score": max_score,
+        "average_score": round(sum(scores) / len(scores), 1) if scores else 0,
+        "median_score": round(float(median(scores)), 1) if scores else 0,
+        "best_repo_name": best_repo.repo_name if best_repo else None,
+        "worst_repo_name": worst_repo.repo_name if worst_repo else None,
+        "portfolio_decisions": {
+            "keep": decisions.get("keep", 0),
+            "improve": decisions.get("improve", 0),
+            "rebuild": decisions.get("rebuild", 0),
+            "archive": decisions.get("archive", 0),
+        },
+        "archived_count": archived_count,
+        "missing_topics_count": missing_topics_count,
+        "missing_homepage_count": missing_homepage_count,
+        "missing_ci_count": missing_ci_count,
+        "top_issue_counts": top_issue_counts,
+    }
+
+
+def enrich_workspace_markdown(
+    markdown: str,
+    repo_results: list[RepoAuditResult],
+    *,
+    include_org_health: bool,
+    policy_path: Path | None,
+) -> str:
+    if not include_org_health:
+        return markdown.rstrip() + "\n"
+
+    summary = build_org_health_summary(repo_results, policy_path=policy_path)
+    return markdown.rstrip() + "\n\n" + render_org_health_block(summary).rstrip() + "\n"
+
+
+def enrich_workspace_payload(
+    payload: dict[str, Any],
+    repo_results: list[RepoAuditResult],
+    *,
+    include_org_health: bool,
+    policy_path: Path | None,
+) -> dict[str, Any]:
+    if not include_org_health:
+        return payload
+
+    enriched = dict(payload)
+    enriched["org_health_summary"] = build_org_health_summary(repo_results, policy_path=policy_path)
+    return enriched
+
+
 def main() -> None:
     load_dotenv()
 
@@ -320,11 +436,21 @@ def main() -> None:
     parser.add_argument(
         "--policy",
         type=str,
-        help="Optional custom portfolio policy JSON file. Requires --portfolio.",
+        help="Optional custom portfolio policy JSON file. Requires --portfolio or --org-health.",
+    )
+    parser.add_argument(
+        "--org-health",
+        action="store_true",
+        help="Append an aggregated organization/workspace health summary.",
     )
     args = parser.parse_args()
 
     ensure_single_repo_mode_for_enhanced_flags(args, parser)
+    ensure_org_health_mode_is_valid(args, parser)
+
+    if args.policy and not (args.portfolio or args.org_health):
+        parser.error("--policy requires --portfolio or --org-health.")
+
     policy_path = Path(args.policy).expanduser().resolve() if args.policy else None
 
     github_token = os.getenv("GITHUB_TOKEN")
@@ -382,13 +508,27 @@ def main() -> None:
 
     if args.workspace:
         workspace_result = audit_workspace(Path(args.workspace), recursive=args.recursive)
-        markdown = render_workspace_report(workspace_result)
+        base_markdown = render_workspace_report(workspace_result)
+        markdown = enrich_workspace_markdown(
+            base_markdown,
+            workspace_result.sorted_results,
+            include_org_health=args.org_health,
+            policy_path=policy_path,
+        )
         print(markdown)
 
         md_path, json_path = build_output_paths(args.output, f"{workspace_result.root_path.name}-workspace-audit")
         if md_path and json_path:
             write_text_output(md_path, markdown)
-            write_json_output(json_path, workspace_result_to_dict(workspace_result))
+            write_json_output(
+                json_path,
+                enrich_workspace_payload(
+                    workspace_result_to_dict(workspace_result),
+                    workspace_result.sorted_results,
+                    include_org_health=args.org_health,
+                    policy_path=policy_path,
+                ),
+            )
         return
 
     if args.github_repo:
@@ -422,13 +562,27 @@ def main() -> None:
             client=github_client,
             include_forks=args.include_forks,
         )
-        markdown = render_github_workspace_report(github_result)
+        base_markdown = render_github_workspace_report(github_result)
+        markdown = enrich_workspace_markdown(
+            base_markdown,
+            github_result.sorted_results,
+            include_org_health=args.org_health,
+            policy_path=policy_path,
+        )
         print(markdown)
 
         md_path, json_path = build_output_paths(args.output, f"{args.github_user}-github-user-audit")
         if md_path and json_path:
             write_text_output(md_path, markdown)
-            write_json_output(json_path, github_workspace_result_to_dict(github_result))
+            write_json_output(
+                json_path,
+                enrich_workspace_payload(
+                    github_workspace_result_to_dict(github_result),
+                    github_result.sorted_results,
+                    include_org_health=args.org_health,
+                    policy_path=policy_path,
+                ),
+            )
         return
 
     if args.github_org:
@@ -437,13 +591,27 @@ def main() -> None:
             client=github_client,
             include_forks=args.include_forks,
         )
-        markdown = render_github_workspace_report(github_result)
+        base_markdown = render_github_workspace_report(github_result)
+        markdown = enrich_workspace_markdown(
+            base_markdown,
+            github_result.sorted_results,
+            include_org_health=args.org_health,
+            policy_path=policy_path,
+        )
         print(markdown)
 
         md_path, json_path = build_output_paths(args.output, f"{args.github_org}-github-org-audit")
         if md_path and json_path:
             write_text_output(md_path, markdown)
-            write_json_output(json_path, github_workspace_result_to_dict(github_result))
+            write_json_output(
+                json_path,
+                enrich_workspace_payload(
+                    github_workspace_result_to_dict(github_result),
+                    github_result.sorted_results,
+                    include_org_health=args.org_health,
+                    policy_path=policy_path,
+                ),
+            )
         return
 
     parser.error(
