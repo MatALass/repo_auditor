@@ -4,6 +4,8 @@ import argparse
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 from repo_auditor.github_client import GitHubClient
 from repo_auditor.github_workspace import (
     audit_github_org,
@@ -117,6 +119,8 @@ def parse_github_repo_slug(value: str) -> tuple[str, str]:
 
 
 def main() -> None:
+    load_dotenv()
+
     parser = argparse.ArgumentParser(description="Audit repositories and rank them by structural quality.")
     parser.add_argument("--demo", action="store_true", help="Run the demo repository audit.")
     parser.add_argument("--path", type=str, help="Scan a single local repository path.")
@@ -253,4 +257,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    main()  

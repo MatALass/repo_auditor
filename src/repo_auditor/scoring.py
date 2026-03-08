@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from repo_auditor.maturity import apply_maturity_adjustments, maturity_band_for_score
 from repo_auditor.models import CategoryScore, RepoAuditResult, RepoFacts
 from repo_auditor.planner import build_action_plan
 from repo_auditor.rules import (
@@ -22,7 +23,6 @@ from repo_auditor.rules import (
     has_tests_directory,
     has_tooling_config,
     interview_ready_signal,
-    is_empty_like_repo_type,
     is_lightweight_app_type,
     is_notebook_like_type,
     is_small_project_type,
@@ -372,6 +372,10 @@ def audit_repo(facts: RepoFacts) -> RepoAuditResult:
     issues.sort(key=issue_sort_key)
 
     prioritized_actions = build_action_plan(issues, repo_type=facts.repo_type)
+    prioritized_actions = apply_maturity_adjustments(
+        prioritized_actions,
+        total_score=total_score,
+    )
 
     return RepoAuditResult(
         repo_name=facts.name,
@@ -379,6 +383,7 @@ def audit_repo(facts: RepoFacts) -> RepoAuditResult:
         max_score=max_score,
         level=score_to_level(total_score),
         repo_type=facts.repo_type,
+        maturity_band=maturity_band_for_score(total_score),
         category_scores=categories,
         priority_issues=issues[:5],
         prioritized_actions=prioritized_actions,

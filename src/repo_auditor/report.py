@@ -12,6 +12,7 @@ def render_markdown_report(result: RepoAuditResult) -> str:
     lines.append(f"**Global score:** {result.total_score}/{result.max_score}")
     lines.append(f"**Level:** {result.level}")
     lines.append(f"**Detected project type:** {result.repo_type}")
+    lines.append(f"**Detected maturity band:** {result.maturity_band}")
     lines.append("")
 
     lines.append("## Category scores")
@@ -86,6 +87,7 @@ def render_workspace_report(workspace_result: WorkspaceAuditResult) -> str:
         lines.append(f"- **Score:** {worst_repo.total_score}/{worst_repo.max_score}")
         lines.append(f"- **Level:** {worst_repo.level}")
         lines.append(f"- **Type:** {worst_repo.repo_type}")
+        lines.append(f"- **Maturity:** {worst_repo.maturity_band}")
         lines.append("")
 
         lines.append("### Top priority issues")
@@ -114,7 +116,8 @@ def render_workspace_report(workspace_result: WorkspaceAuditResult) -> str:
     for index, repo_result in enumerate(workspace_result.sorted_results, start=1):
         lines.append(
             f"{index}. **{repo_result.repo_name}** — "
-            f"{repo_result.total_score}/{repo_result.max_score} ({repo_result.level}, {repo_result.repo_type})"
+            f"{repo_result.total_score}/{repo_result.max_score} "
+            f"({repo_result.level}, {repo_result.repo_type}, {repo_result.maturity_band})"
         )
     lines.append("")
 
@@ -125,6 +128,7 @@ def render_workspace_report(workspace_result: WorkspaceAuditResult) -> str:
         lines.append(f"- Score: **{repo_result.total_score}/{repo_result.max_score}**")
         lines.append(f"- Level: **{repo_result.level}**")
         lines.append(f"- Type: **{repo_result.repo_type}**")
+        lines.append(f"- Maturity: **{repo_result.maturity_band}**")
         if repo_result.priority_issues:
             lines.append("- Top issues:")
             for issue in repo_result.priority_issues:
@@ -169,6 +173,7 @@ def render_github_workspace_report(result: GitHubWorkspaceAuditResult) -> str:
         lines.append(f"- **Score:** {worst_repo.total_score}/{worst_repo.max_score}")
         lines.append(f"- **Level:** {worst_repo.level}")
         lines.append(f"- **Type:** {worst_repo.repo_type}")
+        lines.append(f"- **Maturity:** {worst_repo.maturity_band}")
         lines.append("")
 
         lines.append("### Top priority issues")
@@ -198,7 +203,8 @@ def render_github_workspace_report(result: GitHubWorkspaceAuditResult) -> str:
         for index, repo_result in enumerate(result.sorted_results, start=1):
             lines.append(
                 f"{index}. **{repo_result.repo_name}** — "
-                f"{repo_result.total_score}/{repo_result.max_score} ({repo_result.level}, {repo_result.repo_type})"
+                f"{repo_result.total_score}/{repo_result.max_score} "
+                f"({repo_result.level}, {repo_result.repo_type}, {repo_result.maturity_band})"
             )
         lines.append("")
 
@@ -209,6 +215,7 @@ def render_github_workspace_report(result: GitHubWorkspaceAuditResult) -> str:
             lines.append(f"- Score: **{repo_result.total_score}/{repo_result.max_score}**")
             lines.append(f"- Level: **{repo_result.level}**")
             lines.append(f"- Type: **{repo_result.repo_type}**")
+            lines.append(f"- Maturity: **{repo_result.maturity_band}**")
 
             if repo_result.priority_issues:
                 lines.append("- Top issues:")
