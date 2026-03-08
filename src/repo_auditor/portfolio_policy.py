@@ -11,6 +11,8 @@ DEFAULT_POLICY: dict[str, Any] = {
         "keep_min_score": 78,
         "improve_min_score": 45,
         "archive_max_score": 24,
+        "soft_keep_min_score": 76,
+        "web_improve_floor": 25,
     },
     "archive_repo_types": [
         "generic_project",
@@ -86,10 +88,13 @@ class PortfolioPolicy:
 
     @property
     def thresholds(self) -> dict[str, int]:
+        raw_thresholds = self.raw.get("thresholds", {})
         return {
-            "keep_min_score": int(self.raw.get("thresholds", {}).get("keep_min_score", 78)),
-            "improve_min_score": int(self.raw.get("thresholds", {}).get("improve_min_score", 45)),
-            "archive_max_score": int(self.raw.get("thresholds", {}).get("archive_max_score", 24)),
+            "keep_min_score": int(raw_thresholds.get("keep_min_score", 78)),
+            "improve_min_score": int(raw_thresholds.get("improve_min_score", 45)),
+            "archive_max_score": int(raw_thresholds.get("archive_max_score", 24)),
+            "soft_keep_min_score": int(raw_thresholds.get("soft_keep_min_score", 76)),
+            "web_improve_floor": int(raw_thresholds.get("web_improve_floor", 25)),
         }
 
     @property
@@ -127,7 +132,13 @@ class PortfolioPolicy:
     def thresholds_for_repo_type(self, repo_type: str) -> dict[str, int]:
         thresholds = dict(self.thresholds)
         overrides = self.repo_type_overrides.get(repo_type, {})
-        for key in ("keep_min_score", "improve_min_score", "archive_max_score"):
+        for key in (
+            "keep_min_score",
+            "improve_min_score",
+            "archive_max_score",
+            "soft_keep_min_score",
+            "web_improve_floor",
+        ):
             if key in overrides:
                 thresholds[key] = int(overrides[key])
         return thresholds

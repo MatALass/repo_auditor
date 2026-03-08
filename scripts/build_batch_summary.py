@@ -144,12 +144,21 @@ def determine_repo_decision(repo: dict[str, Any], policy: PortfolioPolicy) -> st
     keep_min_score = thresholds["keep_min_score"]
     improve_min_score = thresholds["improve_min_score"]
     archive_max_score = thresholds["archive_max_score"]
+    soft_keep_min_score = thresholds.get("soft_keep_min_score", keep_min_score)
+    web_improve_floor = thresholds.get("web_improve_floor", 25)
 
     empty_like = has_empty_like_signal(repo, policy)
     structure_debt = has_structure_debt_signal(repo, policy)
     missing_basics = has_missing_basics_signal(repo, policy)
 
     if score >= keep_min_score:
+        return "keep"
+
+    if (
+        score >= soft_keep_min_score
+        and maturity == "advanced"
+        and repo_type in {"web_app", "streamlit_app", "cli_tool", "ml_project", "data_science_project"}
+    ):
         return "keep"
 
     if score <= archive_max_score:
@@ -162,17 +171,23 @@ def determine_repo_decision(repo: dict[str, Any], policy: PortfolioPolicy) -> st
     if score < improve_min_score:
         if empty_like and maturity in policy.archive_maturity_bands and repo_type in policy.archive_repo_types:
             return "archive"
+
+        if (
+            repo_type in {"web_app", "streamlit_app"}
+            and score >= web_improve_floor
+            and not empty_like
+        ):
+            return "improve"
+
         if structure_debt or repo_type in policy.rebuild_repo_types:
             return "rebuild"
-        return "improve"
 
-    if structure_debt and maturity in {"developing", "advanced"} and score < keep_min_score:
         return "improve"
 
     if missing_basics or structure_debt:
         return "improve"
 
-    return "keep"
+    return "improve"
 
 
 def decision_reason(repo: dict[str, Any], decision: str, policy: PortfolioPolicy) -> str:

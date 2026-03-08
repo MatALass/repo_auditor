@@ -128,6 +128,40 @@ ML_KEYWORDS = {
     "pytorch",
     "torch",
 }
+GAME_KEYWORDS = {
+    "game",
+    "tetris",
+    "bataille",
+    "navale",
+    "tower",
+    "arcade",
+    "pygame",
+    "unity",
+    "platformer",
+    "jumper",
+    "tamagotchi",
+}
+WEB_KEYWORDS = {
+    "website",
+    "portfolio",
+    "landing page",
+    "frontend",
+    "front-end",
+    "web app",
+    "webapp",
+    "html",
+    "css",
+    "javascript",
+    "3d hop",
+    "signature",
+}
+PYTHON_APP_KEYWORDS = {
+    "engine",
+    "analytics",
+    "dashboard",
+    "automation",
+    "generator",
+}
 
 
 @dataclass(slots=True)
@@ -209,20 +243,30 @@ def _has_any_path_marker(lower_paths: list[str], markers: set[str]) -> bool:
     return any(marker in path for marker in markers for path in lower_paths)
 
 
-def _has_any_name_fragment(lower_names: list[str], fragments: set[str]) -> bool:
-    joined = " ".join(lower_names)
-    return any(fragment in joined for fragment in fragments)
+def _contains_any_keyword(text: str, keywords: set[str]) -> bool:
+    return any(keyword in text for keyword in keywords)
 
 
-def detect_repo_type(all_paths: list[str], file_names: list[str]) -> str:
+def detect_repo_type(
+    *,
+    all_paths: list[str],
+    file_names: list[str],
+    repo_name: str = "",
+    readme_text: str | None = None,
+) -> str:
     lower_paths = [path.lower() for path in all_paths]
     lower_names = [name.lower() for name in file_names]
     lower_root_names = {name.lower() for name in file_names if "/" not in name and "\\" not in name}
+    repo_name_text = repo_name.strip().lower()
+    readme_text_lower = (readme_text or "").lower()
+    combined_text = " ".join(lower_names + lower_paths + [repo_name_text, readme_text_lower])
 
     notebook_count = sum(1 for path in lower_paths if path.endswith(".ipynb"))
     python_count = sum(1 for path in lower_paths if path.endswith(".py"))
     js_count = sum(1 for path in lower_paths if path.endswith((".js", ".ts", ".jsx", ".tsx")))
-    html_count = sum(1 for path in lower_paths if path.endswith((".html", ".css")))
+    html_count = sum(1 for path in lower_paths if path.endswith(".html"))
+    css_count = sum(1 for path in lower_paths if path.endswith(".css"))
+    static_web_count = html_count + css_count
     markdown_count = sum(1 for path in lower_paths if PurePosixPath(path).suffix in DOC_EXTENSIONS)
     infra_count = sum(
         1
@@ -230,15 +274,10 @@ def detect_repo_type(all_paths: list[str], file_names: list[str]) -> str:
         if PurePosixPath(path).name in INFRA_FILE_NAMES or PurePosixPath(path).suffix in INFRA_EXTENSIONS
     )
 
-    has_streamlit = any("streamlit" in path for path in lower_paths) or "streamlit" in " ".join(lower_names)
-    has_django = "manage.py" in lower_names
+    has_streamlit = "streamlit" in combined_text
+    has_django = "manage.py" in lower_names or "django" in combined_text
     has_package_json = "package.json" in lower_names
     has_python_manifest = "pyproject.toml" in lower_names or "requirements.txt" in lower_names or "setup.py" in lower_names
-    has_rendered_front = has_package_json and html_count > 0
-    has_game_hint = any(
-        keyword in " ".join(lower_names)
-        for keyword in ["tetris", "game", "jumper", "maze", "pygame", "arcade", "unity"]
-    )
 
     has_docs_dir = any(path.startswith("docs/") for path in lower_paths)
     has_docsite_config = any(name in lower_names for name in {"mkdocs.yml", "docusaurus.config.js", "docusaurus.config.ts"})
@@ -247,13 +286,26 @@ def detect_repo_type(all_paths: list[str], file_names: list[str]) -> str:
     has_cli_signal = (
         any(name in CLI_FILE_NAMES for name in lower_names)
         or any(path.startswith(marker) for marker in CLI_PATH_MARKERS for path in lower_paths)
-        or "argparse" in " ".join(lower_names)
+        or "argparse" in combined_text
+        or "click" in combined_text
+        or "typer" in combined_text
     )
     has_ml_signal = (
         any(name in ML_FILE_MARKERS for name in lower_names)
         or _has_any_path_marker(lower_paths, ML_PATH_MARKERS)
-        or _has_any_name_fragment(lower_names, ML_KEYWORDS)
+        or _contains_any_keyword(combined_text, ML_KEYWORDS)
     )
+    has_game_signal = _contains_any_keyword(combined_text, GAME_KEYWORDS)
+    has_static_web_signal = (
+        static_web_count >= 1
+        and (
+            js_count >= 1
+            or static_web_count >= 2
+            or _contains_any_keyword(combined_text, WEB_KEYWORDS)
+        )
+    )
+    has_web_framework_signal = has_package_json and (js_count > 0 or static_web_count > 0)
+    has_python_app_signal = python_count > 0 and _contains_any_keyword(combined_text, PYTHON_APP_KEYWORDS)
 
     if has_streamlit:
         return "streamlit_app"
@@ -261,11 +313,11 @@ def detect_repo_type(all_paths: list[str], file_names: list[str]) -> str:
     if has_django:
         return "django_app"
 
-    if has_package_json and has_rendered_front:
-        return "web_app"
-
-    if has_game_hint and (python_count > 0 or js_count > 0):
+    if has_game_signal and (python_count > 0 or js_count > 0 or static_web_count > 0):
         return "game_project"
+
+    if has_web_framework_signal or has_static_web_signal:
+        return "web_app"
 
     if has_ml_signal and (python_count > 0 or notebook_count > 0):
         return "ml_project"
@@ -276,20 +328,23 @@ def detect_repo_type(all_paths: list[str], file_names: list[str]) -> str:
     if has_cli_signal and (python_count > 0 or js_count > 0):
         return "cli_tool"
 
-    if has_infra_signal and python_count == 0 and js_count == 0:
-        return "config_or_infra_project"
-
-    if (has_docs_dir or has_docsite_config) and markdown_count >= max(3, python_count + js_count + 1):
-        return "documentation_project"
-
-    if notebook_count >= 2:
-        return "notebook_project"
-
     if has_python_manifest and python_count > 0:
+        return "python_project"
+
+    if has_python_app_signal:
         return "python_project"
 
     if has_package_json and js_count > 0:
         return "javascript_project"
+
+    if (has_docs_dir or has_docsite_config) and markdown_count >= max(3, python_count + js_count + static_web_count + 1):
+        return "documentation_project"
+
+    if has_infra_signal and python_count == 0 and js_count == 0 and static_web_count == 0:
+        return "config_or_infra_project"
+
+    if notebook_count >= 2:
+        return "notebook_project"
 
     return "generic_project"
 
@@ -344,6 +399,8 @@ def scan_local_repository(
     repo_type = detect_repo_type(
         all_paths=all_paths,
         file_names=root_files + [Path(path).name for path in all_paths],
+        repo_name=root_path.name,
+        readme_text=readme_text,
     )
 
     return RepoFacts(

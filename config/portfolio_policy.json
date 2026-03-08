@@ -2,7 +2,9 @@
   "thresholds": {
     "keep_min_score": 78,
     "improve_min_score": 45,
-    "archive_max_score": 24
+    "archive_max_score": 24,
+    "soft_keep_min_score": 76,
+    "web_improve_floor": 25
   },
   "repo_type_overrides": {
     "config_or_infra_project": {
@@ -20,6 +22,17 @@
     "data_science_project": {
       "keep_min_score": 72,
       "improve_min_score": 48
+    },
+    "web_app": {
+      "soft_keep_min_score": 76,
+      "web_improve_floor": 25
+    },
+    "streamlit_app": {
+      "soft_keep_min_score": 76,
+      "web_improve_floor": 25
+    },
+    "cli_tool": {
+      "soft_keep_min_score": 77
     }
   },
   "repo_overrides": {

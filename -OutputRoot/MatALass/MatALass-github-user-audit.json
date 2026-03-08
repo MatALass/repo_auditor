@@ -1,0 +1,4629 @@
+{
+  "workspace_type": "github_user",
+  "source_name": "MatALass",
+  "repo_count": 17,
+  "failed_count": 0,
+  "worst_repo_name": "MatALass/3D_HOP",
+  "results": [
+    {
+      "repo_name": "MatALass/3D_HOP",
+      "total_score": 29,
+      "max_score": 100,
+      "level": "very weak",
+      "repo_type": "web_app",
+      "maturity_band": "foundation",
+      "category_scores": [
+        {
+          "name": "Documentation",
+          "score": 5,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "readme_too_short",
+              "title": "README too short",
+              "why_it_matters": "The project context is too weak to explain value, scope, or usage.",
+              "recommendation": "Expand the README with purpose, setup, usage, and project structure.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_project_description",
+              "title": "Project description missing in README",
+              "why_it_matters": "Readers may not understand what the repository actually does.",
+              "recommendation": "Add a clear overview section explaining the project goal and scope.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_installation_instructions",
+              "title": "Installation instructions missing",
+              "why_it_matters": "The project is harder to reproduce and use.",
+              "recommendation": "Add installation or setup steps to the README.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_usage_instructions",
+              "title": "Usage instructions missing",
+              "why_it_matters": "The repository is difficult to run or evaluate.",
+              "recommendation": "Document how to run the project and provide example commands.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_demo_or_examples",
+              "title": "No demo or examples detected",
+              "why_it_matters": "The project is less convincing and harder to evaluate quickly.",
+              "recommendation": "Add screenshots, example outputs, or a demo section.",
+              "severity": "low"
+            },
+            {
+              "code": "missing_roadmap_or_limitations",
+              "title": "No roadmap or limitations section detected",
+              "why_it_matters": "The project maturity and future direction are unclear.",
+              "recommendation": "Add roadmap, known limitations, or next steps.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Structure",
+          "score": 11,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "missing_main_code_directory",
+              "title": "Main code directory missing",
+              "why_it_matters": "The codebase appears less structured and harder to scale.",
+              "recommendation": "Move main source code into a dedicated folder such as src/, app/, or lib/.",
+              "severity": "medium"
+            },
+            {
+              "code": "inconsistent_naming",
+              "title": "Inconsistent or vague naming",
+              "why_it_matters": "Weak file naming hurts readability and maintainability.",
+              "recommendation": "Rename vague files and enforce consistent naming conventions.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Packaging",
+          "score": 3,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_dependency_manifest",
+              "title": "Dependency manifest missing",
+              "why_it_matters": "Dependencies are not formalized, which harms reproducibility.",
+              "recommendation": "Add an appropriate dependency manifest such as pyproject.toml or package.json.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_license",
+              "title": "License missing",
+              "why_it_matters": "The repository usage rights are unclear.",
+              "recommendation": "Add a LICENSE file.",
+              "severity": "low"
+            },
+            {
+              "code": "missing_env_example",
+              "title": "Environment example missing",
+              "why_it_matters": "Projects using configuration or secrets are harder to reproduce safely.",
+              "recommendation": "Add a .env.example or equivalent configuration template.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Tests",
+          "score": 0,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_tests",
+              "title": "No tests detected",
+              "why_it_matters": "The project appears fragile and less maintainable.",
+              "recommendation": "Add a basic test suite covering core logic and critical flows.",
+              "severity": "high"
+            },
+            {
+              "code": "insufficient_test_coverage_apparent",
+              "title": "Test presence appears weak",
+              "why_it_matters": "A very small number of tests often indicates fragile coverage.",
+              "recommendation": "Increase the breadth of tests for critical paths.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_test_framework_configuration",
+              "title": "Test framework not clearly configured",
+              "why_it_matters": "The testing strategy is less explicit and reproducible.",
+              "recommendation": "Declare and configure the testing framework clearly.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_ci_for_tests",
+              "title": "CI for tests missing",
+              "why_it_matters": "Quality checks are not automatically enforced.",
+              "recommendation": "Add CI workflows to run tests automatically.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Maintainability",
+          "score": 6,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "oversized_files",
+              "title": "Oversized files detected",
+              "why_it_matters": "Very large files often indicate weak modularity and harder maintenance.",
+              "recommendation": "Split large files into smaller focused modules.",
+              "severity": "high"
+            },
+            {
+              "code": "vague_file_names",
+              "title": "Vague file names detected",
+              "why_it_matters": "Generic names reduce readability and professionalism.",
+              "recommendation": "Rename files to reflect their specific responsibility.",
+              "severity": "medium"
+            },
+            {
+              "code": "poor_separation_of_concerns",
+              "title": "Poor separation of concerns",
+              "why_it_matters": "Responsibilities appear mixed, which makes future changes harder.",
+              "recommendation": "Split logic into dedicated layers or modules.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Completeness",
+          "score": 4,
+          "max_score": 10,
+          "issues": [
+            {
+              "code": "missing_repository_description",
+              "title": "Repository description missing",
+              "why_it_matters": "The repo is less understandable at first glance on GitHub.",
+              "recommendation": "Add a concise GitHub repository description.",
+              "severity": "low"
+            },
+            {
+              "code": "missing_demo_artifacts",
+              "title": "Demo artifacts missing",
+              "why_it_matters": "The project is harder to evaluate quickly as a portfolio item.",
+              "recommendation": "Add screenshots, sample outputs, or a live demo link.",
+              "severity": "low"
+            },
+            {
+              "code": "project_promise_not_supported_by_contents",
+              "title": "Project promise is weakly supported by repository contents",
+              "why_it_matters": "The repo may look incomplete or under-delivered compared to its description.",
+              "recommendation": "Align README, structure, and code to match the stated project scope.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Portfolio value",
+          "score": 0,
+          "max_score": 5,
+          "issues": [
+            {
+              "code": "low_portfolio_clarity",
+              "title": "Low portfolio clarity",
+              "why_it_matters": "The project is not immediately understandable to a recruiter or reviewer.",
+              "recommendation": "Clarify the purpose, impact, and usage of the project.",
+              "severity": "medium"
+            },
+            {
+              "code": "low_technical_credibility",
+              "title": "Low technical credibility",
+              "why_it_matters": "The repository lacks signals of engineering maturity.",
+              "recommendation": "Improve structure, documentation, testing, and tooling signals.",
+              "severity": "medium"
+            },
+            {
+              "code": "hard_to_present_in_interview",
+              "title": "Hard to present in interview",
+              "why_it_matters": "The project lacks quick evidence of output, value, or usability.",
+              "recommendation": "Add examples, demo material, and clearer execution instructions.",
+              "severity": "low"
+            }
+          ]
+        }
+      ],
+      "priority_issues": [
+        {
+          "code": "missing_dependency_manifest",
+          "title": "Dependency manifest missing",
+          "why_it_matters": "Dependencies are not formalized, which harms reproducibility.",
+          "recommendation": "Add an appropriate dependency manifest such as pyproject.toml or package.json.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_installation_instructions",
+          "title": "Installation instructions missing",
+          "why_it_matters": "The project is harder to reproduce and use.",
+          "recommendation": "Add installation or setup steps to the README.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_tests",
+          "title": "No tests detected",
+          "why_it_matters": "The project appears fragile and less maintainable.",
+          "recommendation": "Add a basic test suite covering core logic and critical flows.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_usage_instructions",
+          "title": "Usage instructions missing",
+          "why_it_matters": "The repository is difficult to run or evaluate.",
+          "recommendation": "Document how to run the project and provide example commands.",
+          "severity": "high"
+        },
+        {
+          "code": "oversized_files",
+          "title": "Oversized files detected",
+          "why_it_matters": "Very large files often indicate weak modularity and harder maintenance.",
+          "recommendation": "Split large files into smaller focused modules.",
+          "severity": "high"
+        }
+      ],
+      "prioritized_actions": [
+        {
+          "code": "document_usage",
+          "title": "Document execution and usage",
+          "description": "Explain how to run the project and what output to expect.",
+          "rationale": "A repository is much less convincing when usage is unclear.",
+          "steps": [
+            "Add run commands.",
+            "Describe expected outputs or visible behavior.",
+            "Provide one concrete usage example."
+          ],
+          "impact": "high",
+          "effort": "low",
+          "priority_score": 142,
+          "source_issue_codes": [
+            "missing_usage_instructions"
+          ]
+        },
+        {
+          "code": "document_installation",
+          "title": "Document installation steps",
+          "description": "Add clear installation instructions with prerequisites and commands.",
+          "rationale": "A project that cannot be installed easily loses reproducibility.",
+          "steps": [
+            "List prerequisites and required versions.",
+            "Add install commands.",
+            "Document environment setup if needed."
+          ],
+          "impact": "high",
+          "effort": "low",
+          "priority_score": 142,
+          "source_issue_codes": [
+            "missing_installation_instructions"
+          ]
+        },
+        {
+          "code": "formalize_dependencies",
+          "title": "Formalize project dependencies",
+          "description": "Add the appropriate manifest file for the project stack.",
+          "rationale": "Without formal dependencies, the project is not properly reproducible.",
+          "steps": [
+            "Add pyproject.toml, requirements.txt, package.json, or the relevant manifest.",
+            "List runtime and development dependencies explicitly."
+          ],
+          "impact": "high",
+          "effort": "low",
+          "priority_score": 142,
+          "source_issue_codes": [
+            "missing_dependency_manifest"
+          ]
+        },
+        {
+          "code": "build_core_test_suite",
+          "title": "Build a core test suite",
+          "description": "Add tests for the repository's main logic and critical flows.",
+          "rationale": "No tests is one of the clearest signals of fragility.",
+          "steps": [
+            "Identify the core business logic or critical flows.",
+            "Add a minimal but credible automated test suite.",
+            "Cover the most failure-prone paths first."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 118,
+          "source_issue_codes": [
+            "missing_tests"
+          ]
+        },
+        {
+          "code": "split_large_files",
+          "title": "Split oversized files",
+          "description": "Break large implementation files into smaller focused modules.",
+          "rationale": "Oversized files are a strong maintainability smell.",
+          "steps": [
+            "Identify oversized files.",
+            "Extract related responsibilities into separate modules.",
+            "Reduce file size while preserving cohesion."
+          ],
+          "impact": "high",
+          "effort": "high",
+          "priority_score": 112,
+          "source_issue_codes": [
+            "oversized_files"
+          ]
+        }
+      ]
+    },
+    {
+      "repo_name": "MatALass/MatALass",
+      "total_score": 31,
+      "max_score": 100,
+      "level": "very weak",
+      "repo_type": "generic_project",
+      "maturity_band": "foundation",
+      "category_scores": [
+        {
+          "name": "Documentation",
+          "score": 14,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "missing_installation_instructions",
+              "title": "Installation instructions missing",
+              "why_it_matters": "The project is harder to reproduce and use.",
+              "recommendation": "Add installation or setup steps to the README.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_usage_instructions",
+              "title": "Usage instructions missing",
+              "why_it_matters": "The repository is difficult to run or evaluate.",
+              "recommendation": "Document how to run the project and provide example commands.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_roadmap_or_limitations",
+              "title": "No roadmap or limitations section detected",
+              "why_it_matters": "The project maturity and future direction are unclear.",
+              "recommendation": "Add roadmap, known limitations, or next steps.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Structure",
+          "score": 10,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "missing_main_code_directory",
+              "title": "Main code directory missing",
+              "why_it_matters": "The codebase appears less structured and harder to scale.",
+              "recommendation": "Move main source code into a dedicated folder such as src/, app/, or lib/.",
+              "severity": "high"
+            }
+          ]
+        },
+        {
+          "name": "Packaging",
+          "score": 0,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_dependency_manifest",
+              "title": "Dependency manifest missing",
+              "why_it_matters": "Dependencies are not formalized, which harms reproducibility.",
+              "recommendation": "Add an appropriate dependency manifest such as pyproject.toml or package.json.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_gitignore",
+              "title": ".gitignore missing",
+              "why_it_matters": "Generated files are more likely to be committed accidentally.",
+              "recommendation": "Add a proper .gitignore file for the project stack.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_license",
+              "title": "License missing",
+              "why_it_matters": "The repository usage rights are unclear.",
+              "recommendation": "Add a LICENSE file.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Tests",
+          "score": 0,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_tests",
+              "title": "No tests detected",
+              "why_it_matters": "The project appears fragile and less maintainable.",
+              "recommendation": "Add a basic test suite covering core logic and critical flows.",
+              "severity": "high"
+            },
+            {
+              "code": "insufficient_test_coverage_apparent",
+              "title": "Test presence appears weak",
+              "why_it_matters": "A very small number of tests often indicates fragile coverage.",
+              "recommendation": "Increase the breadth of tests for critical paths.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_test_framework_configuration",
+              "title": "Test framework not clearly configured",
+              "why_it_matters": "The testing strategy is less explicit and reproducible.",
+              "recommendation": "Declare and configure the testing framework clearly.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_ci_for_tests",
+              "title": "CI for tests missing",
+              "why_it_matters": "Quality checks are not automatically enforced.",
+              "recommendation": "Add CI workflows to run tests automatically.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Maintainability",
+          "score": 2,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "oversized_files",
+              "title": "Oversized files detected",
+              "why_it_matters": "Very large files often indicate weak modularity and harder maintenance.",
+              "recommendation": "Split large files into smaller focused modules.",
+              "severity": "high"
+            },
+            {
+              "code": "monolithic_structure",
+              "title": "Monolithic structure detected",
+              "why_it_matters": "Too much logic concentrated in too few files hurts scalability.",
+              "recommendation": "Separate the codebase into clearer modules and responsibilities.",
+              "severity": "medium"
+            },
+            {
+              "code": "poor_separation_of_concerns",
+              "title": "Poor separation of concerns",
+              "why_it_matters": "Responsibilities appear mixed, which makes future changes harder.",
+              "recommendation": "Split logic into dedicated layers or modules.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Completeness",
+          "score": 4,
+          "max_score": 10,
+          "issues": [
+            {
+              "code": "missing_repository_description",
+              "title": "Repository description missing",
+              "why_it_matters": "The repo is less understandable at first glance on GitHub.",
+              "recommendation": "Add a concise GitHub repository description.",
+              "severity": "low"
+            },
+            {
+              "code": "empty_or_nearly_empty_repo",
+              "title": "Repository is empty or nearly empty",
+              "why_it_matters": "The project does not currently demonstrate meaningful value.",
+              "recommendation": "Add actual implementation, documentation, or archive/remove the repo.",
+              "severity": "high"
+            },
+            {
+              "code": "project_promise_not_supported_by_contents",
+              "title": "Project promise is weakly supported by repository contents",
+              "why_it_matters": "The repo may look incomplete or under-delivered compared to its description.",
+              "recommendation": "Align README, structure, and code to match the stated project scope.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Portfolio value",
+          "score": 1,
+          "max_score": 5,
+          "issues": [
+            {
+              "code": "low_portfolio_clarity",
+              "title": "Low portfolio clarity",
+              "why_it_matters": "The project is not immediately understandable to a recruiter or reviewer.",
+              "recommendation": "Clarify the purpose, impact, and usage of the project.",
+              "severity": "medium"
+            },
+            {
+              "code": "low_technical_credibility",
+              "title": "Low technical credibility",
+              "why_it_matters": "The repository lacks signals of engineering maturity.",
+              "recommendation": "Improve structure, documentation, testing, and tooling signals.",
+              "severity": "medium"
+            }
+          ]
+        }
+      ],
+      "priority_issues": [
+        {
+          "code": "empty_or_nearly_empty_repo",
+          "title": "Repository is empty or nearly empty",
+          "why_it_matters": "The project does not currently demonstrate meaningful value.",
+          "recommendation": "Add actual implementation, documentation, or archive/remove the repo.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_dependency_manifest",
+          "title": "Dependency manifest missing",
+          "why_it_matters": "Dependencies are not formalized, which harms reproducibility.",
+          "recommendation": "Add an appropriate dependency manifest such as pyproject.toml or package.json.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_gitignore",
+          "title": ".gitignore missing",
+          "why_it_matters": "Generated files are more likely to be committed accidentally.",
+          "recommendation": "Add a proper .gitignore file for the project stack.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_installation_instructions",
+          "title": "Installation instructions missing",
+          "why_it_matters": "The project is harder to reproduce and use.",
+          "recommendation": "Add installation or setup steps to the README.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_main_code_directory",
+          "title": "Main code directory missing",
+          "why_it_matters": "The codebase appears less structured and harder to scale.",
+          "recommendation": "Move main source code into a dedicated folder such as src/, app/, or lib/.",
+          "severity": "high"
+        }
+      ],
+      "prioritized_actions": [
+        {
+          "code": "formalize_dependencies",
+          "title": "Formalize project dependencies",
+          "description": "Add the appropriate manifest file for the project stack.",
+          "rationale": "Without formal dependencies, the project is not properly reproducible.",
+          "steps": [
+            "Add pyproject.toml, requirements.txt, package.json, or the relevant manifest.",
+            "List runtime and development dependencies explicitly."
+          ],
+          "impact": "high",
+          "effort": "low",
+          "priority_score": 142,
+          "source_issue_codes": [
+            "missing_dependency_manifest"
+          ]
+        },
+        {
+          "code": "document_usage",
+          "title": "Document execution and usage",
+          "description": "Explain how to run the project and what output to expect.",
+          "rationale": "A repository is much less convincing when usage is unclear.",
+          "steps": [
+            "Add run commands.",
+            "Describe expected outputs or visible behavior.",
+            "Provide one concrete usage example."
+          ],
+          "impact": "high",
+          "effort": "low",
+          "priority_score": 136,
+          "source_issue_codes": [
+            "missing_usage_instructions"
+          ]
+        },
+        {
+          "code": "document_installation",
+          "title": "Document installation steps",
+          "description": "Add clear installation instructions with prerequisites and commands.",
+          "rationale": "A project that cannot be installed easily loses reproducibility.",
+          "steps": [
+            "List prerequisites and required versions.",
+            "Add install commands.",
+            "Document environment setup if needed."
+          ],
+          "impact": "high",
+          "effort": "low",
+          "priority_score": 136,
+          "source_issue_codes": [
+            "missing_installation_instructions"
+          ]
+        },
+        {
+          "code": "complete_or_archive_repo",
+          "title": "Complete or archive the repository",
+          "description": "Either add meaningful implementation or remove/archive the repo from the portfolio.",
+          "rationale": "A nearly empty repo hurts portfolio quality more than it helps.",
+          "steps": [
+            "Decide whether the repo is worth continuing.",
+            "Either add real implementation or archive/remove it from showcase use."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 123,
+          "source_issue_codes": [
+            "empty_or_nearly_empty_repo"
+          ]
+        },
+        {
+          "code": "build_core_test_suite",
+          "title": "Build a core test suite",
+          "description": "Add tests for the repository's main logic and critical flows.",
+          "rationale": "No tests is one of the clearest signals of fragility.",
+          "steps": [
+            "Identify the core business logic or critical flows.",
+            "Add a minimal but credible automated test suite.",
+            "Cover the most failure-prone paths first."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 118,
+          "source_issue_codes": [
+            "missing_tests"
+          ]
+        }
+      ]
+    },
+    {
+      "repo_name": "MatALass/Atelier_Alassoeur_Website",
+      "total_score": 33,
+      "max_score": 100,
+      "level": "very weak",
+      "repo_type": "web_app",
+      "maturity_band": "foundation",
+      "category_scores": [
+        {
+          "name": "Documentation",
+          "score": 14,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "missing_usage_instructions",
+              "title": "Usage instructions missing",
+              "why_it_matters": "The repository is difficult to run or evaluate.",
+              "recommendation": "Document how to run the project and provide example commands.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_demo_or_examples",
+              "title": "No demo or examples detected",
+              "why_it_matters": "The project is less convincing and harder to evaluate quickly.",
+              "recommendation": "Add screenshots, example outputs, or a demo section.",
+              "severity": "low"
+            },
+            {
+              "code": "missing_roadmap_or_limitations",
+              "title": "No roadmap or limitations section detected",
+              "why_it_matters": "The project maturity and future direction are unclear.",
+              "recommendation": "Add roadmap, known limitations, or next steps.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Structure",
+          "score": 12,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "missing_main_code_directory",
+              "title": "Main code directory missing",
+              "why_it_matters": "The codebase appears less structured and harder to scale.",
+              "recommendation": "Move main source code into a dedicated folder such as src/, app/, or lib/.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Packaging",
+          "score": 0,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_dependency_manifest",
+              "title": "Dependency manifest missing",
+              "why_it_matters": "Dependencies are not formalized, which harms reproducibility.",
+              "recommendation": "Add an appropriate dependency manifest such as pyproject.toml or package.json.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_gitignore",
+              "title": ".gitignore missing",
+              "why_it_matters": "Generated files are more likely to be committed accidentally.",
+              "recommendation": "Add a proper .gitignore file for the project stack.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_license",
+              "title": "License missing",
+              "why_it_matters": "The repository usage rights are unclear.",
+              "recommendation": "Add a LICENSE file.",
+              "severity": "low"
+            },
+            {
+              "code": "missing_env_example",
+              "title": "Environment example missing",
+              "why_it_matters": "Projects using configuration or secrets are harder to reproduce safely.",
+              "recommendation": "Add a .env.example or equivalent configuration template.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Tests",
+          "score": 0,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_tests",
+              "title": "No tests detected",
+              "why_it_matters": "The project appears fragile and less maintainable.",
+              "recommendation": "Add a basic test suite covering core logic and critical flows.",
+              "severity": "high"
+            },
+            {
+              "code": "insufficient_test_coverage_apparent",
+              "title": "Test presence appears weak",
+              "why_it_matters": "A very small number of tests often indicates fragile coverage.",
+              "recommendation": "Increase the breadth of tests for critical paths.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_test_framework_configuration",
+              "title": "Test framework not clearly configured",
+              "why_it_matters": "The testing strategy is less explicit and reproducible.",
+              "recommendation": "Declare and configure the testing framework clearly.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_ci_for_tests",
+              "title": "CI for tests missing",
+              "why_it_matters": "Quality checks are not automatically enforced.",
+              "recommendation": "Add CI workflows to run tests automatically.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Maintainability",
+          "score": 2,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "oversized_files",
+              "title": "Oversized files detected",
+              "why_it_matters": "Very large files often indicate weak modularity and harder maintenance.",
+              "recommendation": "Split large files into smaller focused modules.",
+              "severity": "high"
+            },
+            {
+              "code": "monolithic_structure",
+              "title": "Monolithic structure detected",
+              "why_it_matters": "Too much logic concentrated in too few files hurts scalability.",
+              "recommendation": "Separate the codebase into clearer modules and responsibilities.",
+              "severity": "medium"
+            },
+            {
+              "code": "poor_separation_of_concerns",
+              "title": "Poor separation of concerns",
+              "why_it_matters": "Responsibilities appear mixed, which makes future changes harder.",
+              "recommendation": "Split logic into dedicated layers or modules.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Completeness",
+          "score": 3,
+          "max_score": 10,
+          "issues": [
+            {
+              "code": "empty_or_nearly_empty_repo",
+              "title": "Repository is empty or nearly empty",
+              "why_it_matters": "The project does not currently demonstrate meaningful value.",
+              "recommendation": "Add actual implementation, documentation, or archive/remove the repo.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_demo_artifacts",
+              "title": "Demo artifacts missing",
+              "why_it_matters": "The project is harder to evaluate quickly as a portfolio item.",
+              "recommendation": "Add screenshots, sample outputs, or a live demo link.",
+              "severity": "low"
+            },
+            {
+              "code": "project_promise_not_supported_by_contents",
+              "title": "Project promise is weakly supported by repository contents",
+              "why_it_matters": "The repo may look incomplete or under-delivered compared to its description.",
+              "recommendation": "Align README, structure, and code to match the stated project scope.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Portfolio value",
+          "score": 2,
+          "max_score": 5,
+          "issues": [
+            {
+              "code": "low_technical_credibility",
+              "title": "Low technical credibility",
+              "why_it_matters": "The repository lacks signals of engineering maturity.",
+              "recommendation": "Improve structure, documentation, testing, and tooling signals.",
+              "severity": "medium"
+            },
+            {
+              "code": "hard_to_present_in_interview",
+              "title": "Hard to present in interview",
+              "why_it_matters": "The project lacks quick evidence of output, value, or usability.",
+              "recommendation": "Add examples, demo material, and clearer execution instructions.",
+              "severity": "low"
+            }
+          ]
+        }
+      ],
+      "priority_issues": [
+        {
+          "code": "empty_or_nearly_empty_repo",
+          "title": "Repository is empty or nearly empty",
+          "why_it_matters": "The project does not currently demonstrate meaningful value.",
+          "recommendation": "Add actual implementation, documentation, or archive/remove the repo.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_dependency_manifest",
+          "title": "Dependency manifest missing",
+          "why_it_matters": "Dependencies are not formalized, which harms reproducibility.",
+          "recommendation": "Add an appropriate dependency manifest such as pyproject.toml or package.json.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_gitignore",
+          "title": ".gitignore missing",
+          "why_it_matters": "Generated files are more likely to be committed accidentally.",
+          "recommendation": "Add a proper .gitignore file for the project stack.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_tests",
+          "title": "No tests detected",
+          "why_it_matters": "The project appears fragile and less maintainable.",
+          "recommendation": "Add a basic test suite covering core logic and critical flows.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_usage_instructions",
+          "title": "Usage instructions missing",
+          "why_it_matters": "The repository is difficult to run or evaluate.",
+          "recommendation": "Document how to run the project and provide example commands.",
+          "severity": "high"
+        }
+      ],
+      "prioritized_actions": [
+        {
+          "code": "document_usage",
+          "title": "Document execution and usage",
+          "description": "Explain how to run the project and what output to expect.",
+          "rationale": "A repository is much less convincing when usage is unclear.",
+          "steps": [
+            "Add run commands.",
+            "Describe expected outputs or visible behavior.",
+            "Provide one concrete usage example."
+          ],
+          "impact": "high",
+          "effort": "low",
+          "priority_score": 142,
+          "source_issue_codes": [
+            "missing_usage_instructions"
+          ]
+        },
+        {
+          "code": "formalize_dependencies",
+          "title": "Formalize project dependencies",
+          "description": "Add the appropriate manifest file for the project stack.",
+          "rationale": "Without formal dependencies, the project is not properly reproducible.",
+          "steps": [
+            "Add pyproject.toml, requirements.txt, package.json, or the relevant manifest.",
+            "List runtime and development dependencies explicitly."
+          ],
+          "impact": "high",
+          "effort": "low",
+          "priority_score": 142,
+          "source_issue_codes": [
+            "missing_dependency_manifest"
+          ]
+        },
+        {
+          "code": "add_gitignore",
+          "title": "Add a proper .gitignore",
+          "description": "Create a stack-specific .gitignore file.",
+          "rationale": "This avoids polluting the repository with generated files.",
+          "steps": [
+            "Add a base .gitignore adapted to the tech stack.",
+            "Cover environments, caches, build outputs, and editor files."
+          ],
+          "impact": "high",
+          "effort": "low",
+          "priority_score": 136,
+          "source_issue_codes": [
+            "missing_gitignore"
+          ]
+        },
+        {
+          "code": "complete_or_archive_repo",
+          "title": "Complete or archive the repository",
+          "description": "Either add meaningful implementation or remove/archive the repo from the portfolio.",
+          "rationale": "A nearly empty repo hurts portfolio quality more than it helps.",
+          "steps": [
+            "Decide whether the repo is worth continuing.",
+            "Either add real implementation or archive/remove it from showcase use."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 123,
+          "source_issue_codes": [
+            "empty_or_nearly_empty_repo"
+          ]
+        },
+        {
+          "code": "build_core_test_suite",
+          "title": "Build a core test suite",
+          "description": "Add tests for the repository's main logic and critical flows.",
+          "rationale": "No tests is one of the clearest signals of fragility.",
+          "steps": [
+            "Identify the core business logic or critical flows.",
+            "Add a minimal but credible automated test suite.",
+            "Cover the most failure-prone paths first."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 118,
+          "source_issue_codes": [
+            "missing_tests"
+          ]
+        }
+      ]
+    },
+    {
+      "repo_name": "MatALass/Portfolio",
+      "total_score": 35,
+      "max_score": 100,
+      "level": "very weak",
+      "repo_type": "web_app",
+      "maturity_band": "foundation",
+      "category_scores": [
+        {
+          "name": "Documentation",
+          "score": 0,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "missing_readme",
+              "title": "README missing",
+              "why_it_matters": "The repository is hard to understand quickly and loses strong portfolio value.",
+              "recommendation": "Add a README with project overview, installation, usage, and technical structure.",
+              "severity": "high"
+            }
+          ]
+        },
+        {
+          "name": "Structure",
+          "score": 12,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "missing_main_code_directory",
+              "title": "Main code directory missing",
+              "why_it_matters": "The codebase appears less structured and harder to scale.",
+              "recommendation": "Move main source code into a dedicated folder such as src/, app/, or lib/.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Packaging",
+          "score": 7,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_gitignore",
+              "title": ".gitignore missing",
+              "why_it_matters": "Generated files are more likely to be committed accidentally.",
+              "recommendation": "Add a proper .gitignore file for the project stack.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_license",
+              "title": "License missing",
+              "why_it_matters": "The repository usage rights are unclear.",
+              "recommendation": "Add a LICENSE file.",
+              "severity": "low"
+            },
+            {
+              "code": "missing_env_example",
+              "title": "Environment example missing",
+              "why_it_matters": "Projects using configuration or secrets are harder to reproduce safely.",
+              "recommendation": "Add a .env.example or equivalent configuration template.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Tests",
+          "score": 0,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_tests",
+              "title": "No tests detected",
+              "why_it_matters": "The project appears fragile and less maintainable.",
+              "recommendation": "Add a basic test suite covering core logic and critical flows.",
+              "severity": "high"
+            },
+            {
+              "code": "insufficient_test_coverage_apparent",
+              "title": "Test presence appears weak",
+              "why_it_matters": "A very small number of tests often indicates fragile coverage.",
+              "recommendation": "Increase the breadth of tests for critical paths.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_test_framework_configuration",
+              "title": "Test framework not clearly configured",
+              "why_it_matters": "The testing strategy is less explicit and reproducible.",
+              "recommendation": "Declare and configure the testing framework clearly.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_ci_for_tests",
+              "title": "CI for tests missing",
+              "why_it_matters": "Quality checks are not automatically enforced.",
+              "recommendation": "Add CI workflows to run tests automatically.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Maintainability",
+          "score": 10,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "poor_separation_of_concerns",
+              "title": "Poor separation of concerns",
+              "why_it_matters": "Responsibilities appear mixed, which makes future changes harder.",
+              "recommendation": "Split logic into dedicated layers or modules.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Completeness",
+          "score": 4,
+          "max_score": 10,
+          "issues": [
+            {
+              "code": "missing_repository_description",
+              "title": "Repository description missing",
+              "why_it_matters": "The repo is less understandable at first glance on GitHub.",
+              "recommendation": "Add a concise GitHub repository description.",
+              "severity": "low"
+            },
+            {
+              "code": "missing_demo_artifacts",
+              "title": "Demo artifacts missing",
+              "why_it_matters": "The project is harder to evaluate quickly as a portfolio item.",
+              "recommendation": "Add screenshots, sample outputs, or a live demo link.",
+              "severity": "low"
+            },
+            {
+              "code": "project_promise_not_supported_by_contents",
+              "title": "Project promise is weakly supported by repository contents",
+              "why_it_matters": "The repo may look incomplete or under-delivered compared to its description.",
+              "recommendation": "Align README, structure, and code to match the stated project scope.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Portfolio value",
+          "score": 2,
+          "max_score": 5,
+          "issues": [
+            {
+              "code": "low_portfolio_clarity",
+              "title": "Low portfolio clarity",
+              "why_it_matters": "The project is not immediately understandable to a recruiter or reviewer.",
+              "recommendation": "Clarify the purpose, impact, and usage of the project.",
+              "severity": "medium"
+            },
+            {
+              "code": "hard_to_present_in_interview",
+              "title": "Hard to present in interview",
+              "why_it_matters": "The project lacks quick evidence of output, value, or usability.",
+              "recommendation": "Add examples, demo material, and clearer execution instructions.",
+              "severity": "low"
+            }
+          ]
+        }
+      ],
+      "priority_issues": [
+        {
+          "code": "missing_gitignore",
+          "title": ".gitignore missing",
+          "why_it_matters": "Generated files are more likely to be committed accidentally.",
+          "recommendation": "Add a proper .gitignore file for the project stack.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_readme",
+          "title": "README missing",
+          "why_it_matters": "The repository is hard to understand quickly and loses strong portfolio value.",
+          "recommendation": "Add a README with project overview, installation, usage, and technical structure.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_tests",
+          "title": "No tests detected",
+          "why_it_matters": "The project appears fragile and less maintainable.",
+          "recommendation": "Add a basic test suite covering core logic and critical flows.",
+          "severity": "high"
+        },
+        {
+          "code": "insufficient_test_coverage_apparent",
+          "title": "Test presence appears weak",
+          "why_it_matters": "A very small number of tests often indicates fragile coverage.",
+          "recommendation": "Increase the breadth of tests for critical paths.",
+          "severity": "medium"
+        },
+        {
+          "code": "low_portfolio_clarity",
+          "title": "Low portfolio clarity",
+          "why_it_matters": "The project is not immediately understandable to a recruiter or reviewer.",
+          "recommendation": "Clarify the purpose, impact, and usage of the project.",
+          "severity": "medium"
+        }
+      ],
+      "prioritized_actions": [
+        {
+          "code": "write_core_readme",
+          "title": "Write a complete README",
+          "description": "Create a README covering project purpose, installation, usage, structure, and demo evidence.",
+          "rationale": "A missing README destroys repository clarity and portfolio value immediately.",
+          "steps": [
+            "Add a project overview with the problem solved and the technical scope.",
+            "Document installation and execution steps.",
+            "Explain the repository structure and key modules.",
+            "Add demo material such as screenshots, outputs, or usage examples."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 145,
+          "source_issue_codes": [
+            "missing_readme"
+          ]
+        },
+        {
+          "code": "add_gitignore",
+          "title": "Add a proper .gitignore",
+          "description": "Create a stack-specific .gitignore file.",
+          "rationale": "This avoids polluting the repository with generated files.",
+          "steps": [
+            "Add a base .gitignore adapted to the tech stack.",
+            "Cover environments, caches, build outputs, and editor files."
+          ],
+          "impact": "high",
+          "effort": "low",
+          "priority_score": 136,
+          "source_issue_codes": [
+            "missing_gitignore"
+          ]
+        },
+        {
+          "code": "build_core_test_suite",
+          "title": "Build a core test suite",
+          "description": "Add tests for the repository's main logic and critical flows.",
+          "rationale": "No tests is one of the clearest signals of fragility.",
+          "steps": [
+            "Identify the core business logic or critical flows.",
+            "Add a minimal but credible automated test suite.",
+            "Cover the most failure-prone paths first."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 118,
+          "source_issue_codes": [
+            "missing_tests"
+          ]
+        },
+        {
+          "code": "create_main_code_directory",
+          "title": "Introduce a dedicated source directory",
+          "description": "Move core code into a dedicated source folder.",
+          "rationale": "A main code directory improves clarity and future scalability.",
+          "steps": [
+            "Choose src/, app/, or lib/ depending on the stack.",
+            "Move main implementation files there.",
+            "Update imports and execution entry points."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 114,
+          "source_issue_codes": [
+            "missing_main_code_directory"
+          ]
+        },
+        {
+          "code": "separate_responsibilities",
+          "title": "Improve separation of concerns",
+          "description": "Split mixed responsibilities into explicit layers or modules.",
+          "rationale": "Poor separation of concerns slows every future change.",
+          "steps": [
+            "Define major responsibility boundaries.",
+            "Create modules or layers per responsibility.",
+            "Move logic accordingly and simplify entry points."
+          ],
+          "impact": "high",
+          "effort": "high",
+          "priority_score": 107,
+          "source_issue_codes": [
+            "poor_separation_of_concerns"
+          ]
+        }
+      ]
+    },
+    {
+      "repo_name": "MatALass/between-light",
+      "total_score": 38,
+      "max_score": 100,
+      "level": "very weak",
+      "repo_type": "generic_project",
+      "maturity_band": "foundation",
+      "category_scores": [
+        {
+          "name": "Documentation",
+          "score": 17,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "missing_installation_instructions",
+              "title": "Installation instructions missing",
+              "why_it_matters": "The project is harder to reproduce and use.",
+              "recommendation": "Add installation or setup steps to the README.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_roadmap_or_limitations",
+              "title": "No roadmap or limitations section detected",
+              "why_it_matters": "The project maturity and future direction are unclear.",
+              "recommendation": "Add roadmap, known limitations, or next steps.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Structure",
+          "score": 9,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "missing_main_code_directory",
+              "title": "Main code directory missing",
+              "why_it_matters": "The codebase appears less structured and harder to scale.",
+              "recommendation": "Move main source code into a dedicated folder such as src/, app/, or lib/.",
+              "severity": "high"
+            },
+            {
+              "code": "inconsistent_naming",
+              "title": "Inconsistent or vague naming",
+              "why_it_matters": "Weak file naming hurts readability and maintainability.",
+              "recommendation": "Rename vague files and enforce consistent naming conventions.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Packaging",
+          "score": 3,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_dependency_manifest",
+              "title": "Dependency manifest missing",
+              "why_it_matters": "Dependencies are not formalized, which harms reproducibility.",
+              "recommendation": "Add an appropriate dependency manifest such as pyproject.toml or package.json.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_license",
+              "title": "License missing",
+              "why_it_matters": "The repository usage rights are unclear.",
+              "recommendation": "Add a LICENSE file.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Tests",
+          "score": 0,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_tests",
+              "title": "No tests detected",
+              "why_it_matters": "The project appears fragile and less maintainable.",
+              "recommendation": "Add a basic test suite covering core logic and critical flows.",
+              "severity": "high"
+            },
+            {
+              "code": "insufficient_test_coverage_apparent",
+              "title": "Test presence appears weak",
+              "why_it_matters": "A very small number of tests often indicates fragile coverage.",
+              "recommendation": "Increase the breadth of tests for critical paths.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_test_framework_configuration",
+              "title": "Test framework not clearly configured",
+              "why_it_matters": "The testing strategy is less explicit and reproducible.",
+              "recommendation": "Declare and configure the testing framework clearly.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_ci_for_tests",
+              "title": "CI for tests missing",
+              "why_it_matters": "Quality checks are not automatically enforced.",
+              "recommendation": "Add CI workflows to run tests automatically.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Maintainability",
+          "score": 0,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "oversized_files",
+              "title": "Oversized files detected",
+              "why_it_matters": "Very large files often indicate weak modularity and harder maintenance.",
+              "recommendation": "Split large files into smaller focused modules.",
+              "severity": "high"
+            },
+            {
+              "code": "monolithic_structure",
+              "title": "Monolithic structure detected",
+              "why_it_matters": "Too much logic concentrated in too few files hurts scalability.",
+              "recommendation": "Separate the codebase into clearer modules and responsibilities.",
+              "severity": "medium"
+            },
+            {
+              "code": "vague_file_names",
+              "title": "Vague file names detected",
+              "why_it_matters": "Generic names reduce readability and professionalism.",
+              "recommendation": "Rename files to reflect their specific responsibility.",
+              "severity": "medium"
+            },
+            {
+              "code": "poor_separation_of_concerns",
+              "title": "Poor separation of concerns",
+              "why_it_matters": "Responsibilities appear mixed, which makes future changes harder.",
+              "recommendation": "Split logic into dedicated layers or modules.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Completeness",
+          "score": 6,
+          "max_score": 10,
+          "issues": [
+            {
+              "code": "empty_or_nearly_empty_repo",
+              "title": "Repository is empty or nearly empty",
+              "why_it_matters": "The project does not currently demonstrate meaningful value.",
+              "recommendation": "Add actual implementation, documentation, or archive/remove the repo.",
+              "severity": "high"
+            },
+            {
+              "code": "project_promise_not_supported_by_contents",
+              "title": "Project promise is weakly supported by repository contents",
+              "why_it_matters": "The repo may look incomplete or under-delivered compared to its description.",
+              "recommendation": "Align README, structure, and code to match the stated project scope.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Portfolio value",
+          "score": 3,
+          "max_score": 5,
+          "issues": [
+            {
+              "code": "low_technical_credibility",
+              "title": "Low technical credibility",
+              "why_it_matters": "The repository lacks signals of engineering maturity.",
+              "recommendation": "Improve structure, documentation, testing, and tooling signals.",
+              "severity": "medium"
+            }
+          ]
+        }
+      ],
+      "priority_issues": [
+        {
+          "code": "empty_or_nearly_empty_repo",
+          "title": "Repository is empty or nearly empty",
+          "why_it_matters": "The project does not currently demonstrate meaningful value.",
+          "recommendation": "Add actual implementation, documentation, or archive/remove the repo.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_dependency_manifest",
+          "title": "Dependency manifest missing",
+          "why_it_matters": "Dependencies are not formalized, which harms reproducibility.",
+          "recommendation": "Add an appropriate dependency manifest such as pyproject.toml or package.json.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_installation_instructions",
+          "title": "Installation instructions missing",
+          "why_it_matters": "The project is harder to reproduce and use.",
+          "recommendation": "Add installation or setup steps to the README.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_main_code_directory",
+          "title": "Main code directory missing",
+          "why_it_matters": "The codebase appears less structured and harder to scale.",
+          "recommendation": "Move main source code into a dedicated folder such as src/, app/, or lib/.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_tests",
+          "title": "No tests detected",
+          "why_it_matters": "The project appears fragile and less maintainable.",
+          "recommendation": "Add a basic test suite covering core logic and critical flows.",
+          "severity": "high"
+        }
+      ],
+      "prioritized_actions": [
+        {
+          "code": "formalize_dependencies",
+          "title": "Formalize project dependencies",
+          "description": "Add the appropriate manifest file for the project stack.",
+          "rationale": "Without formal dependencies, the project is not properly reproducible.",
+          "steps": [
+            "Add pyproject.toml, requirements.txt, package.json, or the relevant manifest.",
+            "List runtime and development dependencies explicitly."
+          ],
+          "impact": "high",
+          "effort": "low",
+          "priority_score": 142,
+          "source_issue_codes": [
+            "missing_dependency_manifest"
+          ]
+        },
+        {
+          "code": "document_installation",
+          "title": "Document installation steps",
+          "description": "Add clear installation instructions with prerequisites and commands.",
+          "rationale": "A project that cannot be installed easily loses reproducibility.",
+          "steps": [
+            "List prerequisites and required versions.",
+            "Add install commands.",
+            "Document environment setup if needed."
+          ],
+          "impact": "high",
+          "effort": "low",
+          "priority_score": 136,
+          "source_issue_codes": [
+            "missing_installation_instructions"
+          ]
+        },
+        {
+          "code": "create_main_code_directory",
+          "title": "Introduce a dedicated source directory",
+          "description": "Move core code into a dedicated source folder.",
+          "rationale": "A main code directory improves clarity and future scalability.",
+          "steps": [
+            "Choose src/, app/, or lib/ depending on the stack.",
+            "Move main implementation files there.",
+            "Update imports and execution entry points."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 132,
+          "source_issue_codes": [
+            "missing_main_code_directory"
+          ]
+        },
+        {
+          "code": "complete_or_archive_repo",
+          "title": "Complete or archive the repository",
+          "description": "Either add meaningful implementation or remove/archive the repo from the portfolio.",
+          "rationale": "A nearly empty repo hurts portfolio quality more than it helps.",
+          "steps": [
+            "Decide whether the repo is worth continuing.",
+            "Either add real implementation or archive/remove it from showcase use."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 123,
+          "source_issue_codes": [
+            "empty_or_nearly_empty_repo"
+          ]
+        },
+        {
+          "code": "build_core_test_suite",
+          "title": "Build a core test suite",
+          "description": "Add tests for the repository's main logic and critical flows.",
+          "rationale": "No tests is one of the clearest signals of fragility.",
+          "steps": [
+            "Identify the core business logic or critical flows.",
+            "Add a minimal but credible automated test suite.",
+            "Cover the most failure-prone paths first."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 118,
+          "source_issue_codes": [
+            "missing_tests"
+          ]
+        }
+      ]
+    },
+    {
+      "repo_name": "MatALass/email-signature",
+      "total_score": 39,
+      "max_score": 100,
+      "level": "very weak",
+      "repo_type": "web_app",
+      "maturity_band": "foundation",
+      "category_scores": [
+        {
+          "name": "Documentation",
+          "score": 14,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "missing_installation_instructions",
+              "title": "Installation instructions missing",
+              "why_it_matters": "The project is harder to reproduce and use.",
+              "recommendation": "Add installation or setup steps to the README.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_usage_instructions",
+              "title": "Usage instructions missing",
+              "why_it_matters": "The repository is difficult to run or evaluate.",
+              "recommendation": "Document how to run the project and provide example commands.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_roadmap_or_limitations",
+              "title": "No roadmap or limitations section detected",
+              "why_it_matters": "The project maturity and future direction are unclear.",
+              "recommendation": "Add roadmap, known limitations, or next steps.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Structure",
+          "score": 14,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "missing_main_code_directory",
+              "title": "Main code directory missing",
+              "why_it_matters": "The codebase appears less structured and harder to scale.",
+              "recommendation": "Move main source code into a dedicated folder such as src/, app/, or lib/.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Packaging",
+          "score": 2,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_dependency_manifest",
+              "title": "Dependency manifest missing",
+              "why_it_matters": "Dependencies are not formalized, which harms reproducibility.",
+              "recommendation": "Add an appropriate dependency manifest such as pyproject.toml or package.json.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_gitignore",
+              "title": ".gitignore missing",
+              "why_it_matters": "Generated files are more likely to be committed accidentally.",
+              "recommendation": "Add a proper .gitignore file for the project stack.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_env_example",
+              "title": "Environment example missing",
+              "why_it_matters": "Projects using configuration or secrets are harder to reproduce safely.",
+              "recommendation": "Add a .env.example or equivalent configuration template.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Tests",
+          "score": 0,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_tests",
+              "title": "No tests detected",
+              "why_it_matters": "The project appears fragile and less maintainable.",
+              "recommendation": "Add a basic test suite covering core logic and critical flows.",
+              "severity": "high"
+            },
+            {
+              "code": "insufficient_test_coverage_apparent",
+              "title": "Test presence appears weak",
+              "why_it_matters": "A very small number of tests often indicates fragile coverage.",
+              "recommendation": "Increase the breadth of tests for critical paths.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_test_framework_configuration",
+              "title": "Test framework not clearly configured",
+              "why_it_matters": "The testing strategy is less explicit and reproducible.",
+              "recommendation": "Declare and configure the testing framework clearly.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_ci_for_tests",
+              "title": "CI for tests missing",
+              "why_it_matters": "Quality checks are not automatically enforced.",
+              "recommendation": "Add CI workflows to run tests automatically.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Maintainability",
+          "score": 4,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "oversized_files",
+              "title": "Oversized files detected",
+              "why_it_matters": "Very large files often indicate weak modularity and harder maintenance.",
+              "recommendation": "Split large files into smaller focused modules.",
+              "severity": "high"
+            },
+            {
+              "code": "monolithic_structure",
+              "title": "Monolithic structure detected",
+              "why_it_matters": "Too much logic concentrated in too few files hurts scalability.",
+              "recommendation": "Separate the codebase into clearer modules and responsibilities.",
+              "severity": "medium"
+            },
+            {
+              "code": "poor_separation_of_concerns",
+              "title": "Poor separation of concerns",
+              "why_it_matters": "Responsibilities appear mixed, which makes future changes harder.",
+              "recommendation": "Split logic into dedicated layers or modules.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Completeness",
+          "score": 4,
+          "max_score": 10,
+          "issues": [
+            {
+              "code": "missing_repository_description",
+              "title": "Repository description missing",
+              "why_it_matters": "The repo is less understandable at first glance on GitHub.",
+              "recommendation": "Add a concise GitHub repository description.",
+              "severity": "low"
+            },
+            {
+              "code": "empty_or_nearly_empty_repo",
+              "title": "Repository is empty or nearly empty",
+              "why_it_matters": "The project does not currently demonstrate meaningful value.",
+              "recommendation": "Add actual implementation, documentation, or archive/remove the repo.",
+              "severity": "high"
+            },
+            {
+              "code": "project_promise_not_supported_by_contents",
+              "title": "Project promise is weakly supported by repository contents",
+              "why_it_matters": "The repo may look incomplete or under-delivered compared to its description.",
+              "recommendation": "Align README, structure, and code to match the stated project scope.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Portfolio value",
+          "score": 1,
+          "max_score": 5,
+          "issues": [
+            {
+              "code": "low_portfolio_clarity",
+              "title": "Low portfolio clarity",
+              "why_it_matters": "The project is not immediately understandable to a recruiter or reviewer.",
+              "recommendation": "Clarify the purpose, impact, and usage of the project.",
+              "severity": "medium"
+            },
+            {
+              "code": "low_technical_credibility",
+              "title": "Low technical credibility",
+              "why_it_matters": "The repository lacks signals of engineering maturity.",
+              "recommendation": "Improve structure, documentation, testing, and tooling signals.",
+              "severity": "medium"
+            }
+          ]
+        }
+      ],
+      "priority_issues": [
+        {
+          "code": "empty_or_nearly_empty_repo",
+          "title": "Repository is empty or nearly empty",
+          "why_it_matters": "The project does not currently demonstrate meaningful value.",
+          "recommendation": "Add actual implementation, documentation, or archive/remove the repo.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_dependency_manifest",
+          "title": "Dependency manifest missing",
+          "why_it_matters": "Dependencies are not formalized, which harms reproducibility.",
+          "recommendation": "Add an appropriate dependency manifest such as pyproject.toml or package.json.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_gitignore",
+          "title": ".gitignore missing",
+          "why_it_matters": "Generated files are more likely to be committed accidentally.",
+          "recommendation": "Add a proper .gitignore file for the project stack.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_installation_instructions",
+          "title": "Installation instructions missing",
+          "why_it_matters": "The project is harder to reproduce and use.",
+          "recommendation": "Add installation or setup steps to the README.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_tests",
+          "title": "No tests detected",
+          "why_it_matters": "The project appears fragile and less maintainable.",
+          "recommendation": "Add a basic test suite covering core logic and critical flows.",
+          "severity": "high"
+        }
+      ],
+      "prioritized_actions": [
+        {
+          "code": "document_usage",
+          "title": "Document execution and usage",
+          "description": "Explain how to run the project and what output to expect.",
+          "rationale": "A repository is much less convincing when usage is unclear.",
+          "steps": [
+            "Add run commands.",
+            "Describe expected outputs or visible behavior.",
+            "Provide one concrete usage example."
+          ],
+          "impact": "high",
+          "effort": "low",
+          "priority_score": 142,
+          "source_issue_codes": [
+            "missing_usage_instructions"
+          ]
+        },
+        {
+          "code": "document_installation",
+          "title": "Document installation steps",
+          "description": "Add clear installation instructions with prerequisites and commands.",
+          "rationale": "A project that cannot be installed easily loses reproducibility.",
+          "steps": [
+            "List prerequisites and required versions.",
+            "Add install commands.",
+            "Document environment setup if needed."
+          ],
+          "impact": "high",
+          "effort": "low",
+          "priority_score": 142,
+          "source_issue_codes": [
+            "missing_installation_instructions"
+          ]
+        },
+        {
+          "code": "formalize_dependencies",
+          "title": "Formalize project dependencies",
+          "description": "Add the appropriate manifest file for the project stack.",
+          "rationale": "Without formal dependencies, the project is not properly reproducible.",
+          "steps": [
+            "Add pyproject.toml, requirements.txt, package.json, or the relevant manifest.",
+            "List runtime and development dependencies explicitly."
+          ],
+          "impact": "high",
+          "effort": "low",
+          "priority_score": 142,
+          "source_issue_codes": [
+            "missing_dependency_manifest"
+          ]
+        },
+        {
+          "code": "complete_or_archive_repo",
+          "title": "Complete or archive the repository",
+          "description": "Either add meaningful implementation or remove/archive the repo from the portfolio.",
+          "rationale": "A nearly empty repo hurts portfolio quality more than it helps.",
+          "steps": [
+            "Decide whether the repo is worth continuing.",
+            "Either add real implementation or archive/remove it from showcase use."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 123,
+          "source_issue_codes": [
+            "empty_or_nearly_empty_repo"
+          ]
+        },
+        {
+          "code": "build_core_test_suite",
+          "title": "Build a core test suite",
+          "description": "Add tests for the repository's main logic and critical flows.",
+          "rationale": "No tests is one of the clearest signals of fragility.",
+          "steps": [
+            "Identify the core business logic or critical flows.",
+            "Add a minimal but credible automated test suite.",
+            "Cover the most failure-prone paths first."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 118,
+          "source_issue_codes": [
+            "missing_tests"
+          ]
+        }
+      ]
+    },
+    {
+      "repo_name": "MatALass/ML_Football",
+      "total_score": 41,
+      "max_score": 100,
+      "level": "weak",
+      "repo_type": "data_science_project",
+      "maturity_band": "foundation",
+      "category_scores": [
+        {
+          "name": "Documentation",
+          "score": 18,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "missing_roadmap_or_limitations",
+              "title": "No roadmap or limitations section detected",
+              "why_it_matters": "The project maturity and future direction are unclear.",
+              "recommendation": "Add roadmap, known limitations, or next steps.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Structure",
+          "score": 4,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "flat_project_structure",
+              "title": "Flat project structure",
+              "why_it_matters": "Too many root-level files usually indicate weak organization.",
+              "recommendation": "Group code, tests, docs, and assets into dedicated directories.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_main_code_directory",
+              "title": "Main code directory missing",
+              "why_it_matters": "The codebase appears less structured and harder to scale.",
+              "recommendation": "Move main source code into a dedicated folder such as src/, app/, or lib/.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_supporting_directories",
+              "title": "Supporting directories missing",
+              "why_it_matters": "The repository may lack separation for docs, assets, data, or scripts.",
+              "recommendation": "Add relevant directories such as docs/, assets/, data/, or scripts/ when needed.",
+              "severity": "low"
+            },
+            {
+              "code": "inconsistent_naming",
+              "title": "Inconsistent or vague naming",
+              "why_it_matters": "Weak file naming hurts readability and maintainability.",
+              "recommendation": "Rename vague files and enforce consistent naming conventions.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Packaging",
+          "score": 0,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_dependency_manifest",
+              "title": "Dependency manifest missing",
+              "why_it_matters": "Dependencies are not formalized, which harms reproducibility.",
+              "recommendation": "Add an appropriate dependency manifest such as pyproject.toml or package.json.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_gitignore",
+              "title": ".gitignore missing",
+              "why_it_matters": "Generated files are more likely to be committed accidentally.",
+              "recommendation": "Add a proper .gitignore file for the project stack.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_license",
+              "title": "License missing",
+              "why_it_matters": "The repository usage rights are unclear.",
+              "recommendation": "Add a LICENSE file.",
+              "severity": "low"
+            },
+            {
+              "code": "missing_tooling_configuration",
+              "title": "Tooling configuration missing",
+              "why_it_matters": "Formatting, linting, or testing standards are less explicit.",
+              "recommendation": "Add configuration for core tools such as pytest, ruff, eslint, or tsconfig.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Tests",
+          "score": 0,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_tests",
+              "title": "No tests detected",
+              "why_it_matters": "The project appears fragile and less maintainable.",
+              "recommendation": "Add a basic test suite covering core logic and critical flows.",
+              "severity": "medium"
+            },
+            {
+              "code": "insufficient_test_coverage_apparent",
+              "title": "Test presence appears weak",
+              "why_it_matters": "A very small number of tests often indicates fragile coverage.",
+              "recommendation": "Increase the breadth of tests for critical paths.",
+              "severity": "low"
+            },
+            {
+              "code": "missing_ci_for_tests",
+              "title": "CI for tests missing",
+              "why_it_matters": "Quality checks are not automatically enforced.",
+              "recommendation": "Add CI workflows to run tests automatically.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Maintainability",
+          "score": 8,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "vague_file_names",
+              "title": "Vague file names detected",
+              "why_it_matters": "Generic names reduce readability and professionalism.",
+              "recommendation": "Rename files to reflect their specific responsibility.",
+              "severity": "medium"
+            },
+            {
+              "code": "poor_separation_of_concerns",
+              "title": "Poor separation of concerns",
+              "why_it_matters": "Responsibilities appear mixed, which makes future changes harder.",
+              "recommendation": "Split logic into dedicated layers or modules.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_technical_documentation",
+              "title": "Technical documentation missing",
+              "why_it_matters": "Architecture and maintainability decisions are harder to understand.",
+              "recommendation": "Add technical docs such as architecture notes or contribution guidelines.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Completeness",
+          "score": 8,
+          "max_score": 10,
+          "issues": []
+        },
+        {
+          "name": "Portfolio value",
+          "score": 3,
+          "max_score": 5,
+          "issues": [
+            {
+              "code": "low_technical_credibility",
+              "title": "Low technical credibility",
+              "why_it_matters": "The repository lacks signals of engineering maturity.",
+              "recommendation": "Improve structure, documentation, testing, and tooling signals.",
+              "severity": "medium"
+            }
+          ]
+        }
+      ],
+      "priority_issues": [
+        {
+          "code": "flat_project_structure",
+          "title": "Flat project structure",
+          "why_it_matters": "Too many root-level files usually indicate weak organization.",
+          "recommendation": "Group code, tests, docs, and assets into dedicated directories.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_dependency_manifest",
+          "title": "Dependency manifest missing",
+          "why_it_matters": "Dependencies are not formalized, which harms reproducibility.",
+          "recommendation": "Add an appropriate dependency manifest such as pyproject.toml or package.json.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_gitignore",
+          "title": ".gitignore missing",
+          "why_it_matters": "Generated files are more likely to be committed accidentally.",
+          "recommendation": "Add a proper .gitignore file for the project stack.",
+          "severity": "high"
+        },
+        {
+          "code": "inconsistent_naming",
+          "title": "Inconsistent or vague naming",
+          "why_it_matters": "Weak file naming hurts readability and maintainability.",
+          "recommendation": "Rename vague files and enforce consistent naming conventions.",
+          "severity": "medium"
+        },
+        {
+          "code": "low_technical_credibility",
+          "title": "Low technical credibility",
+          "why_it_matters": "The repository lacks signals of engineering maturity.",
+          "recommendation": "Improve structure, documentation, testing, and tooling signals.",
+          "severity": "medium"
+        }
+      ],
+      "prioritized_actions": [
+        {
+          "code": "formalize_dependencies",
+          "title": "Formalize project dependencies",
+          "description": "Add the appropriate manifest file for the project stack.",
+          "rationale": "Without formal dependencies, the project is not properly reproducible.",
+          "steps": [
+            "Add pyproject.toml, requirements.txt, package.json, or the relevant manifest.",
+            "List runtime and development dependencies explicitly."
+          ],
+          "impact": "high",
+          "effort": "low",
+          "priority_score": 142,
+          "source_issue_codes": [
+            "missing_dependency_manifest"
+          ]
+        },
+        {
+          "code": "add_gitignore",
+          "title": "Add a proper .gitignore",
+          "description": "Create a stack-specific .gitignore file.",
+          "rationale": "This avoids polluting the repository with generated files.",
+          "steps": [
+            "Add a base .gitignore adapted to the tech stack.",
+            "Cover environments, caches, build outputs, and editor files."
+          ],
+          "impact": "high",
+          "effort": "low",
+          "priority_score": 136,
+          "source_issue_codes": [
+            "missing_gitignore"
+          ]
+        },
+        {
+          "code": "restructure_repository",
+          "title": "Restructure the repository layout",
+          "description": "Move code, tests, docs, and assets into clear dedicated directories.",
+          "rationale": "A flat structure quickly becomes hard to maintain and scale.",
+          "steps": [
+            "Move source code into src/, app/, or equivalent.",
+            "Move tests into tests/.",
+            "Group docs, assets, and scripts into dedicated folders."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 134,
+          "source_issue_codes": [
+            "flat_project_structure"
+          ]
+        },
+        {
+          "code": "create_main_code_directory",
+          "title": "Introduce a dedicated source directory",
+          "description": "Move core code into a dedicated source folder.",
+          "rationale": "A main code directory improves clarity and future scalability.",
+          "steps": [
+            "Choose src/, app/, or lib/ depending on the stack.",
+            "Move main implementation files there.",
+            "Update imports and execution entry points."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 122,
+          "source_issue_codes": [
+            "missing_main_code_directory"
+          ]
+        },
+        {
+          "code": "build_core_test_suite",
+          "title": "Build a core test suite",
+          "description": "Add tests for the repository's main logic and critical flows.",
+          "rationale": "No tests is one of the clearest signals of fragility.",
+          "steps": [
+            "Identify the core business logic or critical flows.",
+            "Add a minimal but credible automated test suite.",
+            "Cover the most failure-prone paths first."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 108,
+          "source_issue_codes": [
+            "missing_tests"
+          ]
+        }
+      ]
+    },
+    {
+      "repo_name": "MatALass/contact-card",
+      "total_score": 44,
+      "max_score": 100,
+      "level": "weak",
+      "repo_type": "web_app",
+      "maturity_band": "foundation",
+      "category_scores": [
+        {
+          "name": "Documentation",
+          "score": 10,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "missing_project_description",
+              "title": "Project description missing in README",
+              "why_it_matters": "Readers may not understand what the repository actually does.",
+              "recommendation": "Add a clear overview section explaining the project goal and scope.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_installation_instructions",
+              "title": "Installation instructions missing",
+              "why_it_matters": "The project is harder to reproduce and use.",
+              "recommendation": "Add installation or setup steps to the README.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_demo_or_examples",
+              "title": "No demo or examples detected",
+              "why_it_matters": "The project is less convincing and harder to evaluate quickly.",
+              "recommendation": "Add screenshots, example outputs, or a demo section.",
+              "severity": "low"
+            },
+            {
+              "code": "missing_roadmap_or_limitations",
+              "title": "No roadmap or limitations section detected",
+              "why_it_matters": "The project maturity and future direction are unclear.",
+              "recommendation": "Add roadmap, known limitations, or next steps.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Structure",
+          "score": 14,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "missing_main_code_directory",
+              "title": "Main code directory missing",
+              "why_it_matters": "The codebase appears less structured and harder to scale.",
+              "recommendation": "Move main source code into a dedicated folder such as src/, app/, or lib/.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Packaging",
+          "score": 3,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_dependency_manifest",
+              "title": "Dependency manifest missing",
+              "why_it_matters": "Dependencies are not formalized, which harms reproducibility.",
+              "recommendation": "Add an appropriate dependency manifest such as pyproject.toml or package.json.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_license",
+              "title": "License missing",
+              "why_it_matters": "The repository usage rights are unclear.",
+              "recommendation": "Add a LICENSE file.",
+              "severity": "low"
+            },
+            {
+              "code": "missing_env_example",
+              "title": "Environment example missing",
+              "why_it_matters": "Projects using configuration or secrets are harder to reproduce safely.",
+              "recommendation": "Add a .env.example or equivalent configuration template.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Tests",
+          "score": 0,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_tests",
+              "title": "No tests detected",
+              "why_it_matters": "The project appears fragile and less maintainable.",
+              "recommendation": "Add a basic test suite covering core logic and critical flows.",
+              "severity": "high"
+            },
+            {
+              "code": "insufficient_test_coverage_apparent",
+              "title": "Test presence appears weak",
+              "why_it_matters": "A very small number of tests often indicates fragile coverage.",
+              "recommendation": "Increase the breadth of tests for critical paths.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_test_framework_configuration",
+              "title": "Test framework not clearly configured",
+              "why_it_matters": "The testing strategy is less explicit and reproducible.",
+              "recommendation": "Declare and configure the testing framework clearly.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_ci_for_tests",
+              "title": "CI for tests missing",
+              "why_it_matters": "Quality checks are not automatically enforced.",
+              "recommendation": "Add CI workflows to run tests automatically.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Maintainability",
+          "score": 6,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "monolithic_structure",
+              "title": "Monolithic structure detected",
+              "why_it_matters": "Too much logic concentrated in too few files hurts scalability.",
+              "recommendation": "Separate the codebase into clearer modules and responsibilities.",
+              "severity": "medium"
+            },
+            {
+              "code": "poor_separation_of_concerns",
+              "title": "Poor separation of concerns",
+              "why_it_matters": "Responsibilities appear mixed, which makes future changes harder.",
+              "recommendation": "Split logic into dedicated layers or modules.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Completeness",
+          "score": 8,
+          "max_score": 10,
+          "issues": [
+            {
+              "code": "missing_demo_artifacts",
+              "title": "Demo artifacts missing",
+              "why_it_matters": "The project is harder to evaluate quickly as a portfolio item.",
+              "recommendation": "Add screenshots, sample outputs, or a live demo link.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Portfolio value",
+          "score": 3,
+          "max_score": 5,
+          "issues": [
+            {
+              "code": "low_technical_credibility",
+              "title": "Low technical credibility",
+              "why_it_matters": "The repository lacks signals of engineering maturity.",
+              "recommendation": "Improve structure, documentation, testing, and tooling signals.",
+              "severity": "medium"
+            }
+          ]
+        }
+      ],
+      "priority_issues": [
+        {
+          "code": "missing_dependency_manifest",
+          "title": "Dependency manifest missing",
+          "why_it_matters": "Dependencies are not formalized, which harms reproducibility.",
+          "recommendation": "Add an appropriate dependency manifest such as pyproject.toml or package.json.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_installation_instructions",
+          "title": "Installation instructions missing",
+          "why_it_matters": "The project is harder to reproduce and use.",
+          "recommendation": "Add installation or setup steps to the README.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_tests",
+          "title": "No tests detected",
+          "why_it_matters": "The project appears fragile and less maintainable.",
+          "recommendation": "Add a basic test suite covering core logic and critical flows.",
+          "severity": "high"
+        },
+        {
+          "code": "insufficient_test_coverage_apparent",
+          "title": "Test presence appears weak",
+          "why_it_matters": "A very small number of tests often indicates fragile coverage.",
+          "recommendation": "Increase the breadth of tests for critical paths.",
+          "severity": "medium"
+        },
+        {
+          "code": "low_technical_credibility",
+          "title": "Low technical credibility",
+          "why_it_matters": "The repository lacks signals of engineering maturity.",
+          "recommendation": "Improve structure, documentation, testing, and tooling signals.",
+          "severity": "medium"
+        }
+      ],
+      "prioritized_actions": [
+        {
+          "code": "document_installation",
+          "title": "Document installation steps",
+          "description": "Add clear installation instructions with prerequisites and commands.",
+          "rationale": "A project that cannot be installed easily loses reproducibility.",
+          "steps": [
+            "List prerequisites and required versions.",
+            "Add install commands.",
+            "Document environment setup if needed."
+          ],
+          "impact": "high",
+          "effort": "low",
+          "priority_score": 142,
+          "source_issue_codes": [
+            "missing_installation_instructions"
+          ]
+        },
+        {
+          "code": "formalize_dependencies",
+          "title": "Formalize project dependencies",
+          "description": "Add the appropriate manifest file for the project stack.",
+          "rationale": "Without formal dependencies, the project is not properly reproducible.",
+          "steps": [
+            "Add pyproject.toml, requirements.txt, package.json, or the relevant manifest.",
+            "List runtime and development dependencies explicitly."
+          ],
+          "impact": "high",
+          "effort": "low",
+          "priority_score": 142,
+          "source_issue_codes": [
+            "missing_dependency_manifest"
+          ]
+        },
+        {
+          "code": "build_core_test_suite",
+          "title": "Build a core test suite",
+          "description": "Add tests for the repository's main logic and critical flows.",
+          "rationale": "No tests is one of the clearest signals of fragility.",
+          "steps": [
+            "Identify the core business logic or critical flows.",
+            "Add a minimal but credible automated test suite.",
+            "Cover the most failure-prone paths first."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 118,
+          "source_issue_codes": [
+            "missing_tests"
+          ]
+        },
+        {
+          "code": "separate_responsibilities",
+          "title": "Improve separation of concerns",
+          "description": "Split mixed responsibilities into explicit layers or modules.",
+          "rationale": "Poor separation of concerns slows every future change.",
+          "steps": [
+            "Define major responsibility boundaries.",
+            "Create modules or layers per responsibility.",
+            "Move logic accordingly and simplify entry points."
+          ],
+          "impact": "high",
+          "effort": "high",
+          "priority_score": 107,
+          "source_issue_codes": [
+            "poor_separation_of_concerns"
+          ]
+        },
+        {
+          "code": "decompose_monolith",
+          "title": "Decompose monolithic code structure",
+          "description": "Separate logic across multiple focused modules.",
+          "rationale": "Monolithic repositories are harder to evolve and reason about.",
+          "steps": [
+            "Identify major responsibilities currently mixed together.",
+            "Create modules by responsibility.",
+            "Reduce central file dominance."
+          ],
+          "impact": "high",
+          "effort": "high",
+          "priority_score": 104,
+          "source_issue_codes": [
+            "monolithic_structure"
+          ]
+        }
+      ]
+    },
+    {
+      "repo_name": "MatALass/Signature-carre-des-canotiers",
+      "total_score": 51,
+      "max_score": 100,
+      "level": "weak",
+      "repo_type": "web_app",
+      "maturity_band": "developing",
+      "category_scores": [
+        {
+          "name": "Documentation",
+          "score": 8,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "missing_project_description",
+              "title": "Project description missing in README",
+              "why_it_matters": "Readers may not understand what the repository actually does.",
+              "recommendation": "Add a clear overview section explaining the project goal and scope.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_installation_instructions",
+              "title": "Installation instructions missing",
+              "why_it_matters": "The project is harder to reproduce and use.",
+              "recommendation": "Add installation or setup steps to the README.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_usage_instructions",
+              "title": "Usage instructions missing",
+              "why_it_matters": "The repository is difficult to run or evaluate.",
+              "recommendation": "Document how to run the project and provide example commands.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_roadmap_or_limitations",
+              "title": "No roadmap or limitations section detected",
+              "why_it_matters": "The project maturity and future direction are unclear.",
+              "recommendation": "Add roadmap, known limitations, or next steps.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Structure",
+          "score": 14,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "missing_main_code_directory",
+              "title": "Main code directory missing",
+              "why_it_matters": "The codebase appears less structured and harder to scale.",
+              "recommendation": "Move main source code into a dedicated folder such as src/, app/, or lib/.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Packaging",
+          "score": 8,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_dependency_manifest",
+              "title": "Dependency manifest missing",
+              "why_it_matters": "Dependencies are not formalized, which harms reproducibility.",
+              "recommendation": "Add an appropriate dependency manifest such as pyproject.toml or package.json.",
+              "severity": "high"
+            }
+          ]
+        },
+        {
+          "name": "Tests",
+          "score": 0,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_tests",
+              "title": "No tests detected",
+              "why_it_matters": "The project appears fragile and less maintainable.",
+              "recommendation": "Add a basic test suite covering core logic and critical flows.",
+              "severity": "high"
+            },
+            {
+              "code": "insufficient_test_coverage_apparent",
+              "title": "Test presence appears weak",
+              "why_it_matters": "A very small number of tests often indicates fragile coverage.",
+              "recommendation": "Increase the breadth of tests for critical paths.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_test_framework_configuration",
+              "title": "Test framework not clearly configured",
+              "why_it_matters": "The testing strategy is less explicit and reproducible.",
+              "recommendation": "Declare and configure the testing framework clearly.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_ci_for_tests",
+              "title": "CI for tests missing",
+              "why_it_matters": "Quality checks are not automatically enforced.",
+              "recommendation": "Add CI workflows to run tests automatically.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Maintainability",
+          "score": 8,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "monolithic_structure",
+              "title": "Monolithic structure detected",
+              "why_it_matters": "Too much logic concentrated in too few files hurts scalability.",
+              "recommendation": "Separate the codebase into clearer modules and responsibilities.",
+              "severity": "medium"
+            },
+            {
+              "code": "poor_separation_of_concerns",
+              "title": "Poor separation of concerns",
+              "why_it_matters": "Responsibilities appear mixed, which makes future changes harder.",
+              "recommendation": "Split logic into dedicated layers or modules.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Completeness",
+          "score": 10,
+          "max_score": 10,
+          "issues": []
+        },
+        {
+          "name": "Portfolio value",
+          "score": 3,
+          "max_score": 5,
+          "issues": [
+            {
+              "code": "low_technical_credibility",
+              "title": "Low technical credibility",
+              "why_it_matters": "The repository lacks signals of engineering maturity.",
+              "recommendation": "Improve structure, documentation, testing, and tooling signals.",
+              "severity": "medium"
+            }
+          ]
+        }
+      ],
+      "priority_issues": [
+        {
+          "code": "missing_dependency_manifest",
+          "title": "Dependency manifest missing",
+          "why_it_matters": "Dependencies are not formalized, which harms reproducibility.",
+          "recommendation": "Add an appropriate dependency manifest such as pyproject.toml or package.json.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_installation_instructions",
+          "title": "Installation instructions missing",
+          "why_it_matters": "The project is harder to reproduce and use.",
+          "recommendation": "Add installation or setup steps to the README.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_tests",
+          "title": "No tests detected",
+          "why_it_matters": "The project appears fragile and less maintainable.",
+          "recommendation": "Add a basic test suite covering core logic and critical flows.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_usage_instructions",
+          "title": "Usage instructions missing",
+          "why_it_matters": "The repository is difficult to run or evaluate.",
+          "recommendation": "Document how to run the project and provide example commands.",
+          "severity": "high"
+        },
+        {
+          "code": "insufficient_test_coverage_apparent",
+          "title": "Test presence appears weak",
+          "why_it_matters": "A very small number of tests often indicates fragile coverage.",
+          "recommendation": "Increase the breadth of tests for critical paths.",
+          "severity": "medium"
+        }
+      ],
+      "prioritized_actions": [
+        {
+          "code": "build_core_test_suite",
+          "title": "Build a core test suite",
+          "description": "Add tests for the repository's main logic and critical flows.",
+          "rationale": "No tests is one of the clearest signals of fragility.",
+          "steps": [
+            "Identify the core business logic or critical flows.",
+            "Add a minimal but credible automated test suite.",
+            "Cover the most failure-prone paths first."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 142,
+          "source_issue_codes": [
+            "missing_tests"
+          ]
+        },
+        {
+          "code": "document_usage",
+          "title": "Document execution and usage",
+          "description": "Explain how to run the project and what output to expect.",
+          "rationale": "A repository is much less convincing when usage is unclear.",
+          "steps": [
+            "Add run commands.",
+            "Describe expected outputs or visible behavior.",
+            "Provide one concrete usage example."
+          ],
+          "impact": "high",
+          "effort": "low",
+          "priority_score": 130,
+          "source_issue_codes": [
+            "missing_usage_instructions"
+          ]
+        },
+        {
+          "code": "document_installation",
+          "title": "Document installation steps",
+          "description": "Add clear installation instructions with prerequisites and commands.",
+          "rationale": "A project that cannot be installed easily loses reproducibility.",
+          "steps": [
+            "List prerequisites and required versions.",
+            "Add install commands.",
+            "Document environment setup if needed."
+          ],
+          "impact": "high",
+          "effort": "low",
+          "priority_score": 130,
+          "source_issue_codes": [
+            "missing_installation_instructions"
+          ]
+        },
+        {
+          "code": "formalize_dependencies",
+          "title": "Formalize project dependencies",
+          "description": "Add the appropriate manifest file for the project stack.",
+          "rationale": "Without formal dependencies, the project is not properly reproducible.",
+          "steps": [
+            "Add pyproject.toml, requirements.txt, package.json, or the relevant manifest.",
+            "List runtime and development dependencies explicitly."
+          ],
+          "impact": "high",
+          "effort": "low",
+          "priority_score": 126,
+          "source_issue_codes": [
+            "missing_dependency_manifest"
+          ]
+        },
+        {
+          "code": "separate_responsibilities",
+          "title": "Improve separation of concerns",
+          "description": "Split mixed responsibilities into explicit layers or modules.",
+          "rationale": "Poor separation of concerns slows every future change.",
+          "steps": [
+            "Define major responsibility boundaries.",
+            "Create modules or layers per responsibility.",
+            "Move logic accordingly and simplify entry points."
+          ],
+          "impact": "high",
+          "effort": "high",
+          "priority_score": 117,
+          "source_issue_codes": [
+            "poor_separation_of_concerns"
+          ]
+        }
+      ]
+    },
+    {
+      "repo_name": "MatALass/Project_App",
+      "total_score": 59,
+      "max_score": 100,
+      "level": "average",
+      "repo_type": "web_app",
+      "maturity_band": "developing",
+      "category_scores": [
+        {
+          "name": "Documentation",
+          "score": 12,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "missing_usage_instructions",
+              "title": "Usage instructions missing",
+              "why_it_matters": "The repository is difficult to run or evaluate.",
+              "recommendation": "Document how to run the project and provide example commands.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_demo_or_examples",
+              "title": "No demo or examples detected",
+              "why_it_matters": "The project is less convincing and harder to evaluate quickly.",
+              "recommendation": "Add screenshots, example outputs, or a demo section.",
+              "severity": "low"
+            },
+            {
+              "code": "missing_roadmap_or_limitations",
+              "title": "No roadmap or limitations section detected",
+              "why_it_matters": "The project maturity and future direction are unclear.",
+              "recommendation": "Add roadmap, known limitations, or next steps.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Structure",
+          "score": 18,
+          "max_score": 20,
+          "issues": []
+        },
+        {
+          "name": "Packaging",
+          "score": 3,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_dependency_manifest",
+              "title": "Dependency manifest missing",
+              "why_it_matters": "Dependencies are not formalized, which harms reproducibility.",
+              "recommendation": "Add an appropriate dependency manifest such as pyproject.toml or package.json.",
+              "severity": "high"
+            },
+            {
+              "code": "missing_license",
+              "title": "License missing",
+              "why_it_matters": "The repository usage rights are unclear.",
+              "recommendation": "Add a LICENSE file.",
+              "severity": "low"
+            },
+            {
+              "code": "missing_env_example",
+              "title": "Environment example missing",
+              "why_it_matters": "Projects using configuration or secrets are harder to reproduce safely.",
+              "recommendation": "Add a .env.example or equivalent configuration template.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Tests",
+          "score": 9,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_test_framework_configuration",
+              "title": "Test framework not clearly configured",
+              "why_it_matters": "The testing strategy is less explicit and reproducible.",
+              "recommendation": "Declare and configure the testing framework clearly.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_ci_for_tests",
+              "title": "CI for tests missing",
+              "why_it_matters": "Quality checks are not automatically enforced.",
+              "recommendation": "Add CI workflows to run tests automatically.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Maintainability",
+          "score": 13,
+          "max_score": 15,
+          "issues": []
+        },
+        {
+          "name": "Completeness",
+          "score": 4,
+          "max_score": 10,
+          "issues": [
+            {
+              "code": "missing_repository_description",
+              "title": "Repository description missing",
+              "why_it_matters": "The repo is less understandable at first glance on GitHub.",
+              "recommendation": "Add a concise GitHub repository description.",
+              "severity": "low"
+            },
+            {
+              "code": "missing_demo_artifacts",
+              "title": "Demo artifacts missing",
+              "why_it_matters": "The project is harder to evaluate quickly as a portfolio item.",
+              "recommendation": "Add screenshots, sample outputs, or a live demo link.",
+              "severity": "low"
+            },
+            {
+              "code": "project_promise_not_supported_by_contents",
+              "title": "Project promise is weakly supported by repository contents",
+              "why_it_matters": "The repo may look incomplete or under-delivered compared to its description.",
+              "recommendation": "Align README, structure, and code to match the stated project scope.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Portfolio value",
+          "score": 0,
+          "max_score": 5,
+          "issues": [
+            {
+              "code": "low_portfolio_clarity",
+              "title": "Low portfolio clarity",
+              "why_it_matters": "The project is not immediately understandable to a recruiter or reviewer.",
+              "recommendation": "Clarify the purpose, impact, and usage of the project.",
+              "severity": "medium"
+            },
+            {
+              "code": "low_technical_credibility",
+              "title": "Low technical credibility",
+              "why_it_matters": "The repository lacks signals of engineering maturity.",
+              "recommendation": "Improve structure, documentation, testing, and tooling signals.",
+              "severity": "medium"
+            },
+            {
+              "code": "hard_to_present_in_interview",
+              "title": "Hard to present in interview",
+              "why_it_matters": "The project lacks quick evidence of output, value, or usability.",
+              "recommendation": "Add examples, demo material, and clearer execution instructions.",
+              "severity": "low"
+            }
+          ]
+        }
+      ],
+      "priority_issues": [
+        {
+          "code": "missing_dependency_manifest",
+          "title": "Dependency manifest missing",
+          "why_it_matters": "Dependencies are not formalized, which harms reproducibility.",
+          "recommendation": "Add an appropriate dependency manifest such as pyproject.toml or package.json.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_usage_instructions",
+          "title": "Usage instructions missing",
+          "why_it_matters": "The repository is difficult to run or evaluate.",
+          "recommendation": "Document how to run the project and provide example commands.",
+          "severity": "high"
+        },
+        {
+          "code": "low_portfolio_clarity",
+          "title": "Low portfolio clarity",
+          "why_it_matters": "The project is not immediately understandable to a recruiter or reviewer.",
+          "recommendation": "Clarify the purpose, impact, and usage of the project.",
+          "severity": "medium"
+        },
+        {
+          "code": "low_technical_credibility",
+          "title": "Low technical credibility",
+          "why_it_matters": "The repository lacks signals of engineering maturity.",
+          "recommendation": "Improve structure, documentation, testing, and tooling signals.",
+          "severity": "medium"
+        },
+        {
+          "code": "missing_env_example",
+          "title": "Environment example missing",
+          "why_it_matters": "Projects using configuration or secrets are harder to reproduce safely.",
+          "recommendation": "Add a .env.example or equivalent configuration template.",
+          "severity": "medium"
+        }
+      ],
+      "prioritized_actions": [
+        {
+          "code": "document_usage",
+          "title": "Document execution and usage",
+          "description": "Explain how to run the project and what output to expect.",
+          "rationale": "A repository is much less convincing when usage is unclear.",
+          "steps": [
+            "Add run commands.",
+            "Describe expected outputs or visible behavior.",
+            "Provide one concrete usage example."
+          ],
+          "impact": "high",
+          "effort": "low",
+          "priority_score": 130,
+          "source_issue_codes": [
+            "missing_usage_instructions"
+          ]
+        },
+        {
+          "code": "formalize_dependencies",
+          "title": "Formalize project dependencies",
+          "description": "Add the appropriate manifest file for the project stack.",
+          "rationale": "Without formal dependencies, the project is not properly reproducible.",
+          "steps": [
+            "Add pyproject.toml, requirements.txt, package.json, or the relevant manifest.",
+            "List runtime and development dependencies explicitly."
+          ],
+          "impact": "high",
+          "effort": "low",
+          "priority_score": 126,
+          "source_issue_codes": [
+            "missing_dependency_manifest"
+          ]
+        },
+        {
+          "code": "align_scope_and_contents",
+          "title": "Align repository scope with actual contents",
+          "description": "Make the repository content match the promise made in its description and README.",
+          "rationale": "Overpromising damages credibility quickly.",
+          "steps": [
+            "Review the claimed scope.",
+            "Either reduce the promise or add the missing implementation and documentation."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 102,
+          "source_issue_codes": [
+            "project_promise_not_supported_by_contents"
+          ]
+        },
+        {
+          "code": "increase_engineering_signals",
+          "title": "Increase engineering credibility",
+          "description": "Strengthen structure, testing, tooling, and documentation signals.",
+          "rationale": "Weak engineering signals reduce trust in the project quality.",
+          "steps": [
+            "Add or improve tests, tooling config, and documentation.",
+            "Strengthen project structure and reproducibility."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 101,
+          "source_issue_codes": [
+            "low_technical_credibility"
+          ]
+        },
+        {
+          "code": "configure_test_framework",
+          "title": "Configure the test framework explicitly",
+          "description": "Make the testing strategy and commands explicit.",
+          "rationale": "Testing should be reproducible and clearly declared.",
+          "steps": [
+            "Declare the test framework dependency.",
+            "Add config and document the test command."
+          ],
+          "impact": "medium",
+          "effort": "low",
+          "priority_score": 98,
+          "source_issue_codes": [
+            "missing_test_framework_configuration"
+          ]
+        }
+      ]
+    },
+    {
+      "repo_name": "MatALass/final_portfolio",
+      "total_score": 63,
+      "max_score": 100,
+      "level": "average",
+      "repo_type": "web_app",
+      "maturity_band": "developing",
+      "category_scores": [
+        {
+          "name": "Documentation",
+          "score": 16,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "missing_demo_or_examples",
+              "title": "No demo or examples detected",
+              "why_it_matters": "The project is less convincing and harder to evaluate quickly.",
+              "recommendation": "Add screenshots, example outputs, or a demo section.",
+              "severity": "low"
+            },
+            {
+              "code": "missing_roadmap_or_limitations",
+              "title": "No roadmap or limitations section detected",
+              "why_it_matters": "The project maturity and future direction are unclear.",
+              "recommendation": "Add roadmap, known limitations, or next steps.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Structure",
+          "score": 17,
+          "max_score": 20,
+          "issues": []
+        },
+        {
+          "name": "Packaging",
+          "score": 10,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_license",
+              "title": "License missing",
+              "why_it_matters": "The repository usage rights are unclear.",
+              "recommendation": "Add a LICENSE file.",
+              "severity": "low"
+            },
+            {
+              "code": "missing_env_example",
+              "title": "Environment example missing",
+              "why_it_matters": "Projects using configuration or secrets are harder to reproduce safely.",
+              "recommendation": "Add a .env.example or equivalent configuration template.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Tests",
+          "score": 0,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_tests",
+              "title": "No tests detected",
+              "why_it_matters": "The project appears fragile and less maintainable.",
+              "recommendation": "Add a basic test suite covering core logic and critical flows.",
+              "severity": "high"
+            },
+            {
+              "code": "insufficient_test_coverage_apparent",
+              "title": "Test presence appears weak",
+              "why_it_matters": "A very small number of tests often indicates fragile coverage.",
+              "recommendation": "Increase the breadth of tests for critical paths.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_test_framework_configuration",
+              "title": "Test framework not clearly configured",
+              "why_it_matters": "The testing strategy is less explicit and reproducible.",
+              "recommendation": "Declare and configure the testing framework clearly.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_ci_for_tests",
+              "title": "CI for tests missing",
+              "why_it_matters": "Quality checks are not automatically enforced.",
+              "recommendation": "Add CI workflows to run tests automatically.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Maintainability",
+          "score": 13,
+          "max_score": 15,
+          "issues": []
+        },
+        {
+          "name": "Completeness",
+          "score": 4,
+          "max_score": 10,
+          "issues": [
+            {
+              "code": "missing_repository_description",
+              "title": "Repository description missing",
+              "why_it_matters": "The repo is less understandable at first glance on GitHub.",
+              "recommendation": "Add a concise GitHub repository description.",
+              "severity": "low"
+            },
+            {
+              "code": "missing_demo_artifacts",
+              "title": "Demo artifacts missing",
+              "why_it_matters": "The project is harder to evaluate quickly as a portfolio item.",
+              "recommendation": "Add screenshots, sample outputs, or a live demo link.",
+              "severity": "low"
+            },
+            {
+              "code": "project_promise_not_supported_by_contents",
+              "title": "Project promise is weakly supported by repository contents",
+              "why_it_matters": "The repo may look incomplete or under-delivered compared to its description.",
+              "recommendation": "Align README, structure, and code to match the stated project scope.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Portfolio value",
+          "score": 3,
+          "max_score": 5,
+          "issues": [
+            {
+              "code": "low_portfolio_clarity",
+              "title": "Low portfolio clarity",
+              "why_it_matters": "The project is not immediately understandable to a recruiter or reviewer.",
+              "recommendation": "Clarify the purpose, impact, and usage of the project.",
+              "severity": "medium"
+            }
+          ]
+        }
+      ],
+      "priority_issues": [
+        {
+          "code": "missing_tests",
+          "title": "No tests detected",
+          "why_it_matters": "The project appears fragile and less maintainable.",
+          "recommendation": "Add a basic test suite covering core logic and critical flows.",
+          "severity": "high"
+        },
+        {
+          "code": "insufficient_test_coverage_apparent",
+          "title": "Test presence appears weak",
+          "why_it_matters": "A very small number of tests often indicates fragile coverage.",
+          "recommendation": "Increase the breadth of tests for critical paths.",
+          "severity": "medium"
+        },
+        {
+          "code": "low_portfolio_clarity",
+          "title": "Low portfolio clarity",
+          "why_it_matters": "The project is not immediately understandable to a recruiter or reviewer.",
+          "recommendation": "Clarify the purpose, impact, and usage of the project.",
+          "severity": "medium"
+        },
+        {
+          "code": "missing_env_example",
+          "title": "Environment example missing",
+          "why_it_matters": "Projects using configuration or secrets are harder to reproduce safely.",
+          "recommendation": "Add a .env.example or equivalent configuration template.",
+          "severity": "medium"
+        },
+        {
+          "code": "missing_test_framework_configuration",
+          "title": "Test framework not clearly configured",
+          "why_it_matters": "The testing strategy is less explicit and reproducible.",
+          "recommendation": "Declare and configure the testing framework clearly.",
+          "severity": "medium"
+        }
+      ],
+      "prioritized_actions": [
+        {
+          "code": "build_core_test_suite",
+          "title": "Build a core test suite",
+          "description": "Add tests for the repository's main logic and critical flows.",
+          "rationale": "No tests is one of the clearest signals of fragility.",
+          "steps": [
+            "Identify the core business logic or critical flows.",
+            "Add a minimal but credible automated test suite.",
+            "Cover the most failure-prone paths first."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 142,
+          "source_issue_codes": [
+            "missing_tests"
+          ]
+        },
+        {
+          "code": "expand_test_scope",
+          "title": "Expand test coverage on critical paths",
+          "description": "Increase test breadth beyond the current minimal footprint.",
+          "rationale": "A tiny test surface still leaves the project looking fragile.",
+          "steps": [
+            "Add tests for core modules.",
+            "Cover edge cases and failure paths."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 112,
+          "source_issue_codes": [
+            "insufficient_test_coverage_apparent"
+          ]
+        },
+        {
+          "code": "align_scope_and_contents",
+          "title": "Align repository scope with actual contents",
+          "description": "Make the repository content match the promise made in its description and README.",
+          "rationale": "Overpromising damages credibility quickly.",
+          "steps": [
+            "Review the claimed scope.",
+            "Either reduce the promise or add the missing implementation and documentation."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 102,
+          "source_issue_codes": [
+            "project_promise_not_supported_by_contents"
+          ]
+        },
+        {
+          "code": "configure_test_framework",
+          "title": "Configure the test framework explicitly",
+          "description": "Make the testing strategy and commands explicit.",
+          "rationale": "Testing should be reproducible and clearly declared.",
+          "steps": [
+            "Declare the test framework dependency.",
+            "Add config and document the test command."
+          ],
+          "impact": "medium",
+          "effort": "low",
+          "priority_score": 98,
+          "source_issue_codes": [
+            "missing_test_framework_configuration"
+          ]
+        },
+        {
+          "code": "improve_portfolio_positioning",
+          "title": "Improve portfolio clarity",
+          "description": "Make the repository easier to understand for recruiters and reviewers.",
+          "rationale": "Portfolio value depends heavily on clarity and framing.",
+          "steps": [
+            "Clarify the purpose and value proposition.",
+            "Improve README opening and repository description."
+          ],
+          "impact": "medium",
+          "effort": "low",
+          "priority_score": 86,
+          "source_issue_codes": [
+            "low_portfolio_clarity"
+          ]
+        }
+      ]
+    },
+    {
+      "repo_name": "MatALass/vct-emea-kickoff-simulator",
+      "total_score": 63,
+      "max_score": 100,
+      "level": "average",
+      "repo_type": "streamlit_app",
+      "maturity_band": "developing",
+      "category_scores": [
+        {
+          "name": "Documentation",
+          "score": 18,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "missing_demo_or_examples",
+              "title": "No demo or examples detected",
+              "why_it_matters": "The project is less convincing and harder to evaluate quickly.",
+              "recommendation": "Add screenshots, example outputs, or a demo section.",
+              "severity": "low"
+            },
+            {
+              "code": "missing_roadmap_or_limitations",
+              "title": "No roadmap or limitations section detected",
+              "why_it_matters": "The project maturity and future direction are unclear.",
+              "recommendation": "Add roadmap, known limitations, or next steps.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Structure",
+          "score": 15,
+          "max_score": 20,
+          "issues": []
+        },
+        {
+          "name": "Packaging",
+          "score": 7,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_license",
+              "title": "License missing",
+              "why_it_matters": "The repository usage rights are unclear.",
+              "recommendation": "Add a LICENSE file.",
+              "severity": "low"
+            },
+            {
+              "code": "missing_env_example",
+              "title": "Environment example missing",
+              "why_it_matters": "Projects using configuration or secrets are harder to reproduce safely.",
+              "recommendation": "Add a .env.example or equivalent configuration template.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Tests",
+          "score": 0,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_tests",
+              "title": "No tests detected",
+              "why_it_matters": "The project appears fragile and less maintainable.",
+              "recommendation": "Add a basic test suite covering core logic and critical flows.",
+              "severity": "medium"
+            },
+            {
+              "code": "insufficient_test_coverage_apparent",
+              "title": "Test presence appears weak",
+              "why_it_matters": "A very small number of tests often indicates fragile coverage.",
+              "recommendation": "Increase the breadth of tests for critical paths.",
+              "severity": "low"
+            },
+            {
+              "code": "missing_ci_for_tests",
+              "title": "CI for tests missing",
+              "why_it_matters": "Quality checks are not automatically enforced.",
+              "recommendation": "Add CI workflows to run tests automatically.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Maintainability",
+          "score": 12,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "monolithic_structure",
+              "title": "Monolithic structure detected",
+              "why_it_matters": "Too much logic concentrated in too few files hurts scalability.",
+              "recommendation": "Separate the codebase into clearer modules and responsibilities.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Completeness",
+          "score": 8,
+          "max_score": 10,
+          "issues": [
+            {
+              "code": "missing_demo_artifacts",
+              "title": "Demo artifacts missing",
+              "why_it_matters": "The project is harder to evaluate quickly as a portfolio item.",
+              "recommendation": "Add screenshots, sample outputs, or a live demo link.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Portfolio value",
+          "score": 3,
+          "max_score": 5,
+          "issues": [
+            {
+              "code": "low_technical_credibility",
+              "title": "Low technical credibility",
+              "why_it_matters": "The repository lacks signals of engineering maturity.",
+              "recommendation": "Improve structure, documentation, testing, and tooling signals.",
+              "severity": "medium"
+            }
+          ]
+        }
+      ],
+      "priority_issues": [
+        {
+          "code": "low_technical_credibility",
+          "title": "Low technical credibility",
+          "why_it_matters": "The repository lacks signals of engineering maturity.",
+          "recommendation": "Improve structure, documentation, testing, and tooling signals.",
+          "severity": "medium"
+        },
+        {
+          "code": "missing_env_example",
+          "title": "Environment example missing",
+          "why_it_matters": "Projects using configuration or secrets are harder to reproduce safely.",
+          "recommendation": "Add a .env.example or equivalent configuration template.",
+          "severity": "medium"
+        },
+        {
+          "code": "missing_tests",
+          "title": "No tests detected",
+          "why_it_matters": "The project appears fragile and less maintainable.",
+          "recommendation": "Add a basic test suite covering core logic and critical flows.",
+          "severity": "medium"
+        },
+        {
+          "code": "monolithic_structure",
+          "title": "Monolithic structure detected",
+          "why_it_matters": "Too much logic concentrated in too few files hurts scalability.",
+          "recommendation": "Separate the codebase into clearer modules and responsibilities.",
+          "severity": "medium"
+        },
+        {
+          "code": "insufficient_test_coverage_apparent",
+          "title": "Test presence appears weak",
+          "why_it_matters": "A very small number of tests often indicates fragile coverage.",
+          "recommendation": "Increase the breadth of tests for critical paths.",
+          "severity": "low"
+        }
+      ],
+      "prioritized_actions": [
+        {
+          "code": "build_core_test_suite",
+          "title": "Build a core test suite",
+          "description": "Add tests for the repository's main logic and critical flows.",
+          "rationale": "No tests is one of the clearest signals of fragility.",
+          "steps": [
+            "Identify the core business logic or critical flows.",
+            "Add a minimal but credible automated test suite.",
+            "Cover the most failure-prone paths first."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 114,
+          "source_issue_codes": [
+            "missing_tests"
+          ]
+        },
+        {
+          "code": "decompose_monolith",
+          "title": "Decompose monolithic code structure",
+          "description": "Separate logic across multiple focused modules.",
+          "rationale": "Monolithic repositories are harder to evolve and reason about.",
+          "steps": [
+            "Identify major responsibilities currently mixed together.",
+            "Create modules by responsibility.",
+            "Reduce central file dominance."
+          ],
+          "impact": "high",
+          "effort": "high",
+          "priority_score": 102,
+          "source_issue_codes": [
+            "monolithic_structure"
+          ]
+        },
+        {
+          "code": "expand_test_scope",
+          "title": "Expand test coverage on critical paths",
+          "description": "Increase test breadth beyond the current minimal footprint.",
+          "rationale": "A tiny test surface still leaves the project looking fragile.",
+          "steps": [
+            "Add tests for core modules.",
+            "Cover edge cases and failure paths."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 102,
+          "source_issue_codes": [
+            "insufficient_test_coverage_apparent"
+          ]
+        },
+        {
+          "code": "increase_engineering_signals",
+          "title": "Increase engineering credibility",
+          "description": "Strengthen structure, testing, tooling, and documentation signals.",
+          "rationale": "Weak engineering signals reduce trust in the project quality.",
+          "steps": [
+            "Add or improve tests, tooling config, and documentation.",
+            "Strengthen project structure and reproducibility."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 101,
+          "source_issue_codes": [
+            "low_technical_credibility"
+          ]
+        },
+        {
+          "code": "add_env_template",
+          "title": "Add a configuration template",
+          "description": "Create a safe example for environment or config variables.",
+          "rationale": "Projects depending on secrets or config should remain reproducible safely.",
+          "steps": [
+            "Add .env.example or equivalent.",
+            "Document each variable briefly."
+          ],
+          "impact": "medium",
+          "effort": "low",
+          "priority_score": 93,
+          "source_issue_codes": [
+            "missing_env_example"
+          ]
+        }
+      ]
+    },
+    {
+      "repo_name": "MatALass/merge-tactics-optimizer",
+      "total_score": 70,
+      "max_score": 100,
+      "level": "good",
+      "repo_type": "cli_tool",
+      "maturity_band": "advanced",
+      "category_scores": [
+        {
+          "name": "Documentation",
+          "score": 20,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "missing_roadmap_or_limitations",
+              "title": "No roadmap or limitations section detected",
+              "why_it_matters": "The project maturity and future direction are unclear.",
+              "recommendation": "Add roadmap, known limitations, or next steps.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Structure",
+          "score": 17,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "missing_tests_directory",
+              "title": "Tests directory missing",
+              "why_it_matters": "Test organization is unclear or absent.",
+              "recommendation": "Add a dedicated tests/ directory.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Packaging",
+          "score": 7,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_license",
+              "title": "License missing",
+              "why_it_matters": "The repository usage rights are unclear.",
+              "recommendation": "Add a LICENSE file.",
+              "severity": "low"
+            },
+            {
+              "code": "missing_tooling_configuration",
+              "title": "Tooling configuration missing",
+              "why_it_matters": "Formatting, linting, or testing standards are less explicit.",
+              "recommendation": "Add configuration for core tools such as pytest, ruff, eslint, or tsconfig.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Tests",
+          "score": 0,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_tests",
+              "title": "No tests detected",
+              "why_it_matters": "The project appears fragile and less maintainable.",
+              "recommendation": "Add a basic test suite covering core logic and critical flows.",
+              "severity": "high"
+            },
+            {
+              "code": "insufficient_test_coverage_apparent",
+              "title": "Test presence appears weak",
+              "why_it_matters": "A very small number of tests often indicates fragile coverage.",
+              "recommendation": "Increase the breadth of tests for critical paths.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_test_framework_configuration",
+              "title": "Test framework not clearly configured",
+              "why_it_matters": "The testing strategy is less explicit and reproducible.",
+              "recommendation": "Declare and configure the testing framework clearly.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_ci_for_tests",
+              "title": "CI for tests missing",
+              "why_it_matters": "Quality checks are not automatically enforced.",
+              "recommendation": "Add CI workflows to run tests automatically.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Maintainability",
+          "score": 13,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_technical_documentation",
+              "title": "Technical documentation missing",
+              "why_it_matters": "Architecture and maintainability decisions are harder to understand.",
+              "recommendation": "Add technical docs such as architecture notes or contribution guidelines.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Completeness",
+          "score": 10,
+          "max_score": 10,
+          "issues": []
+        },
+        {
+          "name": "Portfolio value",
+          "score": 3,
+          "max_score": 5,
+          "issues": [
+            {
+              "code": "low_technical_credibility",
+              "title": "Low technical credibility",
+              "why_it_matters": "The repository lacks signals of engineering maturity.",
+              "recommendation": "Improve structure, documentation, testing, and tooling signals.",
+              "severity": "medium"
+            }
+          ]
+        }
+      ],
+      "priority_issues": [
+        {
+          "code": "missing_tests",
+          "title": "No tests detected",
+          "why_it_matters": "The project appears fragile and less maintainable.",
+          "recommendation": "Add a basic test suite covering core logic and critical flows.",
+          "severity": "high"
+        },
+        {
+          "code": "insufficient_test_coverage_apparent",
+          "title": "Test presence appears weak",
+          "why_it_matters": "A very small number of tests often indicates fragile coverage.",
+          "recommendation": "Increase the breadth of tests for critical paths.",
+          "severity": "medium"
+        },
+        {
+          "code": "low_technical_credibility",
+          "title": "Low technical credibility",
+          "why_it_matters": "The repository lacks signals of engineering maturity.",
+          "recommendation": "Improve structure, documentation, testing, and tooling signals.",
+          "severity": "medium"
+        },
+        {
+          "code": "missing_test_framework_configuration",
+          "title": "Test framework not clearly configured",
+          "why_it_matters": "The testing strategy is less explicit and reproducible.",
+          "recommendation": "Declare and configure the testing framework clearly.",
+          "severity": "medium"
+        },
+        {
+          "code": "missing_tests_directory",
+          "title": "Tests directory missing",
+          "why_it_matters": "Test organization is unclear or absent.",
+          "recommendation": "Add a dedicated tests/ directory.",
+          "severity": "medium"
+        }
+      ],
+      "prioritized_actions": [
+        {
+          "code": "build_core_test_suite",
+          "title": "Build a core test suite",
+          "description": "Add tests for the repository's main logic and critical flows.",
+          "rationale": "No tests is one of the clearest signals of fragility.",
+          "steps": [
+            "Identify the core business logic or critical flows.",
+            "Add a minimal but credible automated test suite.",
+            "Cover the most failure-prone paths first."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 126,
+          "source_issue_codes": [
+            "missing_tests"
+          ]
+        },
+        {
+          "code": "increase_engineering_signals",
+          "title": "Increase engineering credibility",
+          "description": "Strengthen structure, testing, tooling, and documentation signals.",
+          "rationale": "Weak engineering signals reduce trust in the project quality.",
+          "steps": [
+            "Add or improve tests, tooling config, and documentation.",
+            "Strengthen project structure and reproducibility."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 101,
+          "source_issue_codes": [
+            "low_technical_credibility"
+          ]
+        },
+        {
+          "code": "expand_test_scope",
+          "title": "Expand test coverage on critical paths",
+          "description": "Increase test breadth beyond the current minimal footprint.",
+          "rationale": "A tiny test surface still leaves the project looking fragile.",
+          "steps": [
+            "Add tests for core modules.",
+            "Cover edge cases and failure paths."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 100,
+          "source_issue_codes": [
+            "insufficient_test_coverage_apparent"
+          ]
+        },
+        {
+          "code": "configure_test_framework",
+          "title": "Configure the test framework explicitly",
+          "description": "Make the testing strategy and commands explicit.",
+          "rationale": "Testing should be reproducible and clearly declared.",
+          "steps": [
+            "Declare the test framework dependency.",
+            "Add config and document the test command."
+          ],
+          "impact": "medium",
+          "effort": "low",
+          "priority_score": 90,
+          "source_issue_codes": [
+            "missing_test_framework_configuration"
+          ]
+        },
+        {
+          "code": "create_test_layout",
+          "title": "Create a dedicated test layout",
+          "description": "Introduce a tests/ directory with a coherent structure.",
+          "rationale": "Test organization is part of maintainability and engineering maturity.",
+          "steps": [
+            "Create tests/.",
+            "Move or add tests by feature or module."
+          ],
+          "impact": "medium",
+          "effort": "low",
+          "priority_score": 89,
+          "source_issue_codes": [
+            "missing_tests_directory"
+          ]
+        }
+      ]
+    },
+    {
+      "repo_name": "MatALass/footpredict-pl",
+      "total_score": 70,
+      "max_score": 100,
+      "level": "good",
+      "repo_type": "streamlit_app",
+      "maturity_band": "advanced",
+      "category_scores": [
+        {
+          "name": "Documentation",
+          "score": 20,
+          "max_score": 20,
+          "issues": []
+        },
+        {
+          "name": "Structure",
+          "score": 17,
+          "max_score": 20,
+          "issues": []
+        },
+        {
+          "name": "Packaging",
+          "score": 7,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_license",
+              "title": "License missing",
+              "why_it_matters": "The repository usage rights are unclear.",
+              "recommendation": "Add a LICENSE file.",
+              "severity": "low"
+            },
+            {
+              "code": "missing_env_example",
+              "title": "Environment example missing",
+              "why_it_matters": "Projects using configuration or secrets are harder to reproduce safely.",
+              "recommendation": "Add a .env.example or equivalent configuration template.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Tests",
+          "score": 0,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_tests",
+              "title": "No tests detected",
+              "why_it_matters": "The project appears fragile and less maintainable.",
+              "recommendation": "Add a basic test suite covering core logic and critical flows.",
+              "severity": "medium"
+            },
+            {
+              "code": "insufficient_test_coverage_apparent",
+              "title": "Test presence appears weak",
+              "why_it_matters": "A very small number of tests often indicates fragile coverage.",
+              "recommendation": "Increase the breadth of tests for critical paths.",
+              "severity": "low"
+            },
+            {
+              "code": "missing_ci_for_tests",
+              "title": "CI for tests missing",
+              "why_it_matters": "Quality checks are not automatically enforced.",
+              "recommendation": "Add CI workflows to run tests automatically.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Maintainability",
+          "score": 13,
+          "max_score": 15,
+          "issues": []
+        },
+        {
+          "name": "Completeness",
+          "score": 10,
+          "max_score": 10,
+          "issues": []
+        },
+        {
+          "name": "Portfolio value",
+          "score": 3,
+          "max_score": 5,
+          "issues": [
+            {
+              "code": "low_technical_credibility",
+              "title": "Low technical credibility",
+              "why_it_matters": "The repository lacks signals of engineering maturity.",
+              "recommendation": "Improve structure, documentation, testing, and tooling signals.",
+              "severity": "medium"
+            }
+          ]
+        }
+      ],
+      "priority_issues": [
+        {
+          "code": "low_technical_credibility",
+          "title": "Low technical credibility",
+          "why_it_matters": "The repository lacks signals of engineering maturity.",
+          "recommendation": "Improve structure, documentation, testing, and tooling signals.",
+          "severity": "medium"
+        },
+        {
+          "code": "missing_env_example",
+          "title": "Environment example missing",
+          "why_it_matters": "Projects using configuration or secrets are harder to reproduce safely.",
+          "recommendation": "Add a .env.example or equivalent configuration template.",
+          "severity": "medium"
+        },
+        {
+          "code": "missing_tests",
+          "title": "No tests detected",
+          "why_it_matters": "The project appears fragile and less maintainable.",
+          "recommendation": "Add a basic test suite covering core logic and critical flows.",
+          "severity": "medium"
+        },
+        {
+          "code": "insufficient_test_coverage_apparent",
+          "title": "Test presence appears weak",
+          "why_it_matters": "A very small number of tests often indicates fragile coverage.",
+          "recommendation": "Increase the breadth of tests for critical paths.",
+          "severity": "low"
+        },
+        {
+          "code": "missing_ci_for_tests",
+          "title": "CI for tests missing",
+          "why_it_matters": "Quality checks are not automatically enforced.",
+          "recommendation": "Add CI workflows to run tests automatically.",
+          "severity": "low"
+        }
+      ],
+      "prioritized_actions": [
+        {
+          "code": "increase_engineering_signals",
+          "title": "Increase engineering credibility",
+          "description": "Strengthen structure, testing, tooling, and documentation signals.",
+          "rationale": "Weak engineering signals reduce trust in the project quality.",
+          "steps": [
+            "Add or improve tests, tooling config, and documentation.",
+            "Strengthen project structure and reproducibility."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 101,
+          "source_issue_codes": [
+            "low_technical_credibility"
+          ]
+        },
+        {
+          "code": "build_core_test_suite",
+          "title": "Build a core test suite",
+          "description": "Add tests for the repository's main logic and critical flows.",
+          "rationale": "No tests is one of the clearest signals of fragility.",
+          "steps": [
+            "Identify the core business logic or critical flows.",
+            "Add a minimal but credible automated test suite.",
+            "Cover the most failure-prone paths first."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 98,
+          "source_issue_codes": [
+            "missing_tests"
+          ]
+        },
+        {
+          "code": "expand_test_scope",
+          "title": "Expand test coverage on critical paths",
+          "description": "Increase test breadth beyond the current minimal footprint.",
+          "rationale": "A tiny test surface still leaves the project looking fragile.",
+          "steps": [
+            "Add tests for core modules.",
+            "Cover edge cases and failure paths."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 90,
+          "source_issue_codes": [
+            "insufficient_test_coverage_apparent"
+          ]
+        },
+        {
+          "code": "add_env_template",
+          "title": "Add a configuration template",
+          "description": "Create a safe example for environment or config variables.",
+          "rationale": "Projects depending on secrets or config should remain reproducible safely.",
+          "steps": [
+            "Add .env.example or equivalent.",
+            "Document each variable briefly."
+          ],
+          "impact": "medium",
+          "effort": "low",
+          "priority_score": 85,
+          "source_issue_codes": [
+            "missing_env_example"
+          ]
+        },
+        {
+          "code": "add_test_ci",
+          "title": "Add CI for automated tests",
+          "description": "Run tests automatically in CI.",
+          "rationale": "Automation reinforces quality gates and project credibility.",
+          "steps": [
+            "Add a CI workflow.",
+            "Run install, lint, and test steps automatically."
+          ],
+          "impact": "medium",
+          "effort": "medium",
+          "priority_score": 84,
+          "source_issue_codes": [
+            "missing_ci_for_tests"
+          ]
+        }
+      ]
+    },
+    {
+      "repo_name": "MatALass/morpion-ultime",
+      "total_score": 77,
+      "max_score": 100,
+      "level": "good",
+      "repo_type": "game_project",
+      "maturity_band": "advanced",
+      "category_scores": [
+        {
+          "name": "Documentation",
+          "score": 20,
+          "max_score": 20,
+          "issues": []
+        },
+        {
+          "name": "Structure",
+          "score": 17,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "missing_main_code_directory",
+              "title": "Main code directory missing",
+              "why_it_matters": "The codebase appears less structured and harder to scale.",
+              "recommendation": "Move main source code into a dedicated folder such as src/, app/, or lib/.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Packaging",
+          "score": 7,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_license",
+              "title": "License missing",
+              "why_it_matters": "The repository usage rights are unclear.",
+              "recommendation": "Add a LICENSE file.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Tests",
+          "score": 10,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "insufficient_test_coverage_apparent",
+              "title": "Test presence appears weak",
+              "why_it_matters": "A very small number of tests often indicates fragile coverage.",
+              "recommendation": "Increase the breadth of tests for critical paths.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Maintainability",
+          "score": 8,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "oversized_files",
+              "title": "Oversized files detected",
+              "why_it_matters": "Very large files often indicate weak modularity and harder maintenance.",
+              "recommendation": "Split large files into smaller focused modules.",
+              "severity": "high"
+            },
+            {
+              "code": "poor_separation_of_concerns",
+              "title": "Poor separation of concerns",
+              "why_it_matters": "Responsibilities appear mixed, which makes future changes harder.",
+              "recommendation": "Split logic into dedicated layers or modules.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Completeness",
+          "score": 10,
+          "max_score": 10,
+          "issues": []
+        },
+        {
+          "name": "Portfolio value",
+          "score": 5,
+          "max_score": 5,
+          "issues": []
+        }
+      ],
+      "priority_issues": [
+        {
+          "code": "oversized_files",
+          "title": "Oversized files detected",
+          "why_it_matters": "Very large files often indicate weak modularity and harder maintenance.",
+          "recommendation": "Split large files into smaller focused modules.",
+          "severity": "high"
+        },
+        {
+          "code": "missing_main_code_directory",
+          "title": "Main code directory missing",
+          "why_it_matters": "The codebase appears less structured and harder to scale.",
+          "recommendation": "Move main source code into a dedicated folder such as src/, app/, or lib/.",
+          "severity": "medium"
+        },
+        {
+          "code": "poor_separation_of_concerns",
+          "title": "Poor separation of concerns",
+          "why_it_matters": "Responsibilities appear mixed, which makes future changes harder.",
+          "recommendation": "Split logic into dedicated layers or modules.",
+          "severity": "medium"
+        },
+        {
+          "code": "insufficient_test_coverage_apparent",
+          "title": "Test presence appears weak",
+          "why_it_matters": "A very small number of tests often indicates fragile coverage.",
+          "recommendation": "Increase the breadth of tests for critical paths.",
+          "severity": "low"
+        },
+        {
+          "code": "missing_license",
+          "title": "License missing",
+          "why_it_matters": "The repository usage rights are unclear.",
+          "recommendation": "Add a LICENSE file.",
+          "severity": "low"
+        }
+      ],
+      "prioritized_actions": [
+        {
+          "code": "split_large_files",
+          "title": "Split oversized files",
+          "description": "Break large implementation files into smaller focused modules.",
+          "rationale": "Oversized files are a strong maintainability smell.",
+          "steps": [
+            "Identify oversized files.",
+            "Extract related responsibilities into separate modules.",
+            "Reduce file size while preserving cohesion."
+          ],
+          "impact": "high",
+          "effort": "high",
+          "priority_score": 112,
+          "source_issue_codes": [
+            "oversized_files"
+          ]
+        },
+        {
+          "code": "separate_responsibilities",
+          "title": "Improve separation of concerns",
+          "description": "Split mixed responsibilities into explicit layers or modules.",
+          "rationale": "Poor separation of concerns slows every future change.",
+          "steps": [
+            "Define major responsibility boundaries.",
+            "Create modules or layers per responsibility.",
+            "Move logic accordingly and simplify entry points."
+          ],
+          "impact": "high",
+          "effort": "high",
+          "priority_score": 107,
+          "source_issue_codes": [
+            "poor_separation_of_concerns"
+          ]
+        },
+        {
+          "code": "create_main_code_directory",
+          "title": "Introduce a dedicated source directory",
+          "description": "Move core code into a dedicated source folder.",
+          "rationale": "A main code directory improves clarity and future scalability.",
+          "steps": [
+            "Choose src/, app/, or lib/ depending on the stack.",
+            "Move main implementation files there.",
+            "Update imports and execution entry points."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 102,
+          "source_issue_codes": [
+            "missing_main_code_directory"
+          ]
+        },
+        {
+          "code": "expand_test_scope",
+          "title": "Expand test coverage on critical paths",
+          "description": "Increase test breadth beyond the current minimal footprint.",
+          "rationale": "A tiny test surface still leaves the project looking fragile.",
+          "steps": [
+            "Add tests for core modules.",
+            "Cover edge cases and failure paths."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 90,
+          "source_issue_codes": [
+            "insufficient_test_coverage_apparent"
+          ]
+        },
+        {
+          "code": "add_license",
+          "title": "Add a license",
+          "description": "Clarify repository usage rights with a LICENSE file.",
+          "rationale": "Licensing matters for portfolio clarity and open-source reuse.",
+          "steps": [
+            "Choose an appropriate license.",
+            "Add the corresponding LICENSE file."
+          ],
+          "impact": "low",
+          "effort": "low",
+          "priority_score": 47,
+          "source_issue_codes": [
+            "missing_license"
+          ]
+        }
+      ]
+    },
+    {
+      "repo_name": "MatALass/repo_auditor",
+      "total_score": 78,
+      "max_score": 100,
+      "level": "good",
+      "repo_type": "cli_tool",
+      "maturity_band": "advanced",
+      "category_scores": [
+        {
+          "name": "Documentation",
+          "score": 20,
+          "max_score": 20,
+          "issues": []
+        },
+        {
+          "name": "Structure",
+          "score": 20,
+          "max_score": 20,
+          "issues": []
+        },
+        {
+          "name": "Packaging",
+          "score": 7,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_license",
+              "title": "License missing",
+              "why_it_matters": "The repository usage rights are unclear.",
+              "recommendation": "Add a LICENSE file.",
+              "severity": "low"
+            },
+            {
+              "code": "missing_tooling_configuration",
+              "title": "Tooling configuration missing",
+              "why_it_matters": "Formatting, linting, or testing standards are less explicit.",
+              "recommendation": "Add configuration for core tools such as pytest, ruff, eslint, or tsconfig.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Tests",
+          "score": 9,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_test_framework_configuration",
+              "title": "Test framework not clearly configured",
+              "why_it_matters": "The testing strategy is less explicit and reproducible.",
+              "recommendation": "Declare and configure the testing framework clearly.",
+              "severity": "medium"
+            },
+            {
+              "code": "missing_ci_for_tests",
+              "title": "CI for tests missing",
+              "why_it_matters": "Quality checks are not automatically enforced.",
+              "recommendation": "Add CI workflows to run tests automatically.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Maintainability",
+          "score": 13,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "oversized_files",
+              "title": "Oversized files detected",
+              "why_it_matters": "Very large files often indicate weak modularity and harder maintenance.",
+              "recommendation": "Split large files into smaller focused modules.",
+              "severity": "high"
+            }
+          ]
+        },
+        {
+          "name": "Completeness",
+          "score": 6,
+          "max_score": 10,
+          "issues": [
+            {
+              "code": "missing_repository_description",
+              "title": "Repository description missing",
+              "why_it_matters": "The repo is less understandable at first glance on GitHub.",
+              "recommendation": "Add a concise GitHub repository description.",
+              "severity": "low"
+            },
+            {
+              "code": "project_promise_not_supported_by_contents",
+              "title": "Project promise is weakly supported by repository contents",
+              "why_it_matters": "The repo may look incomplete or under-delivered compared to its description.",
+              "recommendation": "Align README, structure, and code to match the stated project scope.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Portfolio value",
+          "score": 3,
+          "max_score": 5,
+          "issues": [
+            {
+              "code": "low_portfolio_clarity",
+              "title": "Low portfolio clarity",
+              "why_it_matters": "The project is not immediately understandable to a recruiter or reviewer.",
+              "recommendation": "Clarify the purpose, impact, and usage of the project.",
+              "severity": "medium"
+            }
+          ]
+        }
+      ],
+      "priority_issues": [
+        {
+          "code": "oversized_files",
+          "title": "Oversized files detected",
+          "why_it_matters": "Very large files often indicate weak modularity and harder maintenance.",
+          "recommendation": "Split large files into smaller focused modules.",
+          "severity": "high"
+        },
+        {
+          "code": "low_portfolio_clarity",
+          "title": "Low portfolio clarity",
+          "why_it_matters": "The project is not immediately understandable to a recruiter or reviewer.",
+          "recommendation": "Clarify the purpose, impact, and usage of the project.",
+          "severity": "medium"
+        },
+        {
+          "code": "missing_test_framework_configuration",
+          "title": "Test framework not clearly configured",
+          "why_it_matters": "The testing strategy is less explicit and reproducible.",
+          "recommendation": "Declare and configure the testing framework clearly.",
+          "severity": "medium"
+        },
+        {
+          "code": "missing_tooling_configuration",
+          "title": "Tooling configuration missing",
+          "why_it_matters": "Formatting, linting, or testing standards are less explicit.",
+          "recommendation": "Add configuration for core tools such as pytest, ruff, eslint, or tsconfig.",
+          "severity": "medium"
+        },
+        {
+          "code": "project_promise_not_supported_by_contents",
+          "title": "Project promise is weakly supported by repository contents",
+          "why_it_matters": "The repo may look incomplete or under-delivered compared to its description.",
+          "recommendation": "Align README, structure, and code to match the stated project scope.",
+          "severity": "medium"
+        }
+      ],
+      "prioritized_actions": [
+        {
+          "code": "split_large_files",
+          "title": "Split oversized files",
+          "description": "Break large implementation files into smaller focused modules.",
+          "rationale": "Oversized files are a strong maintainability smell.",
+          "steps": [
+            "Identify oversized files.",
+            "Extract related responsibilities into separate modules.",
+            "Reduce file size while preserving cohesion."
+          ],
+          "impact": "high",
+          "effort": "high",
+          "priority_score": 112,
+          "source_issue_codes": [
+            "oversized_files"
+          ]
+        },
+        {
+          "code": "align_scope_and_contents",
+          "title": "Align repository scope with actual contents",
+          "description": "Make the repository content match the promise made in its description and README.",
+          "rationale": "Overpromising damages credibility quickly.",
+          "steps": [
+            "Review the claimed scope.",
+            "Either reduce the promise or add the missing implementation and documentation."
+          ],
+          "impact": "high",
+          "effort": "medium",
+          "priority_score": 102,
+          "source_issue_codes": [
+            "project_promise_not_supported_by_contents"
+          ]
+        },
+        {
+          "code": "configure_tooling",
+          "title": "Add tooling configuration",
+          "description": "Configure linting, formatting, typing, or test tools explicitly.",
+          "rationale": "Tooling configuration signals engineering discipline.",
+          "steps": [
+            "Choose the relevant tools for the stack.",
+            "Add configuration files and document usage."
+          ],
+          "impact": "medium",
+          "effort": "medium",
+          "priority_score": 95,
+          "source_issue_codes": [
+            "missing_tooling_configuration"
+          ]
+        },
+        {
+          "code": "configure_test_framework",
+          "title": "Configure the test framework explicitly",
+          "description": "Make the testing strategy and commands explicit.",
+          "rationale": "Testing should be reproducible and clearly declared.",
+          "steps": [
+            "Declare the test framework dependency.",
+            "Add config and document the test command."
+          ],
+          "impact": "medium",
+          "effort": "low",
+          "priority_score": 90,
+          "source_issue_codes": [
+            "missing_test_framework_configuration"
+          ]
+        },
+        {
+          "code": "improve_portfolio_positioning",
+          "title": "Improve portfolio clarity",
+          "description": "Make the repository easier to understand for recruiters and reviewers.",
+          "rationale": "Portfolio value depends heavily on clarity and framing.",
+          "steps": [
+            "Clarify the purpose and value proposition.",
+            "Improve README opening and repository description."
+          ],
+          "impact": "medium",
+          "effort": "low",
+          "priority_score": 86,
+          "source_issue_codes": [
+            "low_portfolio_clarity"
+          ]
+        }
+      ]
+    },
+    {
+      "repo_name": "MatALass/repo-audit",
+      "total_score": 87,
+      "max_score": 100,
+      "level": "strong",
+      "repo_type": "cli_tool",
+      "maturity_band": "advanced",
+      "category_scores": [
+        {
+          "name": "Documentation",
+          "score": 18,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "missing_project_structure_explanation",
+              "title": "Project structure not explained",
+              "why_it_matters": "The repository layout is less understandable for maintainers and recruiters.",
+              "recommendation": "Add a short section describing key folders and modules.",
+              "severity": "low"
+            },
+            {
+              "code": "missing_roadmap_or_limitations",
+              "title": "No roadmap or limitations section detected",
+              "why_it_matters": "The project maturity and future direction are unclear.",
+              "recommendation": "Add roadmap, known limitations, or next steps.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Structure",
+          "score": 15,
+          "max_score": 20,
+          "issues": [
+            {
+              "code": "missing_supporting_directories",
+              "title": "Supporting directories missing",
+              "why_it_matters": "The repository may lack separation for docs, assets, data, or scripts.",
+              "recommendation": "Add relevant directories such as docs/, assets/, data/, or scripts/ when needed.",
+              "severity": "low"
+            }
+          ]
+        },
+        {
+          "name": "Packaging",
+          "score": 9,
+          "max_score": 15,
+          "issues": [
+            {
+              "code": "missing_tooling_configuration",
+              "title": "Tooling configuration missing",
+              "why_it_matters": "Formatting, linting, or testing standards are less explicit.",
+              "recommendation": "Add configuration for core tools such as pytest, ruff, eslint, or tsconfig.",
+              "severity": "medium"
+            }
+          ]
+        },
+        {
+          "name": "Tests",
+          "score": 15,
+          "max_score": 15,
+          "issues": []
+        },
+        {
+          "name": "Maintainability",
+          "score": 15,
+          "max_score": 15,
+          "issues": []
+        },
+        {
+          "name": "Completeness",
+          "score": 10,
+          "max_score": 10,
+          "issues": []
+        },
+        {
+          "name": "Portfolio value",
+          "score": 5,
+          "max_score": 5,
+          "issues": []
+        }
+      ],
+      "priority_issues": [
+        {
+          "code": "missing_tooling_configuration",
+          "title": "Tooling configuration missing",
+          "why_it_matters": "Formatting, linting, or testing standards are less explicit.",
+          "recommendation": "Add configuration for core tools such as pytest, ruff, eslint, or tsconfig.",
+          "severity": "medium"
+        },
+        {
+          "code": "missing_project_structure_explanation",
+          "title": "Project structure not explained",
+          "why_it_matters": "The repository layout is less understandable for maintainers and recruiters.",
+          "recommendation": "Add a short section describing key folders and modules.",
+          "severity": "low"
+        },
+        {
+          "code": "missing_roadmap_or_limitations",
+          "title": "No roadmap or limitations section detected",
+          "why_it_matters": "The project maturity and future direction are unclear.",
+          "recommendation": "Add roadmap, known limitations, or next steps.",
+          "severity": "low"
+        },
+        {
+          "code": "missing_supporting_directories",
+          "title": "Supporting directories missing",
+          "why_it_matters": "The repository may lack separation for docs, assets, data, or scripts.",
+          "recommendation": "Add relevant directories such as docs/, assets/, data/, or scripts/ when needed.",
+          "severity": "low"
+        }
+      ],
+      "prioritized_actions": [
+        {
+          "code": "configure_tooling",
+          "title": "Add tooling configuration",
+          "description": "Configure linting, formatting, typing, or test tools explicitly.",
+          "rationale": "Tooling configuration signals engineering discipline.",
+          "steps": [
+            "Choose the relevant tools for the stack.",
+            "Add configuration files and document usage."
+          ],
+          "impact": "medium",
+          "effort": "medium",
+          "priority_score": 95,
+          "source_issue_codes": [
+            "missing_tooling_configuration"
+          ]
+        },
+        {
+          "code": "document_structure",
+          "title": "Explain repository structure",
+          "description": "Document the main folders and their responsibilities.",
+          "rationale": "Structure explanation accelerates onboarding and maintenance.",
+          "steps": [
+            "List top-level folders.",
+            "Explain the purpose of core modules."
+          ],
+          "impact": "medium",
+          "effort": "low",
+          "priority_score": 71,
+          "source_issue_codes": [
+            "missing_project_structure_explanation"
+          ]
+        },
+        {
+          "code": "add_roadmap_section",
+          "title": "Add roadmap and limitations",
+          "description": "Document current limitations and future improvements.",
+          "rationale": "This shows maturity and helps frame the current state of the project.",
+          "steps": [
+            "Add known limitations.",
+            "Add next steps or roadmap items."
+          ],
+          "impact": "low",
+          "effort": "low",
+          "priority_score": 51,
+          "source_issue_codes": [
+            "missing_roadmap_or_limitations"
+          ]
+        },
+        {
+          "code": "add_support_directories",
+          "title": "Add supporting directories where relevant",
+          "description": "Separate documentation, assets, scripts, notebooks, or data into dedicated folders.",
+          "rationale": "Supporting material should not be mixed randomly with main code.",
+          "steps": [
+            "Create only the directories relevant to the project.",
+            "Move auxiliary files into the right locations."
+          ],
+          "impact": "low",
+          "effort": "low",
+          "priority_score": 46,
+          "source_issue_codes": [
+            "missing_supporting_directories"
+          ]
+        }
+      ]
+    }
+  ],
+  "failed_repositories": []
+}
